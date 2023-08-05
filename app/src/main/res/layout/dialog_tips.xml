@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white_radius_8"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="@dimen/dp_304"
+            android:layout_height="@dimen/dp_160"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/layout_title"
+                layout="@layout/layout_dialog_title" />
+
+            <TextView
+                android:id="@+id/tv_message_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="26dp"
+                tools:text="WPA2 PSK"
+                android:textSize="7dp" />
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:textColor="@color/color_333333"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_25"
+                android:textSize="@dimen/sp_16" />
+            <TextView
+                android:id="@+id/tv_message2"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="AAAAAAAAAA"
+                android:layout_centerVertical="true"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_18" />
+
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/layout_bottom"
+                layout="@layout/layout_dialog_bottom" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</layout>

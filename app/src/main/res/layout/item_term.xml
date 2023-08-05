@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tv_term"
+        android:layout_width="@dimen/dp_54"
+        android:layout_height="@dimen/dp_25"
+        android:background="@drawable/bg_translucent_radius_8"
+        android:gravity="center"
+        android:text="45"
+        android:textColor="#ff999999"
+        android:textSize="@dimen/sp_14" />
+</layout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="@dimen/dp_265_33"
+        android:layout_height="@dimen/dp_204"
+        android:background="@drawable/bg_common_dialog"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/dp_10" />
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="@dimen/dp_11_33"
+                android:layout_height="@dimen/dp_11_33"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_18"
+                android:src="@drawable/ic_toolbar_close" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_179"
+            android:layout_below="@+id/rl_title"
+            android:layout_marginTop="@dimen/dp_25"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp_46"
+            android:paddingRight="@dimen/dp_46">
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner" />
+
+            <TimePicker
+                android:id="@+id/timePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <include
+            android:id="@+id/layout_bottom"
+            layout="@layout/layout_dialog_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_44"
+            android:layout_below="@+id/ll_container" />
+    </RelativeLayout>
+
+</layout>

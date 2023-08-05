@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+-->
+
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_processing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_50"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="@dimen/dp_60"
+                android:layout_marginTop="@dimen/dp_23"
+                android:visibility="gone"
+                android:background="@mipmap/ic_processing" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/str_amount"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_24" />
+
+            <TextView
+                android:id="@+id/tv_all_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_9"
+                android:text="₦ 22,800"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_30" />
+
+            <TextView
+                android:id="@+id/tv_showMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginRight="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_24"
+                android:text=""
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_18" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+<!--
+</layout>
+-->

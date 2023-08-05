@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "112497927393",
+    "project_id": "icredit-dba98",
+    "storage_bucket": "icredit-dba98.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112497927393:android:dc8373d786268b545403a0",
+        "android_client_info": {
+          "package_name": "com.icredit.loan.cash.ng"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112497927393-ekmj89colricp9nvu8fcl51se6bir0tc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.icredit.loan.cash.ng",
+            "certificate_hash": "d4d065a1444d0804783dc6f0de2107e540cdcfc6"
+          }
+        },
+        {
+          "client_id": "112497927393-ca3c2bmm0894rb23p5q919en7jtbi5er.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcRdJ3H9mhyyZDl5yOECuDZ_rpCP0GD9g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112497927393-ca3c2bmm0894rb23p5q919en7jtbi5er.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

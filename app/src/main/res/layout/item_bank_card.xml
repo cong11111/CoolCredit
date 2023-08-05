@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+	android:padding="@dimen/dp_5">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_125"
+        android:background="@drawable/bg_card_blue">
+        <ImageView
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_33"
+           android:layout_marginLeft="@dimen/dp_20"
+            android:src="@mipmap/ic_cardchip" />
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_width="@dimen/dp_45"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_25"
+            android:layout_marginRight="@dimen/dp_20"
+            android:src="@mipmap/ic_cardlogo" />
+        <TextView
+            android:id="@+id/tv_bankName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_60"
+            android:layout_marginTop="@dimen/dp_30"
+            android:text="BankNumber"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/sp_20" />
+
+        <TextView
+            android:id="@+id/tv_bankNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_bankName"
+            android:layout_marginLeft="@dimen/dp_60"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="****  ****  ****  6523"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/sp_24" />
+    </RelativeLayout>
+</LinearLayout>

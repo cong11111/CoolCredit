@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+-->
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_white_radius_8"
+        android:gravity="center_horizontal">
+
+        <include
+            android:id="@+id/ll_title"
+            layout="@layout/layout_title" />
+
+        <com.tiny.cash.loan.card.ui.view.UntouchableScrollView
+            android:layout_below="@+id/ll_title"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_80"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <com.tiny.cash.loan.card.ui.view.FullSizeListView
+                android:id ="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/dp_16"
+                android:layout_height="@dimen/dp_450"
+                android:divider="@null"
+                android:dividerHeight="20dp"
+                android:paddingLeft="@dimen/dp_15"
+                android:paddingRight="@dimen/dp_15"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbarThumbVertical="@drawable/item_scroll_bar" />
+            </LinearLayout>
+        </com.tiny.cash.loan.card.ui.view.UntouchableScrollView>
+
+
+        <Button
+            android:id="@+id/btn_apply_again"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_35"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:background="@drawable/bg_blue_radius_20"
+            android:enabled="true"
+            android:text="CONFIRM"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/sp_15" />
+    </RelativeLayout>
+
+<!--
+</layout>-->

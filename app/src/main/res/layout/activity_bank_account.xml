@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<layout>
+-->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+
+
+        <include
+            android:id="@+id/ll_title"
+            layout="@layout/layout_title" />
+
+        <LinearLayout
+            android:id="@+id/ll_add_bank_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_23"
+            android:layout_marginRight="@dimen/dp_16"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_bank_name"
+                android:textColor="@color/color_ff999999"
+                android:textSize="@dimen/sp_16" />
+
+            <org.angmarch.views.NiceSpinner
+                android:id="@+id/nice_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-25dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:gravity="start"
+                android:hint="@string/str_choose_from_list"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_18" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="@color/color_ffebebeb" />
+
+            <com.tiny.cash.loan.card.ui.view.ClearEditText
+                android:id="@+id/edt_bank_acount_number"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginTop="@dimen/dp_18"
+                android:background="@drawable/edittext_selector"
+                android:hint="@string/str_bank_acount_number"
+                android:inputType="number"
+                android:textColor="@color/color_333333"
+                android:textCursorDrawable="@drawable/ic_edt_cursor"
+                android:textSize="@dimen/sp_18" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="@color/color_ffebebeb" />
+
+
+            <com.tiny.cash.loan.card.ui.view.ClearEditText
+                android:id="@+id/et_bvn"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginTop="@dimen/dp_18"
+                android:background="@drawable/edittext_selector"
+                android:hint="@string/str_bvn"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="11"
+                android:singleLine="true"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_18" />
+
+            <com.text.alginlib.XQJustifyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                android:text="Our app will withdraw ₦50 card binding fee from your bank account.Please make sure you have at least ₦ 50 in your bank account."
+                android:textColor="@color/color_FF0000"
+                android:textSize="@dimen/sp_16"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_42"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_16"
+                android:background="@drawable/btn_login_selector"
+                android:enabled="true"
+                android:text="@string/str_submit"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/sp_15" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+<!--
+</layout>-->

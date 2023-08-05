@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+-->
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_20">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Account Name:"
+                android:textSize="@dimen/sp_16" />
+
+            <TextView
+                android:id="@+id/tv_Account_Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_135"
+                android:textStyle="bold"
+                android:text=""
+                android:textSize="@dimen/sp_16" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_33"
+            android:background="@color/color_ffd1d1d1" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Account Number: "
+                android:textSize="@dimen/sp_16" />
+            <TextView
+                android:id="@+id/tv_copy"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_25"
+                android:layout_marginRight="@dimen/dp_16"
+                android:background="@drawable/bg_bule_radius_10"
+                android:text="copy"
+                android:gravity="center_horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/sp_14" />
+            <TextView
+                android:id="@+id/tv_Account_Number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_135"
+                android:text=""
+                android:textStyle="bold"
+                android:textSize="@dimen/sp_16" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_33"
+            android:background="@color/color_ffd1d1d1" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Bank:"
+                android:textSize="@dimen/sp_16" />
+
+            <TextView
+                android:id="@+id/tv_Account_Bank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_135"
+                android:text=""
+                android:textStyle="bold"
+                android:textSize="@dimen/sp_16" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_33"
+            android:background="@color/color_ffd1d1d1" />
+
+        <com.text.alginlib.XQJustifyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_70"
+            android:text="Please fill in BVN account for transfer\n
+1. Go to a nearby ATM and enter the account on the page and select the bank." />
+
+        <com.text.alginlib.XQJustifyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="2. Fill in BVN and mobile phone number when transferring. Otherwise, it will cause the loan status update to fail, resulting in penalty interest."
+            android:textStyle="bold" />
+
+        <com.text.alginlib.XQJustifyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="3. Contact our customer service after successful transfer and provide corresponding certificates." />
+    </LinearLayout>
+<!--
+</layout>-->

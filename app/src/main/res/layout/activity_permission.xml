@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<layout>
+-->
+
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_10"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_16">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/str_welcome"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_24" />
+
+            <com.text.alginlib.XQJustifyTextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_46"
+                android:layout_marginTop="@dimen/dp_13"
+                android:gravity="start"
+                android:text="@string/str_all_permission_details"
+                android:textColor="@color/color_ff999999"
+                android:textSize="@dimen/sp_14" />
+
+            <com.text.alginlib.XQJustifyTextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_46"
+                android:layout_marginTop="@dimen/dp_13"
+                android:gravity="start"
+                android:text="Your data is well protected and used for assessment only. Without your consent, we will not share your personal information  and data with any third party. The platform will ensure 100% security of your information. All the information will be uploaded to our server (url https://srv.icredit.ng/ ) as the input of our credit model."
+                android:textColor="@color/color_ff999999"
+                android:textSize="@dimen/sp_14" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/bg_white_radius"
+                android:paddingLeft="@dimen/dp_18"
+                android:paddingRight="@dimen/dp_19"
+                android:paddingBottom="@dimen/dp_25">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_48"
+                    android:layout_height="@dimen/dp_49"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_sms" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_60"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:text="@string/str_sms"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+
+                <com.text.alginlib.XQJustifyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_59"
+                    android:layout_marginTop="@dimen/dp_51"
+                    android:text="We use SMS data to retrieve financial and transactional data to understand your financial history and help us determine your eligibility for credit. Your information will be stored encrypted icredit.ng. Your data will be uploaded to our server (https://srv.icredit.ng/)."
+                    android:textColor="@color/color_ff999999"
+                    android:textSize="@dimen/sp_12" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/bg_white_radius"
+                android:paddingLeft="@dimen/dp_18"
+                android:paddingRight="@dimen/dp_19"
+                android:paddingBottom="@dimen/dp_25">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_48"
+                    android:layout_height="@dimen/dp_49"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_maillist" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_60"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:text="@string/str_mail_list"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+
+                <com.text.alginlib.XQJustifyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_59"
+                    android:layout_marginTop="@dimen/dp_51"
+                    android:text="We use aspects of your phonebook and contact data to help us prevent fraud and determine your eligibility for credit. Your data will be uploaded to our server (https://srv.icredit.ng/). ICredit will never use contact or phonebook data to contact your friends or family. "
+                    android:textColor="@color/color_ff999999"
+                    android:textSize="@dimen/sp_12" />
+            </RelativeLayout>
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/dp_10"-->
+<!--                android:background="@drawable/bg_white_radius"-->
+<!--                android:paddingLeft="@dimen/dp_18"-->
+<!--                android:paddingRight="@dimen/dp_19"-->
+<!--                android:paddingBottom="@dimen/dp_25">-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="@dimen/dp_48"-->
+<!--                    android:layout_height="@dimen/dp_49"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:background="@mipmap/icon_applist" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="@dimen/dp_60"-->
+<!--                    android:layout_marginTop="@dimen/dp_30"-->
+<!--                    android:text="APPlist"-->
+<!--                    android:textColor="@color/color_333333"-->
+<!--                    android:textSize="@dimen/sp_16" />-->
+
+<!--                <com.text.alginlib.XQJustifyTextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="@dimen/dp_59"-->
+<!--                    android:layout_marginTop="@dimen/dp_51"-->
+<!--                    android:text="We use applist data to distinguish fraudulent customers. Your information will be stored encrypted icredit.ng. Your data will be uploaded to our server (https://srv.icredit.ng/)."-->
+<!--                    android:textColor="@color/color_ff999999"-->
+<!--                    android:textSize="@dimen/sp_12" />-->
+<!--            </RelativeLayout>-->
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/dp_10"-->
+<!--                android:background="@drawable/bg_white_radius"-->
+<!--                android:paddingLeft="@dimen/dp_18"-->
+<!--                android:paddingRight="@dimen/dp_19"-->
+<!--                android:paddingBottom="@dimen/dp_25">-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="@dimen/dp_48"-->
+<!--                    android:layout_height="@dimen/dp_49"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:background="@mipmap/ic_position" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="@dimen/dp_60"-->
+<!--                    android:layout_marginTop="@dimen/dp_30"-->
+<!--                    android:text="@string/str_position"-->
+<!--                    android:textColor="@color/color_333333"-->
+<!--                    android:textSize="@dimen/sp_16" />-->
+
+<!--                <com.text.alginlib.XQJustifyTextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="@dimen/dp_59"-->
+<!--                    android:layout_marginTop="@dimen/dp_51"-->
+<!--                    android:text="We use your location, device and usage data for anti-fraud and credit modeling purpose. "-->
+<!--                    android:textColor="@color/color_ff999999"-->
+<!--                    android:textSize="@dimen/sp_12" />-->
+<!--            </RelativeLayout>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_24"
+                android:background="@drawable/bg_white_radius"
+                android:paddingLeft="@dimen/dp_18"
+                android:paddingRight="@dimen/dp_19"
+                android:paddingBottom="@dimen/dp_25">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_48"
+                    android:layout_height="@dimen/dp_49"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_mobile" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_60"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:text="@string/str_mobile_phone_status"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+
+                <com.text.alginlib.XQJustifyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_59"
+                    android:layout_marginTop="@dimen/dp_51"
+                    android:text="It is used to identify the user identity, prevent malicious programs and safe operation."
+                    android:textColor="@color/color_ff999999"
+                    android:textSize="@dimen/sp_12" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_106"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/bg_white_radius"
+                android:paddingLeft="@dimen/dp_18"
+                android:paddingRight="@dimen/dp_19"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_48"
+                    android:layout_height="@dimen/dp_49"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_camera" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_60"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:text="@string/str_camera"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+
+                <com.text.alginlib.XQJustifyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_59"
+                    android:layout_marginTop="@dimen/dp_51"
+                    android:text="@string/str_permission_details"
+                    android:textColor="@color/color_ff999999"
+                    android:textSize="@dimen/sp_12" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/bg_white_radius"
+                android:paddingLeft="@dimen/dp_18"
+                android:paddingRight="@dimen/dp_19"
+                android:paddingBottom="@dimen/dp_20">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_48"
+                    android:layout_height="@dimen/dp_49"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_sd" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_60"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:text="@string/str_sd_card"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+
+                <com.text.alginlib.XQJustifyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_59"
+                    android:layout_marginTop="@dimen/dp_51"
+                    android:text="It is used to identify the user identity, prevent malicious programs and safe operation.  We will obtain your storage permission to ensure the normal operation of the program."
+                    android:textColor="@color/color_ff999999"
+                    android:textSize="@dimen/sp_12" />
+            </RelativeLayout>
+
+            <com.text.alginlib.XQJustifyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_14"
+                android:layout_marginRight="@dimen/dp_2"
+                android:text="Please read the authorization carefully before using ICredit."
+                android:textColor="@color/color_ff999999"
+                android:textSize="@dimen/sp_14" />
+
+
+            <LinearLayout
+                android:id="@+id/ll_lout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_lout"
+                android:layout_marginTop="@dimen/dp_10"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_read_agree"
+                    android:textColor="@color/color_000000"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:id="@+id/tv_privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_5"
+                    android:text="terms &amp; privacy"
+                    android:textColor="@color/color_09CAB3"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_allow"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_42_67"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@drawable/btn_login_selector"
+                android:text="@string/str_allow"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/sp_14" />
+
+            <Button
+                android:id="@+id/btn_disagree"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_42_67"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/shape_btn_login_disable"
+                android:text="@string/str_disagree"
+                android:textColor="@color/color_ff666666"
+                android:textSize="@dimen/sp_14" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+<!--
+</layout>-->

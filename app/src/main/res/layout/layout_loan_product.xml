@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+-->
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f5f5f5">
+
+            <RelativeLayout
+                android:id="@+id/rl_product"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_135"
+                    android:background="@drawable/bg_loan">
+
+                    <LinearLayout
+                        android:id="@+id/ll_lout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/dp_16"
+                        android:paddingRight="@dimen/dp_16">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_20"
+                            android:layout_height="@dimen/dp_20"
+                            android:src="@mipmap/icon_msg" />
+
+                        <com.text.alginlib.XQJustifyTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:text="@string/str_not_transfer_money"
+                            android:textColor="@color/color_FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_loan_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_66"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:background="@drawable/bg_white_radius_8"
+                    android:paddingLeft="@dimen/dp_15"
+                    android:paddingRight="@dimen/dp_15"
+                    android:paddingBottom="@dimen/dp_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:text="@string/str_loan_product"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/sp_20" />
+
+                    <TextView
+                        android:id="@+id/tv_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_70"
+                        android:text="@string/str_loan_amount"
+                        android:layout_marginRight="@dimen/dp_8"
+                        android:textColor="@color/color_656565"
+                        android:textSize="@dimen/sp_18" />
+
+                    <com.tiny.cash.loan.card.ui.view.FullSizeGridView
+                        android:id="@+id/spinner_loan_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_alignTop="@+id/tv_text"
+                        android:layout_toRightOf="@+id/tv_text"
+                        android:horizontalSpacing="@dimen/dp_5"
+                        android:numColumns="3"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="@dimen/dp_10" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/spinner_loan_amount"
+                        android:text="@string/str_repay_term"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:textColor="@color/color_656565"
+                        android:textSize="@dimen/sp_18" />
+
+
+                    <com.tiny.cash.loan.card.ui.view.FullSizeGridView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_below="@+id/spinner_loan_amount"
+                        android:layout_toRightOf="@+id/tv_text"
+                        android:horizontalSpacing="@dimen/dp_5"
+                        android:numColumns="3"
+                        android:paddingTop="@dimen/dp_10"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="@dimen/dp_10" />
+
+                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/ll_noTerm"
+                    android:visibility="gone"
+                    android:layout_below="@+id/rl_loan_product"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_165"
+                    android:background="@drawable/bg_white_radius_8"
+                    android:gravity="center">
+                    <TextView
+                        android:textColor="@color/color_FF0000"
+                        android:textSize="@dimen/sp_17"
+                        android:layout_marginLeft="@dimen/dp_25"
+                        android:layout_marginRight="@dimen/dp_25"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kindly choose your preferred loan duration by selecting a Repay Term"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_all"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl_loan_product"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/ll_total"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:layout_marginRight="@dimen/dp_16"
+                        android:background="@drawable/bg_white_radius_8"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingRight="@dimen/dp_20"
+                        android:paddingBottom="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/str_bills_details"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_20"
+                            android:visibility="gone" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35"
+                            android:layout_marginTop="@dimen/dp_10">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Interest"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_Total_Interest"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Origination Fee"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_Total_Fee"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Disburse Amount"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_Total_Disburse"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Repayment Amount"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_Total_Repayment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Repay Date"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_Total_Repay_Date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_more_Continue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:text="The Detail"
+                        android:textColor="@color/color_ff666666"
+                        android:textSize="@dimen/sp_16"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_first"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginRight="@dimen/dp_16"
+                        android:background="@drawable/bg_white_radius_8"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingRight="@dimen/dp_20"
+                        android:paddingBottom="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="1 Term"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_20" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Interest Amount"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_first_Interest"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Origination Fee Amount"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_first_Fee"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Disburse Amount"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_first_Disburse"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Repayment Amount"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_first_Repayment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_ff09c9b3"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Repay Date"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_first_Repay_Date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_ff09c9b3"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_second"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginRight="@dimen/dp_16"
+                        android:layout_marginBottom="@dimen/dp_80"
+                        android:background="@drawable/bg_white_radius_8"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingRight="@dimen/dp_20"
+                        android:paddingBottom="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="2 Term"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_20" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Interest Amount"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_second_Interest"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Origination Fee Amount"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_second_Fee"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Disburse Amount"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_second_Disburse"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_333333"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Repayment Amount"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_second_Repayment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_ff09c9b3"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_35">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Repay Date"
+                                android:textColor="@color/color_656565"
+                                android:textSize="@dimen/sp_18" />
+
+                            <TextView
+                                android:id="@+id/tv_second_Repay_Date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="₦ 0"
+                                android:textColor="@color/color_ff09c9b3"
+                                android:textSize="@dimen/sp_16" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_first1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/rl_loan_product"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_80"
+                    android:background="@drawable/bg_white_radius_8"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dp_20"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingRight="@dimen/dp_20"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_35">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Interest Amount"
+                            android:textColor="@color/color_656565"
+                            android:textSize="@dimen/sp_18" />
+
+                        <TextView
+                            android:id="@+id/tv_first_Interest1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="₦ 0"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_16" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_35">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Origination Fee Amount"
+                            android:textColor="@color/color_656565"
+                            android:textSize="@dimen/sp_18" />
+
+                        <TextView
+                            android:id="@+id/tv_first_Fee1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="₦ 0"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_16" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_35">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Disburse Amount"
+                            android:textColor="@color/color_656565"
+                            android:textSize="@dimen/sp_18" />
+
+                        <TextView
+                            android:id="@+id/tv_first_Disburse1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="₦ 0"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/sp_16" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_35">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Repayment Amount"
+                            android:textColor="@color/color_656565"
+                            android:textSize="@dimen/sp_18" />
+
+                        <TextView
+                            android:id="@+id/tv_first_Repayment1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="₦ 0"
+                            android:textColor="@color/color_ff09c9b3"
+                            android:textSize="@dimen/sp_16" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_35">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Repay Date"
+                            android:textColor="@color/color_656565"
+                            android:textSize="@dimen/sp_18" />
+
+                        <TextView
+                            android:id="@+id/tv_first_Repay_Date1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="₦ 0"
+                            android:textColor="@color/color_ff09c9b3"
+                            android:textSize="@dimen/sp_16" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/btn_apply_now"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_42_67"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/dp_16_67"
+                android:layout_marginTop="@dimen/dp_25"
+                android:layout_marginRight="@dimen/dp_16_67"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:background="@drawable/btn_login_selector"
+                android:text="@string/str_apply_now"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/sp_14" />
+        </RelativeLayout>
+
+    </FrameLayout>
+<!--
+</layout>
+-->

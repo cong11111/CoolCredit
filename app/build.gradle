@@ -1,0 +1,288 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: "com.bytedance.android.aabResGuard"
+apply plugin: 'kotlin-android'
+apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'kotlin-kapt'
+apply plugin: "AndResGuard"
+
+android {
+
+    compileSdkVersion 31
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.cash.loan.kudicredit"
+        minSdkVersion 19
+        targetSdkVersion 31
+        versionCode 20003
+        versionName "2.0.3"
+        flavorDimensions "channel"
+        // dex突破65535的限制
+        multiDexEnabled true
+        ndk {
+            // 设置支持的SO库架构，第三方给的so库哪几种架构，就配置这几种架构
+            abiFilters 'armeabi-v7a', 'arm64-v8a'//,'x86'
+//            abiFilters 'armeabi' , 'armeabi','x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+    }
+    gradle.taskGraph.whenReady {
+        tasks.each { task ->
+            if (task.name.contains("uploadCrashlyticsMappingFile")) {
+                task.enabled = false
+            }
+        }
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += "src/main/kotlin"
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('../sign/app_sign')
+            storePassword 'C6shards'
+            keyAlias 'PLSKard'
+            keyPassword 'pal3sk9'
+            //添加V1V2签名
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+
+    buildTypes {
+        debug {
+            multiDexEnabled true
+            minifyEnabled false
+            debuggable true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        release {
+            multiDexEnabled true
+            minifyEnabled true
+            shrinkResources true
+            //关闭调试模式
+            debuggable false
+            // 开启ZipAlign优化
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    //    flavorDimensions "default"
+    // 渠道名称与BusinessUtils对应
+    productFlavors {
+        dev {
+            manifestPlaceholders = [CHANNEL_VALUE: "dev"]//渠道名字
+//            buildConfigField "String", "Chanel", "\"dev\""
+            buildConfigField "String", "HOST", "\"https://srv.kudicredit.com/\""
+        }
+        Icredit {
+            manifestPlaceholders = [CHANNEL_VALUE: "KudiCredit"]
+//            buildConfigField "String", "Chanel", "\"Icredit\""
+            buildConfigField "String", "HOST", "\"https://srv.kudicredit.com/\""
+        }
+        SMS {
+            manifestPlaceholders = [CHANNEL_VALUE: "SMS"]
+//            buildConfigField "String", "Chanel", "\"SMS\""
+            buildConfigField "String", "HOST", "\"https://srv.kudicredit.com/\""
+        }
+    }
+
+    variantFilter { variant ->
+        def names = variant.flavors*.name
+
+        if (names.contains("something")) {
+            variant.ignore = true
+        }
+    }
+
+//    applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            outputFileName = "${variant.name}-${variant.versionName}.apk"
+//        }
+//    }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            force "com.squareup.okhttp3:okhttp:3.12.0"
+        }
+    }
+    repositories {
+        mavenCentral()
+    }
+
+    packagingOptions {
+        exclude("META-INF/proguard/androidx-annotations.pro")
+        exclude("**/kotlin/**")
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.6.0'
+
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'org.greenrobot:eventbus:3.3.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+
+    // OkHttp
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+    //状态栏
+    implementation 'com.githang:status-bar-compat:0.7'
+    //文字左右对齐库
+    implementation 'com.text:alginlib:1.0.1'
+    //下拉框
+    implementation 'com.github.arcadefire:nice-spinner:1.4.4'
+    //选择器库
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
+    //银行卡支付
+    implementation 'co.paystack.android:paystack:3.1.2'
+
+    //KeyValue框架
+    implementation 'com.tencent:mmkv:1.2.12'
+    implementation 'com.getkeepsafe.relinker:relinker:1.4.1'
+
+    implementation "com.android.installreferrer:installreferrer:2.2"
+
+    implementation 'androidx.work:work-runtime:2.5.0'
+    implementation 'com.google.android.gms:play-services-analytics:16.0.8'
+    implementation 'com.alibaba:fastjson:1.1.56.android'
+
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation('com.github.flutterwave.rave-android:rave_android:2.1.38') {
+        exclude module: 'logging-interceptor'
+    }
+
+    implementation platform('com.google.firebase:firebase-bom:29.3.1')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'androidx.work:work-runtime:2.7.1'
+
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.20'
+    implementation 'com.google.dagger:hilt-android:2.38.1'
+    kapt 'com.google.dagger:hilt-android-compiler:2.38.1'
+}
+
+aabResGuard {
+//    mappingFile = file("mapping.txt").toPath() // Mapping file used for incremental obfuscation
+    whiteList = [ // White list rules
+                  "*.R.raw.*",
+                  "*.R.mipmap.ic_home_logo",
+                  "*.R.string.default_web_client_id",
+                  "*.R.string.firebase_database_url",
+                  "*.R.string.gcm_defaultSenderId",
+                  "*.R.string.google_api_key",
+                  "*.R.string.google_app_id",
+                  "*.R.string.google_crash_reporting_api_key",
+                  "*.R.string.google_storage_bucket",
+                  "*.R.string.project_id",
+                  "*.R.string.com.crashlytics.android.build_id",
+                  "*.R.drawable.icon"
+    ]
+    obfuscatedBundleFileName = "duplicated-app.aab" // Obfuscated file name, must end with '.aab'
+    mergeDuplicatedRes = false // Whether to allow the merge of duplicate resources
+    enableFilterFiles = true // Whether to allow filter files
+    filterList = [ // file filter rules
+//                   "armeabi-v7a",
+//                   "*/arm64-v8a/*",
+                   "META-INF/*"
+    ]
+
+    enableFilterStrings = false // switch of filter strings
+    unusedStringPath = file("unused.txt").toPath() // strings will be filtered in this file
+//    languageWhiteList = ["en", "zh"] // keep en,en-xx,zh,zh-xx etc. remove others.
+}
+
+andResGuard {
+    // mappingFile = file("./resource_mapping.txt")
+    mappingFile = null
+    use7zip = false
+    useSign = true
+    // 打开这个开关，会keep住所有资源的原始路径，只混淆资源的名字
+    keepRoot = false
+    whiteList = [
+            "R.raw.*",
+            "R.mipmap.ic_home_logo",
+            "R.string.default_web_client_id",
+            "R.string.firebase_database_url",
+            "R.string.gcm_defaultSenderId",
+            "R.string.google_api_key",
+            "R.string.google_app_id",
+            "R.string.google_crash_reporting_api_key",
+            "R.string.google_storage_bucket",
+            "R.string.project_id",
+            "R.string.com.crashlytics.android.build_id",
+            "R.drawable.icon",
+            "R.drawable.ic_home_logo1",
+
+            // for google-services
+            "R.string.google_app_id",
+            "R.string.gcm_defaultSenderId",
+            "R.string.default_web_client_id",
+            "R.string.ga_trackingId",
+            "R.string.firebase_database_url",
+            "R.string.google_api_key",
+            "R.string.google_crash_reporting_api_key",
+            "R.string.admob_id",
+            "R.string.ga_trackingId",
+            "R.string.google_storage_bucket",
+            "R.string.project_id",
+    ]
+
+    compressFilePattern = [
+            "*.png",
+            "*.jpg",
+            "*.jpeg",
+            "*.gif",
+            "resources.arsc"
+    ]
+//    sevenzip {
+//        artifact = "com.tencent.mm:SevenZip:1.2.11"
+//        //path = "/usr/local/bin/7za"
+//    }
+
+    /**
+     * 可选： 如果不设置则会默认覆盖assemble输出的apk
+     **/
+//    finalApkBackupPath = "${project.rootDir}/final.apk"
+
+    /**
+     * 可选: 指定v1签名时生成jar文件的摘要算法
+     * 默认值为“SHA-1”
+     **/
+    // digestalg = "SHA-256"
+}

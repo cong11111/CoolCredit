@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_304"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_30"
+            android:background="@drawable/bg_white_radius_8"
+            android:gravity="center_horizontal">
+
+            <RelativeLayout
+                android:id="@+id/ll_lout1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_130"
+                android:background="@drawable/bg_bule_radius_8">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_54"
+                    android:layout_height="@dimen/dp_54"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp_25"
+                    android:background="@mipmap/ic_home_logo2" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/iv_five"
+                android:layout_width="@dimen/dp_179"
+                android:layout_height="@dimen/dp_44"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_103"
+                android:background="@mipmap/bg_fivestars"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dp_7">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_18"
+                    android:background="@mipmap/five_stars" />
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_18"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:background="@mipmap/five_stars" />
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_18"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:background="@mipmap/five_stars" />
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_18"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:background="@mipmap/five_stars" />
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_18"
+                    android:background="@mipmap/five_stars" />
+            </LinearLayout>
+
+            <com.text.alginlib.XQJustifyTextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/iv_five"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:text=""
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_16" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_42"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/dp_15"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/str_cancel"
+                    android:textColor="@color/color_ff999999"
+                    android:textSize="@dimen/sp_16" />
+
+                <TextView
+                    android:id="@+id/btn_submit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/str_done"
+                    android:textColor="@color/color_ff3865cb"
+                    android:textSize="@dimen/sp_16" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

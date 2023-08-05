@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "945833689992",
+    "project_id": "kudi-f1754",
+    "storage_bucket": "kudi-f1754.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945833689992:android:84487d857a53828441b03d",
+        "android_client_info": {
+          "package_name": "com.cash.loan.kudicredit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "945833689992-j9c6i2p6lpvr0jou14mtufivg8n6amvo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEHN59GHMu9l7xMc-MOUzTzU0brMitmq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "945833689992-j9c6i2p6lpvr0jou14mtufivg8n6amvo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

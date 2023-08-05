@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout android:orientation="horizontal" xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:gravity="center_vertical"
+        android:background="@drawable/shape_toast_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="@dimen/dp_210"
+        android:minHeight="@dimen/dp_65">
+        <ProgressBar
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"
+            android:indeterminateDrawable="@drawable/shape_progress_bar"
+            android:layout_marginLeft="@dimen/dp_15_33"/>
+        <TextView
+            android:id="@+id/tv_login_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/sp_14"
+            android:layout_marginLeft="@dimen/dp_18"
+            android:text="@string/str_loading"/>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_16"
+            android:background="@drawable/bg_green_radius_8"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_20">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="1 Term"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_20" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Interest Amount"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_first_Interest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Origination Fee Amount"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_first_Fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Disburse Amount"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_first_Disburse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Repayment Amount"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_first_Repayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Repay Date"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_first_Repay_Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_first_Overdue_Fee"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Overdue Fee"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_first_Overdue_Fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_first_repaymemt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_42_67"
+                android:background="@drawable/btn_login_selector"
+                android:enabled="true"
+                android:text="@string/str_make_a_repaymemt"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/sp_15"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rl_Terms_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_16"
+            android:background="@drawable/bg_green_radius_8"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_20">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="2 Term"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_20" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Interest Amount"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_second_Interest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Origination Fee Amount"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_second_Fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Disburse Amount"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_second_Disburse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Repayment Amount"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_second_Repayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Repay Date"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_second_Repay_Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_second_Overdue_Fee"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Overdue Fee"
+                    android:textColor="@color/color_656565"
+                    android:textSize="@dimen/sp_18" />
+
+                <TextView
+                    android:id="@+id/tv_second_Overdue_Fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="₦ 0"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_second_repaymemt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_42_67"
+                android:background="@drawable/btn_login_selector"
+                android:enabled="true"
+                android:text="@string/str_make_a_repaymemt"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/sp_15"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

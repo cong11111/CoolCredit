@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+
+    <color name="color_424242">#424242</color>
+    <color name="color_555550">#555550</color>
+    <color name="color_333333">#333333</color>
+    <color name="color_434343">#434343</color>
+    <color name="color_4E5BFF">#4E5BFF</color>
+    <color name="color_804E5BFF">#d94E5BFF</color>
+    <color name="color_CDCDCD">#CDCDCD</color>
+    <color name="color_FFFFFF">#FFFFFF</color>
+    <color name="color_111111">#111111</color>
+    <color name="color_000000">#000000</color>
+    <color name="color_E9E9F0">#E9E9F0</color>
+    <color name="color_FF0000">#FF0000</color>
+    <color name="color_656565">#656565</color>
+
+    <color name="color_ff999999">#ff999999</color>
+    <color name="color_ff3865cb">#ff3865cb</color>
+    <color name="color_ffcccccc">#ffcccccc</color>
+    <color name="color_09CAB3">#09CAB3</color>
+    <color name="color_ff09c9b3">#ff09c9b3</color>
+    <color name="color_ff666666">#ff666666</color>
+    <color name="color_ffebebeb">#ffebebeb</color>
+    <color name="color_ffd1d1d1">#ffd1d1d1</color>
+    <color name="color_63a219">#63a219</color>
+    <color name="color_ff9900">#ff9900</color>
+    <color name="color_D9000000">#D9000000</color>
+    <color name="color_EBEBEB">#EBEBEB</color>
+    <color name="translucent_bg">#7F000000</color>
+    <color name="color_2F6EFE">#2F6EFE</color>
+
+</resources>

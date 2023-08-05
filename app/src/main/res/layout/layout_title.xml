@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+-->
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_42"
+        android:background="@color/color_ff3865cb">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:paddingLeft="@dimen/dp_6"
+            android:paddingRight="@dimen/dp_6"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_11"
+            android:src="@mipmap/btn_back_white" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/str_bank_name"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/sp_16" />
+    </RelativeLayout>
+<!--
+
+</layout>-->

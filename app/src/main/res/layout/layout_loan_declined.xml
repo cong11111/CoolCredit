@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+-->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/ll_declined"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/dp_70"
+            android:layout_height="@dimen/dp_60"
+            android:layout_marginTop="@dimen/dp_23"
+            android:background="@mipmap/ic_declined" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/str_possible_reasons_why_your"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/rstr_equest_is_declined"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_24" />
+
+
+
+        <com.text.alginlib.XQJustifyTextView
+            android:id="@+id/tv_reason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_19"
+            android:text=""
+            android:textColor="@color/color_ff666666"
+            android:textSize="@dimen/sp_18" />
+
+        <TextView
+            android:id="@+id/tv_reappaly"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_18"
+            android:text="You can reapply after 5 days"
+            android:textColor="@color/color_ff666666"
+            android:textSize="@dimen/sp_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_13"
+            android:text="2. You have provided invalid details and not shared all the required information to us."
+            android:textColor="@color/color_ff666666"
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_19"
+            android:text="1. You are listed on the blacklist of Credit Reference Bureau."
+            android:textColor="@color/color_ff666666"
+            android:textSize="@dimen/sp_16"
+            android:visibility="gone" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_13"
+            android:text="3. It's possible that you don't match the profile of borrowers we lend money to at this time."
+            android:textColor="@color/color_ff666666"
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone" />
+
+
+        <Button
+            android:id="@+id/btn_apply_again"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_42_67"
+            android:layout_marginTop="@dimen/dp_48"
+            android:background="@drawable/btn_login_selector"
+            android:enabled="true"
+            android:text="@string/str_apply_again"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/sp_15"
+            android:visibility="gone" />
+    </LinearLayout>
+<!--
+</layout>
+-->

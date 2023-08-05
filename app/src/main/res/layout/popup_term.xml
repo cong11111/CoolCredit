@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white_radius"
+        android:orientation="vertical">
+
+        <GridView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:horizontalSpacing="@dimen/dp_10"
+            android:numColumns="4"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_13"
+            android:verticalSpacing="@dimen/dp_10" />
+    </LinearLayout>

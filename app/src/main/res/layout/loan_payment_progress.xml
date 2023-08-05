@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+-->
+
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_paid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_23"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="@dimen/dp_60"
+                android:layout_marginTop="@dimen/dp_23"
+                android:visibility="gone"
+                android:background="@mipmap/ic_repayment" />
+
+            <TextView
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingRight="@dimen/dp_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_50"
+                android:text="Dear customer, please wait while the repayment is being processed."
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_23" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_20"
+                    android:paddingRight="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_50"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_23"
+                    android:text="If your online repayment failed, pls transfer to Zenith Bank PLC 1130088382, Bestfin Nigeria Limited, Contact WhatsApp 08084890423. "/>
+            <Button
+                android:id="@+id/btn_Refresh"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_42_67"
+                android:layout_marginLeft="@dimen/dp_16_67"
+                android:layout_marginTop="@dimen/dp_40"
+                android:layout_marginRight="@dimen/dp_16_67"
+                android:layout_marginBottom="@dimen/dp_72"
+                android:background="@drawable/btn_login_selector"
+                android:enabled="true"
+                android:text="Refresh"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/sp_15" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+<!--
+</layout>
+-->

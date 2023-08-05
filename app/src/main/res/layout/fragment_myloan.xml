@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include
+            android:id="@+id/ll_loan_product"
+            layout="@layout/layout_loan_product"/>
+        <include
+            android:visibility="gone"
+            android:id="@+id/ll_loan_processing"
+            layout="@layout/layout_loan_processing"/>
+        <include
+            android:visibility="gone"
+            android:id="@+id/ll_loan_active"
+            layout="@layout/layout_loan_active"/>
+
+        <include
+            android:visibility="gone"
+            android:id="@+id/ll_loan_overdue"
+            layout="@layout/layout_loan_overdue"/>
+        <include
+            android:visibility="gone"
+            android:id="@+id/ll_loan_paid"
+            layout="@layout/layout_loan_paid"/>
+        <include
+            android:visibility="gone"
+            android:id="@+id/ll_loan_declined"
+            layout="@layout/layout_loan_declined"/>
+
+    </LinearLayout>
+</layout>
