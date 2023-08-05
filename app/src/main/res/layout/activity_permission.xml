@@ -76,6 +76,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/dp_10"
                 android:background="@drawable/bg_white_radius"
                 android:paddingLeft="@dimen/dp_18"
@@ -178,6 +179,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_24"
+                android:visibility="gone"
                 android:background="@drawable/bg_white_radius"
                 android:paddingLeft="@dimen/dp_18"
                 android:paddingRight="@dimen/dp_19"
@@ -249,6 +251,7 @@
                 android:background="@drawable/bg_white_radius"
                 android:paddingLeft="@dimen/dp_18"
                 android:paddingRight="@dimen/dp_19"
+                android:visibility="gone"
                 android:paddingBottom="@dimen/dp_20">
 
                 <ImageView

@@ -1,5 +1,6 @@
 package com.tiny.cash.loan.card.feature.menu;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -188,7 +189,7 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
 
     private void addTextChangedListener(TextView editText, String type) {
         editText.setOnClickListener(v -> {
-            checkPermission(type);
+            startOpenContact(type);
         });
     }
 
@@ -284,16 +285,16 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
                 submitContact();
                 break;
             case R.id.iv_first_contact_mobile:
-                checkPermission(Constants.ONE);
+                startOpenContact(Constants.ONE);
                 break;
             case R.id.iv_second_contact_mobile:
-                checkPermission(Constants.TWO);
+                startOpenContact(Constants.TWO);
                 break;
             case R.id.iv_three_contact_mobile:
-                checkPermission(Constants.THREE);
+                startOpenContact(Constants.THREE);
                 break;
             case R.id.iv_four_contact_mobile:
-                checkPermission(Constants.FOUR);
+                startOpenContact(Constants.FOUR);
                 break;
             case R.id.iv_first_contact_mobile_clear:
                 mBinding.etFirstContactMobile.setText("");
@@ -373,39 +374,44 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
         observable.subscribeWith(mObserver);
     }
 
-    private void checkPermission(String type) {
+    private void startOpenContact(String type) {
         Type = type;
-        //**版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取**
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //ContextCompat.checkSelfPermission() 方法 指定context和某个权限 返回PackageManager.PERMISSION_DENIED或者PackageManager.PERMISSION_GRANTED
-            if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.READ_CONTACTS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                // 若不为GRANTED(即为DENIED)则要申请权限了
-                // 申请权限 第一个为context 第二个可以指定多个请求的权限 第三个参数为请求码
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{android.Manifest.permission.READ_CONTACTS}, REQUEST_CODE);
-            } else {
-                //权限已经被授予，在这里直接写要执行的相应方法即可
-                intentToContact();
-            }
-        } else {
-            // 低于6.0的手机直接访问
-            intentToContact();
-        }
+        intentToContact();
     }
 
+//    private void checkPermission(String type) {
+//        Type = type;
+//        //**版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取**
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            //ContextCompat.checkSelfPermission() 方法 指定context和某个权限 返回PackageManager.PERMISSION_DENIED或者PackageManager.PERMISSION_GRANTED
+//            if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.READ_CONTACTS)
+//                    != PackageManager.PERMISSION_GRANTED) {
+//                // 若不为GRANTED(即为DENIED)则要申请权限了
+//                // 申请权限 第一个为context 第二个可以指定多个请求的权限 第三个参数为请求码
+//                ActivityCompat.requestPermissions(getActivity(),
+//                        new String[]{android.Manifest.permission.READ_CONTACTS}, REQUEST_CODE);
+//            } else {
+//                //权限已经被授予，在这里直接写要执行的相应方法即可
+//                intentToContact();
+//            }
+//        } else {
+//            // 低于6.0的手机直接访问
+//            intentToContact();
+//        }
+//    }
+
     // 用户权限 申请 的回调方法
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                intentToContact();
-            } else {
-                Toast.makeText(getContext(), "Authorization is prohibited", Toast.LENGTH_SHORT).show();
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+//        if (requestCode == REQUEST_CODE) {
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                intentToContact();
+//            } else {
+//                Toast.makeText(getContext(), "Authorization is prohibited", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//    }
 
     private void intentToContact() {
         // 跳转到联系人界面
@@ -420,6 +426,7 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
     String contactName = null;
     Cursor cursor = null;
 
+    @SuppressLint("Range")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -1,5 +1,6 @@
 package com.tiny.cash.loan.card.feature.users;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseActivity;
@@ -42,12 +44,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
 import co.paystack.android.utils.StringUtils;
+
 import com.tiny.cash.loan.card.message.EventMessage;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -59,13 +70,15 @@ import io.reactivex.schedulers.Schedulers;
 public class ContactsActivity extends BaseActivity implements View.OnClickListener {
 
     private ActivityContactBinding mBinding;
-    private String Type ="0";
+    private String Type = "0";
 
     private final int REQUEST_CODE = 1000;
     private final int CONTACT_CODE = 2000;
     private ContactInfoParams mRefereeInfoParams;
     private NetObserver<Response<UserContact>> mObserver;
     private List<String> mList;
+
+    private ActivityResultLauncher mActivityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +88,37 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
         initView();
         initData();
         UpLoadUserInfo();
+
+        mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    try {
+                        Uri contactUri = result.getData().getData();
+                        if (contactUri == null) {
+                            ToastUtils.showShort("not select contact.");
+                            return;
+                        }
+                        String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER,
+                                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
+                        Cursor cursor = getContentResolver().query(contactUri,
+                                projection, null, null, null);
+                        while (cursor != null && cursor.moveToFirst()) {
+                            int NUMBER_INDEX = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                            int DISPLAY_NAME = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+                            contactName = cursor.getString(NUMBER_INDEX);
+                            phoneNum = cursor.getString(DISPLAY_NAME);
+                            cursor.close();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    //  把电话号码中的  -  符号 替换成空格
+                    if (phoneNum != null) {
+                        phoneNum = phoneNum.replaceAll("-", " ");
+                        // 空格去掉  为什么不直接-替换成"" 因为测试的时候发现还是会有空格 只能这么处理
+                        phoneNum = phoneNum.replaceAll(" ", "");
+                    }
+                    setResultView(contactName, phoneNum);
+                });
     }
 
     private void initView() {
@@ -117,7 +161,7 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
 
     private void addTextChangedListener(TextView editText, String type) {
         editText.setOnClickListener(v -> {
-            checkPermission(type);
+            startOpenContact(type);
         });
     }
 
@@ -128,7 +172,7 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
         addTextChangedListener(mBinding.etSecondContactName, Constants.TWO);
         addTextChangedListener(mBinding.etThreeContactName, Constants.THREE);
         addTextChangedListener(mBinding.etFourContactName, Constants.FOUR);
-        
+
         addTextChangedListener(mBinding.etFirstContactMobile, Constants.ONE);
         addTextChangedListener(mBinding.etSecondContactMobile, Constants.TWO);
         addTextChangedListener(mBinding.etThreeContactMobile, Constants.THREE);
@@ -195,16 +239,16 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
                 submitContact();
                 break;
             case R.id.iv_first_contact_mobile:
-                checkPermission(Constants.ONE);
+                startOpenContact(Constants.ONE);
                 break;
             case R.id.iv_second_contact_mobile:
-                checkPermission(Constants.TWO);
+                startOpenContact(Constants.TWO);
                 break;
             case R.id.iv_three_contact_mobile:
-                checkPermission(Constants.THREE);
+                startOpenContact(Constants.THREE);
                 break;
             case R.id.iv_four_contact_mobile:
-                checkPermission(Constants.FOUR);
+                startOpenContact(Constants.FOUR);
                 break;
             case R.id.iv_first_contact_mobile_clear:
                 mBinding.etFirstContactMobile.setText("");
@@ -286,121 +330,102 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
         observable.subscribeWith(mObserver);
     }
 
-    private void checkPermission(String type) {
+    private void startOpenContact(String type) {
         Type = type;
-        //**版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取**
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //ContextCompat.checkSelfPermission() 方法 指定context和某个权限 返回PackageManager.PERMISSION_DENIED或者PackageManager.PERMISSION_GRANTED
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                // 若不为GRANTED(即为DENIED)则要申请权限了
-                // 申请权限 第一个为context 第二个可以指定多个请求的权限 第三个参数为请求码
-                ActivityCompat.requestPermissions(this,
-                        new String[]{android.Manifest.permission.READ_CONTACTS}, REQUEST_CODE);
-            } else {
-                //权限已经被授予，在这里直接写要执行的相应方法即可
-                intentToContact();
-            }
-        } else {
-            // 低于6.0的手机直接访问
-            intentToContact();
-        }
+        intentToContact();
     }
 
+//    private void checkPermission(String type) {
+//        Type = type;
+//        //**版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取**
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            //ContextCompat.checkSelfPermission() 方法 指定context和某个权限 返回PackageManager.PERMISSION_DENIED或者PackageManager.PERMISSION_GRANTED
+//            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
+//                    != PackageManager.PERMISSION_GRANTED) {
+//                // 若不为GRANTED(即为DENIED)则要申请权限了
+//                // 申请权限 第一个为context 第二个可以指定多个请求的权限 第三个参数为请求码
+//                ActivityCompat.requestPermissions(this,
+//                        new String[]{android.Manifest.permission.READ_CONTACTS}, REQUEST_CODE);
+//            } else {
+//                //权限已经被授予，在这里直接写要执行的相应方法即可
+//                intentToContact();
+//            }
+//        } else {
+//            // 低于6.0的手机直接访问
+//            intentToContact();
+//        }
+//    }
+
     // 用户权限 申请 的回调方法
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                intentToContact();
-            } else {
-                Toast.makeText(this, "Authorization is prohibited", Toast.LENGTH_SHORT).show();
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+//        if (requestCode == REQUEST_CODE) {
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                intentToContact();
+//            } else {
+//                Toast.makeText(this, "Authorization is prohibited", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//    }
 
     private void intentToContact() {
         // 跳转到联系人界面
-        Intent intent = new Intent();
-        intent.setAction("android.intent.action.PICK");
-        intent.addCategory("android.intent.category.DEFAULT");
-        intent.setType("vnd.android.cursor.dir/phone_v2");
-        startActivityForResult(intent, CONTACT_CODE);
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+        mActivityResultLauncher.launch(intent);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+
+        }
     }
+
     String phoneNum = null;
     String contactName = null;
-    Cursor cursor = null;
+
+    @SuppressLint("Range")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CONTACT_CODE) {
-            if (data != null) {
-                try {
-                    Uri uri = data.getData();
-                    // 创建内容解析者
-                    ContentResolver contentResolver = getContentResolver();
-                    if (uri != null) {
-                        cursor = contentResolver.query(uri,
-                                new String[]{"display_name", "data1"}, null, null, null);
-                    }
-                    if (cursor != null && cursor.getCount() >= 1) {
-                        while (cursor.moveToNext()) {
-                            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                            phoneNum = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        }
-                    }
-                }catch (Exception e){
 
-                }
-                //  把电话号码中的  -  符号 替换成空格
-                if (phoneNum != null) {
-                    phoneNum = phoneNum.replaceAll("-", " ");
-                    // 空格去掉  为什么不直接-替换成"" 因为测试的时候发现还是会有空格 只能这么处理
-                    phoneNum = phoneNum.replaceAll(" ", "");
-                }
-                setResultView(contactName, phoneNum);
-            }
-        }
     }
 
     private void setResultView(String name, String mobile) {
         switch (Type) {
             case Constants.ONE:
-                if(!StringUtils.isEmpty(name) ){
+                if (!StringUtils.isEmpty(name)) {
                     mRefereeInfoParams.setContact1(Utils.filter(name));
                 }
-                if(!StringUtils.isEmpty(mobile) ){
+                if (!StringUtils.isEmpty(mobile)) {
                     mRefereeInfoParams.setContact1Mobile(Utils.filter(mobile));
                 }
                 mBinding.etFirstContactName.setText(name);
                 mBinding.etFirstContactMobile.setText(mobile);
                 break;
             case Constants.TWO:
-                if(!StringUtils.isEmpty(name) ){
+                if (!StringUtils.isEmpty(name)) {
                     mRefereeInfoParams.setContact2(Utils.filter(name));
                 }
-                if(!StringUtils.isEmpty(mobile) ){
+                if (!StringUtils.isEmpty(mobile)) {
                     mRefereeInfoParams.setContact2Mobile(Utils.filter(mobile));
                 }
                 mBinding.etSecondContactName.setText(name);
                 mBinding.etSecondContactMobile.setText(mobile);
                 break;
             case Constants.THREE:
-                if(!StringUtils.isEmpty(name) ){
+                if (!StringUtils.isEmpty(name)) {
                     mRefereeInfoParams.setContact3(Utils.filter(name));
                 }
-                if(!StringUtils.isEmpty(mobile) ){
+                if (!StringUtils.isEmpty(mobile)) {
                     mRefereeInfoParams.setContact3Mobile(Utils.filter(mobile));
                 }
                 mBinding.etThreeContactName.setText(name);
                 mBinding.etThreeContactMobile.setText(mobile);
                 break;
             case Constants.FOUR:
-                if(!StringUtils.isEmpty(name) ){
+                if (!StringUtils.isEmpty(name)) {
                     mRefereeInfoParams.setContact4(Utils.filter(name));
                 }
-                if(!StringUtils.isEmpty(mobile) ){
+                if (!StringUtils.isEmpty(mobile)) {
                     mRefereeInfoParams.setContact4Mobile(Utils.filter(mobile));
                 }
                 mBinding.etFourContactName.setText(name);

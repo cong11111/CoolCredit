@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'com.google.gms.google-services'
@@ -17,10 +19,11 @@ android {
         applicationId "com.cash.loan.kudicredit"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 20003
-        versionName "2.0.3"
-        flavorDimensions "channel"
+        versionCode 30001
+        versionName "3.0.1"
+        flavorDimensions("default")
         // dex突破65535的限制
+        buildConfigField "boolean", "IS_AAB_BUILD", "false"
         multiDexEnabled true
         ndk {
             // 设置支持的SO库架构，第三方给的so库哪几种架构，就配置这几种架构
@@ -83,25 +86,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    //    flavorDimensions "default"
-    // 渠道名称与BusinessUtils对应
-    productFlavors {
-        dev {
-            manifestPlaceholders = [CHANNEL_VALUE: "dev"]//渠道名字
-//            buildConfigField "String", "Chanel", "\"dev\""
-            buildConfigField "String", "HOST", "\"https://srv.kudicredit.com/\""
-        }
-        Icredit {
-            manifestPlaceholders = [CHANNEL_VALUE: "KudiCredit"]
-//            buildConfigField "String", "Chanel", "\"Icredit\""
-            buildConfigField "String", "HOST", "\"https://srv.kudicredit.com/\""
-        }
-        SMS {
-            manifestPlaceholders = [CHANNEL_VALUE: "SMS"]
-//            buildConfigField "String", "Chanel", "\"SMS\""
-            buildConfigField "String", "HOST", "\"https://srv.kudicredit.com/\""
-        }
-    }
 
     variantFilter { variant ->
         def names = variant.flavors*.name
@@ -110,12 +94,6 @@ android {
             variant.ignore = true
         }
     }
-
-//    applicationVariants.all { variant ->
-//        variant.outputs.all {
-//            outputFileName = "${variant.name}-${variant.versionName}.apk"
-//        }
-//    }
 
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
@@ -140,10 +118,39 @@ android {
         exclude("META-INF/proguard/androidx-annotations.pro")
         exclude("**/kotlin/**")
     }
+
+    productFlavors {
+        apiTest {
+            dimension "default"
+            resValue "string", "app_name_1", "@string/app_name_test"
+            buildConfigField "boolean", "USE_ONLINE_API", "false"
+            manifestPlaceholders = [CHANNEL_VALUE: "KudiCredit"]
+            buildConfigField "String", "HOST", "\"https://srv.kudicredit.com/\""
+        }
+        apiOnline {
+            dimension "default"
+            resValue "string", "app_name_1", "@string/app_name"
+            buildConfigField "boolean", "USE_ONLINE_API", "true"
+            manifestPlaceholders = [CHANNEL_VALUE: "KudiCredit"]
+            buildConfigField "String", "HOST", "\"https://srv.kudicredit.com/\""
+        }
+    }
+
+//    applicationVariants.all { variant ->
+//        variant.outputs.all { output ->
+//            outputFileName = "Icredit_" + variant.productFlavors[0].name + "_" + releaseTime() + ".apk"
+//            outputFileName = outputFileName
+//        }
+//    }
+}
+
+static def releaseTime() {
+//    return new SimpleDateFormat("MM_dd_hh_mm",Locale.CHINA).format(new Date());
+    return new SimpleDateFormat("MM_dd", Locale.CHINA).format(new Date());
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.6.0'
@@ -157,7 +164,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
-
+    implementation 'com.blankj:utilcodex:1.30.6'
     // OkHttp
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
     //状态栏

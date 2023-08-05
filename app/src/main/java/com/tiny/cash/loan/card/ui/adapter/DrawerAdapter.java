@@ -8,8 +8,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tiny.cash.loan.card.kudicredit.BuildConfig;
 import com.tiny.cash.loan.card.kudicredit.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,17 +23,25 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerViewHolder> {
 
-    private List<DrawerItem> dataList = Arrays.asList(
-            new DrawerItemNormal(R.mipmap.ic_loan, R.string.menu_My_loan),
-            new DrawerItemNormal(R.mipmap.ic_profile, R.string.menu_My_Profile),
-            new DrawerItemNormal(R.mipmap.ic_card, R.string.menu_Card),
-            new DrawerItemNormal(R.mipmap.ic_account, R.string.menu_Bank_Account),
-            new DrawerItemNormal(R.mipmap.ic_account, R.string.menu_off_payment),
-            new DrawerItemNormal(R.mipmap.ic_message, R.string.menu_Message),
-            new DrawerItemNormal(R.mipmap.ic_about, R.string.menu_ContactUs),
-            new DrawerItemNormal(R.mipmap.ic_about, R.string.menu_About),
-            new DrawerItemNormal(R.mipmap.ic_out, R.string.menu_Log_out)
-    );
+    private ArrayList<DrawerItem> dataList = new ArrayList<>();
+
+    public DrawerAdapter(){
+        List list = Arrays.asList(
+                new DrawerItemNormal(R.mipmap.ic_loan, R.string.menu_My_loan),
+                new DrawerItemNormal(R.mipmap.ic_profile, R.string.menu_My_Profile),
+                new DrawerItemNormal(R.mipmap.ic_card, R.string.menu_Card),
+                new DrawerItemNormal(R.mipmap.ic_account, R.string.menu_Bank_Account),
+                new DrawerItemNormal(R.mipmap.ic_account, R.string.menu_off_payment),
+                new DrawerItemNormal(R.mipmap.ic_message, R.string.menu_Message),
+                new DrawerItemNormal(R.mipmap.ic_about, R.string.menu_ContactUs),
+                new DrawerItemNormal(R.mipmap.ic_about, R.string.menu_About),
+                new DrawerItemNormal(R.mipmap.ic_out, R.string.menu_Log_out)
+        );
+        dataList.addAll(list);
+        if (!BuildConfig.IS_AAB_BUILD) {
+            dataList.add(new DrawerItemNormal(R.mipmap.ic_out, R.string.menu_test1));
+        }
+    }
 
     private  int mCount = 0 ;
     @Override

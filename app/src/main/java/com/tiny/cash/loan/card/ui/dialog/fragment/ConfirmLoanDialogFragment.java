@@ -7,15 +7,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.alibaba.fastjson.JSON;
+import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr;
 import com.tiny.cash.loan.card.KudiCreditApp;
 import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.collect.item.CollectSmsMgr;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.ui.bean.ContactInfo;
-import com.tiny.cash.loan.card.ui.bean.InstallPackageInfo;
 import com.tiny.cash.loan.card.ui.bean.SmsInfo;
 import com.tiny.cash.loan.card.kudicredit.databinding.DialogConfirmLoanBinding;
 import com.tiny.cash.loan.card.ui.dialog.BaseDialogBuilder;
@@ -28,7 +30,6 @@ import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.NetworkUtil;
-import com.tiny.cash.loan.card.utils.PhoneInfoContent;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
 
 import com.tiny.cash.loan.card.net.ResponseException;
@@ -102,12 +103,9 @@ public class ConfirmLoanDialogFragment extends BaseDialogFragment<ConfirmLoanDia
     String verCode = null;
 
     private void CreateAuthInfo() {
-        // TODO: 2022/11/25 后续要把上传短信那块做限制，短信太多会提交不成功
-        PhoneInfoContent phoneInfoContent = new PhoneInfoContent(getActivity());
-        List<SmsInfo> smsInfo = phoneInfoContent.getSmsInfo();
-        List<ContactInfo> contactInfos = phoneInfoContent.getConnect();
+//        List<ContactInfo> contactInfos = phoneInfoContent.getConnect();
 //      List<CallInfo> callInfos = phoneInfoContent.getContentCallLog();
-        List<InstallPackageInfo> installedPackages = phoneInfoContent.getInstalledPackages();
+//        List<InstallPackageInfo> installedPackages = phoneInfoContent.getInstalledPackages();
         String deviceId = KvStorage.get(LocalConfig.LC_DEVICEID, "");
         String imei = KvStorage.get(LocalConfig.LC_IMEI, "");
         String brand = KvStorage.get(LocalConfig.LC_BRAND, "");
@@ -124,16 +122,18 @@ public class ConfirmLoanDialogFragment extends BaseDialogFragment<ConfirmLoanDia
             e.printStackTrace();
         }
         params = new AuthParams();
-        if (smsInfo != null) {
-            params.setSms(smsInfo.size() > 0 ? AESUtil.encryptAES(JSON.toJSON(smsInfo).toString()) : "");
-        }
+        params.setSms(CollectSmsMgr.Companion.getSInstance().getSmsAesStr());
 //        params.setCall(callInfos);
-        if (contactInfos != null) {
-            params.setContacts(contactInfos.size() > 0 ? AESUtil.encryptAES(JSON.toJSON(contactInfos).toString()) : "");
+//        if (contactInfos != null) {
+//            params.setContacts(contactInfos.size() > 0 ? AESUtil.encryptAES(JSON.toJSON(contactInfos).toString()) : "");
+//        }
+//        if (installedPackages != null) {
+        String appInfoAesStr = CollectAppInfoMgr.Companion.getSInstance().getAppInfoAesStr();
+        if (TextUtils.isEmpty(appInfoAesStr) ) {
+            appInfoAesStr = "";
         }
-        if (installedPackages != null) {
-            params.setAppList(installedPackages.size() > 0 ? AESUtil.encryptAES(JSON.toJSON(installedPackages).toString()) : "");
-        }
+        params.setAppList(appInfoAesStr);
+//        }
         params.setAndroidId(androidId);
         params.setBrand(brand);
         params.setDeviceUniqId(deviceId);

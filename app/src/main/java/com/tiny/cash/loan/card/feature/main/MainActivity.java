@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.feature.users.ContactsActivity;
 import com.tiny.cash.loan.card.kudicredit.BuildConfig;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.ui.adapter.DrawerAdapter;
@@ -87,9 +88,10 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawer;
     private Fragment mCurrentFragment;
     private ImageView mImageView;//, android.Manifest.permission.CAMERA  , android.Manifest.permission.RECORD_AUDIO
-    private String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
-            , android.Manifest.permission.READ_CONTACTS, android.Manifest.permission.READ_PHONE_STATE
-            , android.Manifest.permission.READ_SMS};
+    private String[] permissions = new String[]{
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
+//            , android.Manifest.permission.READ_CONTACTS, android.Manifest.permission.READ_PHONE_STATE,
+            android.Manifest.permission.READ_SMS};
 
     public static final int REQUEST_PERMISSIONS = 60;
     private NetObserver loutObserver, UpVersionObserver, orderObserver, flutterObserver;
@@ -228,6 +230,9 @@ public class MainActivity extends BaseActivity {
                     break;
                 case R.string.menu_Log_out:
                     logOut();
+                    break;
+                case R.string.menu_test1:
+                    test1();
                     break;
             }
             if (drawerItemNormal.titleRes == R.string.menu_My_loan) {
@@ -751,5 +756,9 @@ public class MainActivity extends BaseActivity {
     private void showCallUsFragment() {
         CallUsFragment aboutFragment = CallUsFragment.newInstance();
         showFragment(aboutFragment);
+    }
+
+    private void test1() {
+        startIntent(ContactsActivity.class);
     }
 }
