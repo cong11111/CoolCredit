@@ -136,12 +136,12 @@ android {
         }
     }
 
-//    applicationVariants.all { variant ->
-//        variant.outputs.all { output ->
-//            outputFileName = "Icredit_" + variant.productFlavors[0].name + "_" + releaseTime() + ".apk"
-//            outputFileName = outputFileName
-//        }
-//    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "Kudicredit_" + variant.productFlavors[0].name + "_" + releaseTime() + ".apk"
+            outputFileName = outputFileName
+        }
+    }
 }
 
 static def releaseTime() {
@@ -176,7 +176,7 @@ dependencies {
     //选择器库
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
     //银行卡支付
-    implementation 'co.paystack.android:paystack:3.1.2'
+    implementation 'co.paystack.android:paystack:3.1.3'
 
     //KeyValue框架
     implementation 'com.tencent:mmkv:1.2.12'

