@@ -284,7 +284,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_14"
                 android:layout_marginRight="@dimen/dp_2"
-                android:text="Please read the authorization carefully before using ICredit."
+                android:text="Please read the authorization carefully before using KudiCredit."
                 android:textColor="@color/color_ff999999"
                 android:textSize="@dimen/sp_14" />
 

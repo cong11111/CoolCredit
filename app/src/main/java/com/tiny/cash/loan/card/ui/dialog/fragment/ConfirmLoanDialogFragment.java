@@ -11,19 +11,30 @@ import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.alibaba.fastjson.JSON;
-import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr;
-import com.tiny.cash.loan.card.KudiCreditApp;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+
 import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.KudiCreditApp;
+import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
+import com.tiny.cash.loan.card.collect.CollectDataMgr;
+import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr;
 import com.tiny.cash.loan.card.collect.item.CollectSmsMgr;
 import com.tiny.cash.loan.card.kudicredit.R;
-import com.tiny.cash.loan.card.ui.bean.ContactInfo;
-import com.tiny.cash.loan.card.ui.bean.SmsInfo;
 import com.tiny.cash.loan.card.kudicredit.databinding.DialogConfirmLoanBinding;
+import com.tiny.cash.loan.card.message.EventMessage;
+import com.tiny.cash.loan.card.net.NetManager;
+import com.tiny.cash.loan.card.net.NetObserver;
+import com.tiny.cash.loan.card.net.ResponseException;
+import com.tiny.cash.loan.card.net.request.params.ApplyParams;
+import com.tiny.cash.loan.card.net.request.params.AuthParams;
+import com.tiny.cash.loan.card.net.response.Response;
+import com.tiny.cash.loan.card.net.response.data.bean.AuthResult;
+import com.tiny.cash.loan.card.net.response.data.order.LoanTrial;
+import com.tiny.cash.loan.card.net.response.data.order.OrderStatus;
 import com.tiny.cash.loan.card.ui.dialog.BaseDialogBuilder;
 import com.tiny.cash.loan.card.ui.dialog.BaseDialogFragment;
 import com.tiny.cash.loan.card.ui.dialog.iface.INegativeButtonDialogListener;
-import com.tiny.cash.loan.card.utils.AESUtil;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.DeviceInfo;
 import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
@@ -32,26 +43,11 @@ import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.NetworkUtil;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
 
-import com.tiny.cash.loan.card.net.ResponseException;
-import com.tiny.cash.loan.card.net.NetManager;
-import com.tiny.cash.loan.card.net.NetObserver;
-import com.tiny.cash.loan.card.net.response.data.bean.AuthResult;
-import com.tiny.cash.loan.card.net.response.data.order.OrderStatus;
-import com.tiny.cash.loan.card.net.response.data.order.LoanTrial;
-import com.tiny.cash.loan.card.net.request.params.ApplyParams;
-import com.tiny.cash.loan.card.net.request.params.AuthParams;
-import com.tiny.cash.loan.card.net.response.Response;
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import androidx.fragment.app.FragmentManager;
-import com.tiny.cash.loan.card.message.EventMessage;
-
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -262,21 +258,44 @@ public class ConfirmLoanDialogFragment extends BaseDialogFragment<ConfirmLoanDia
         if (isAdded()) {
             showProgressDialogFragment(getContext().getString(R.string.str_loading), false);
         }
-        Observable.create(new ObservableOnSubscribe<Boolean>() {
+        CollectDataMgr.Companion.getSInstance().collectAuthData(orderId, new BaseCollectDataMgr.Observer() {
             @Override
-            public void subscribe(ObservableEmitter<Boolean> emitter) {
-                CreateAuthInfo();
-                emitter.onNext(true);
+            public void success(@Nullable AuthResult response) {
+                if (isRemoving() || isDetached()) {
+                    return;
+                }
+                if (response.isHasUpload()) {
+                    submitOrderApply();
+                } else {
+                    showToast(response.getFailReason());
+                }
             }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetObserver<Boolean>() {
-                    @Override
-                    public void onNext(Boolean aBoolean) {
-                        super.onNext(aBoolean);
-                        upLoadAuthInfo();
-                    }
-                });
+
+            @Override
+            public void failure(@Nullable String response) {
+                if (isRemoving() || isDetached()) {
+                    return;
+                }
+                if (!TextUtils.isEmpty(response)) {
+                    showToast(response);
+                }
+            }
+        });
+//        Observable.create(new ObservableOnSubscribe<Boolean>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<Boolean> emitter) {
+//                CreateAuthInfo();
+//                emitter.onNext(true);
+//            }
+//        }).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new NetObserver<Boolean>() {
+//                    @Override
+//                    public void onNext(Boolean aBoolean) {
+//                        super.onNext(aBoolean);
+//                        upLoadAuthInfo();
+//                    }
+//                });
     }
 
     public static class DialogBuilder extends BaseDialogBuilder<ConfirmLoanDialogFragment, DialogConfirmLoanBinding, DialogBuilder> {
