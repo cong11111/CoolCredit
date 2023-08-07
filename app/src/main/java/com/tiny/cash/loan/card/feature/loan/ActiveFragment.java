@@ -125,7 +125,9 @@ public class ActiveFragment extends BaseFragment {
                 mBinding.llLoanDetail.tvFirstDisburse.setText(getString(R.string.str_money, split(trialBean.getAmount())));
                 mBinding.llLoanDetail.tvFirstRepayment.setText(getString(R.string.str_money, split(trialBean.getTotalAmount())));
                 mBinding.llLoanDetail.tvFirstRepayDate.setText(trialBean.getRepayDate());
-                mBinding.llLoanDetail.btnFirstRepaymemt.setVisibility(trialBean.getPayable() ? View.VISIBLE : View.GONE);
+                // TODO
+//                mBinding.llLoanDetail.btnFirstRepaymemt.setVisibility(trialBean.getPayable() ? View.VISIBLE : View.GONE);
+                mBinding.llLoanDetail.btnFirstRepaymemt.setVisibility(View.GONE);
 
                 mBinding.llLoanDetail.btnFirstRepaymemt.setOnClickListener(v -> {
                     queryBankStatus();
@@ -138,7 +140,9 @@ public class ActiveFragment extends BaseFragment {
                 mBinding.llLoanDetail.tvSecondDisburse.setText(getString(R.string.str_money, split(trialBean.getAmount())));
                 mBinding.llLoanDetail.tvSecondRepayment.setText(getString(R.string.str_money, split(trialBean.getTotalAmount())));
                 mBinding.llLoanDetail.tvSecondRepayDate.setText(trialBean.getRepayDate());
-                mBinding.llLoanDetail.btnSecondRepaymemt.setVisibility(trialBean.getPayable() ? View.VISIBLE : View.GONE);
+                // TODO
+//                mBinding.llLoanDetail.btnSecondRepaymemt.setVisibility(trialBean.getPayable() ? View.VISIBLE : View.GONE);
+                mBinding.llLoanDetail.btnSecondRepaymemt.setVisibility(View.GONE);
 
                 mBinding.llLoanDetail.btnSecondRepaymemt.setOnClickListener(v -> {
                     queryBankStatus();

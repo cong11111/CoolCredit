@@ -176,6 +176,7 @@
                         android:background="@null"
                         android:gravity="center"
                         android:text="Redocly"
+                        android:visibility="gone"
                         android:textAllCaps="false"
                         android:textColor="@color/color_D9000000"
                         android:textSize="@dimen/sp_18" />

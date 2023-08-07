@@ -133,7 +133,8 @@ public class PaymentMethodActivity extends BaseActivity implements View.OnClickL
             mBinding.llMonify.setVisibility(View.GONE);
 
         if (redocly_h5)
-            mBinding.btnRedoclyH5.setVisibility(View.VISIBLE);
+            // TODO
+            mBinding.btnRedoclyH5.setVisibility(View.GONE);
         else
             mBinding.btnRedoclyH5.setVisibility(View.GONE);
 

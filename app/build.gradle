@@ -23,7 +23,6 @@ android {
         versionName "3.0.1"
         flavorDimensions("default")
         // dex突破65535的限制
-        buildConfigField "boolean", "IS_AAB_BUILD", "false"
         multiDexEnabled true
         ndk {
             // 设置支持的SO库架构，第三方给的so库哪几种架构，就配置这几种架构
@@ -71,6 +70,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
             signingConfig signingConfigs.release
+            buildConfigField "boolean", "IS_AAB_BUILD", "false"
         }
 
         release {
@@ -81,6 +81,7 @@ android {
             debuggable false
             // 开启ZipAlign优化
             zipAlignEnabled true
+            buildConfigField "boolean", "IS_AAB_BUILD", "true"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
             signingConfig signingConfigs.release
