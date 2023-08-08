@@ -46,7 +46,7 @@
     <string name="str_reapply">You can reapply after "%1$s" days</string>
     <string name="str_permission_details">It is used to identify the user identity, prevent malicious programs and safe operation.</string>
     <string name="str_welcome">Welcome to KudiCredit!</string>
-    <string name="str_all_permission_details">To assess your profile and create tailored loan products, we need to get your permissions for accessing information on your Phone, SMS</string>
+    <string name="str_all_permission_details">To assess your profile and create tailored loan products, we need to get your permissions for accessing information on your Phone, SMS.</string>
 	<string name="str_peace_in_mind">LOAN UP TO</string>
     <string name="str_make_your_finance">Safe and reliable personal</string>
 	<string name="str_register">REGISTER</string>
