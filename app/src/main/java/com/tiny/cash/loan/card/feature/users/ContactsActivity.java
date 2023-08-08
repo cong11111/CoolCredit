@@ -104,8 +104,8 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
                         while (cursor != null && cursor.moveToFirst()) {
                             int NUMBER_INDEX = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
                             int DISPLAY_NAME = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-                            contactName = cursor.getString(NUMBER_INDEX);
-                            phoneNum = cursor.getString(DISPLAY_NAME);
+                            phoneNum = cursor.getString(NUMBER_INDEX);
+                            contactName = cursor.getString(DISPLAY_NAME);
                             cursor.close();
                         }
                     } catch (Exception e) {

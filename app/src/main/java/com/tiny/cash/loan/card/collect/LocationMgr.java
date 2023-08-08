@@ -21,6 +21,8 @@ import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.tiny.cash.loan.card.kudicredit.BuildConfig;
+import com.tiny.cash.loan.card.utils.KvStorage;
+import com.tiny.cash.loan.card.utils.LocalConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -210,6 +212,8 @@ public class LocationMgr {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
+                       KvStorage.put(LocalConfig.LC_LONGITUDE, longitude + "");
+                       KvStorage.put(LocalConfig.LC_LATITUDE, latitude + "");
 //                        OkGo.getInstance().addCommonHeaders(
 //                                BuildRequestJsonUtils.Companion.buildHeaderLocation(
 //                                        longitude + "", latitude + ""));
