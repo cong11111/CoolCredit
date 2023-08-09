@@ -3,6 +3,7 @@ package com.tiny.cash.loan.card
 import androidx.multidex.MultiDexApplication
 import co.paystack.android.PaystackSdk
 import com.google.firebase.FirebaseApp
+import com.tiny.cash.loan.card.collect.LocationMgr
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -12,6 +13,7 @@ class KudiCreditApp : MultiDexApplication() {
         instance = this
         PaystackSdk.initialize(applicationContext)
         FirebaseApp.initializeApp(this)
+        LocationMgr.getInstance().init(this)
     }
 
     companion object {

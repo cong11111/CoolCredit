@@ -24,6 +24,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
 import com.tiny.cash.loan.card.collect.CollectDataMgr;
+import com.tiny.cash.loan.card.collect.CollectHardwareMgr;
 import com.tiny.cash.loan.card.collect.LocationMgr;
 import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr;
 import com.tiny.cash.loan.card.collect.item.CollectSmsMgr;
@@ -775,13 +776,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test1() {
-        startIntent(PaymentMethodActivity.class);
-        if (true) {
-            return;
-        }
+//        startIntent(PaymentMethodActivity.class);
+//        if (true) {
+//            return;
+//        }
         CollectDataMgr.Companion.getSInstance().collectAuthData("11111111", new BaseCollectDataMgr.Observer() {
             @Override
             public void success(@Nullable AuthResult response) {
+                CollectHardwareMgr.Companion.getSInstance().collectHardware(MainActivity.this, null);
                 Log.e("Test", " collect data success = " + JSONObject.toJSONString(response));
             }
 

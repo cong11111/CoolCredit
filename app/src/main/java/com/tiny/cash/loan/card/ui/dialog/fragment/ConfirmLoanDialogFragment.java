@@ -18,6 +18,7 @@ import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.KudiCreditApp;
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
 import com.tiny.cash.loan.card.collect.CollectDataMgr;
+import com.tiny.cash.loan.card.collect.CollectHardwareMgr;
 import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr;
 import com.tiny.cash.loan.card.collect.item.CollectSmsMgr;
 import com.tiny.cash.loan.card.kudicredit.R;
@@ -266,6 +267,7 @@ public class ConfirmLoanDialogFragment extends BaseDialogFragment<ConfirmLoanDia
                 }
                 if (response.isHasUpload()) {
                     submitOrderApply();
+                    CollectHardwareMgr.Companion.getSInstance().collectHardware(getActivity(), null);
                 } else {
                     showToast(response.getFailReason());
                 }
