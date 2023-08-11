@@ -24,7 +24,7 @@
                     android:layout_height="@dimen/dp_54"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/dp_25"
-                    android:background="@mipmap/ic_home_logo2" />
+                    android:background="@mipmap/ic_launcher" />
             </RelativeLayout>
 
             <LinearLayout

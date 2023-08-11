@@ -160,7 +160,7 @@ public class RemoteMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, PUSH_CHANNEL_ID)
-                        .setSmallIcon(R.mipmap.ic_home_logo)
+                        .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(title)
                         .setContentText(desc)
                         .setAutoCancel(true)
