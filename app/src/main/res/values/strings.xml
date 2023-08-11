@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Icredit</string>
-    <string name="app_name_test">Icredit测试版</string>
-    <string name="nav_header_title">Icredit</string>
-    <string name="nav_header_subtitle">Welcome to Icredit</string>
+    <string name="app_name">iCredit</string>
+    <string name="app_name_test">iCredit测试版</string>
+    <string name="nav_header_title">iCredit</string>
+    <string name="nav_header_subtitle">Welcome to iCredit</string>
     <string name="nav_header_desc">Navigation header</string>
 
     <string name="str_validate_num_input_hint"> please enter your SMS Code</string>
@@ -45,7 +45,7 @@
     <string name="str_money">₦ "%1$s"</string>
     <string name="str_reapply">You can reapply after "%1$s" days</string>
     <string name="str_permission_details">It is used to identify the user identity, prevent malicious programs and safe operation.</string>
-    <string name="str_welcome">Welcome to Icredit!</string>
+    <string name="str_welcome">Welcome to iCredit!</string>
     <string name="str_all_permission_details">To assess your profile and create tailored loan products, we need to get your permissions for accessing information on your Phone, SMS.</string>
 	<string name="str_peace_in_mind">LOAN UP TO</string>
     <string name="str_make_your_finance">Safe and reliable personal</string>

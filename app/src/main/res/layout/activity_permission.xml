@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_59"
                     android:layout_marginTop="@dimen/dp_51"
-                    android:text="We use aspects of your phonebook and contact data to help us prevent fraud and determine your eligibility for credit. Your data will be uploaded to our server (https://srv.icredit.ng/). ICredit will never use contact or phonebook data to contact your friends or family. "
+                    android:text="We use aspects of your phonebook and contact data to help us prevent fraud and determine your eligibility for credit. Your data will be uploaded to our server (https://srv.icredit.ng/). iCredit will never use contact or phonebook data to contact your friends or family. "
                     android:textColor="@color/color_ff999999"
                     android:textSize="@dimen/sp_12" />
             </RelativeLayout>
