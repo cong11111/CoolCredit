@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -76,7 +77,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
             return false;
         }));
-
+        String mobile = KvStorage.get(LocalConfig.LC_MOBILE, "");
+        if (!TextUtils.isEmpty(mobile)) {
+            if (mobile.startsWith("234") && mobile.length() == 13) {
+                mobile = mobile.substring(3, 13);
+            }
+            binding.edtPhone.setText(mobile);
+        }
         binding.edtPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -355,6 +362,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     }else {
                         intent = new Intent(LoginActivity.this, PermissionActivity.class);
                     }
+                    // TODO
+//                    intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+//                    intent.putExtra("phone", phone);
+//                    Log.e("Test", " test = " + passWord);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } else {
                     String msg = response.getStatus().getMsg();

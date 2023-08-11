@@ -241,12 +241,14 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                     KvStorage.put(LocalConfig.LC_PASSWORD, pwd);
                     Boolean mShowPermission = KvStorage.get(LocalConfig.getNewKey(LocalConfig.LC_HASSHOWPERMISSION), false);
                     Intent intent;
-                    if (mShowPermission){
-                        intent = new Intent(ResetPasswordActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    }else {
-                        intent = new Intent(ResetPasswordActivity.this, PermissionActivity.class);
-                    }
+//                    if (mShowPermission){
+//                        intent = new Intent(ResetPasswordActivity.this, MainActivity.class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    }else {
+//                        intent = new Intent(ResetPasswordActivity.this, PermissionActivity.class);
+//                    }
+                    intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } else if (response.getStatus().getCode() == ApiServerImpl.PHONE_HAS_REG) {
                     showToast(response.getStatus().getMsg());

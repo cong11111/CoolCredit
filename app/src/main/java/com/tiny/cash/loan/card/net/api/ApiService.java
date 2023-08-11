@@ -8,6 +8,7 @@ import com.tiny.cash.loan.card.net.request.params.FlutterWaveParams;
 import com.tiny.cash.loan.card.net.request.params.OtherInfoParams;
 import com.tiny.cash.loan.card.net.request.params.UserInfoParams;
 import com.tiny.cash.loan.card.net.response.BaseResponse;
+import com.tiny.cash.loan.card.net.response.HardwareResponseBean;
 import com.tiny.cash.loan.card.net.response.Response;
 import com.tiny.cash.loan.card.net.response.data.bean.AppConfigFile;
 import com.tiny.cash.loan.card.net.response.data.bean.AuthResult;
@@ -43,6 +44,8 @@ import com.tiny.cash.loan.card.net.response.data.order.PayStackResult;
 import com.tiny.cash.loan.card.net.response.data.order.ProductList;
 import com.tiny.cash.loan.card.net.response.data.order.QueryOrderId;
 import com.tiny.cash.loan.card.net.response.data.order.VerifyFlutterBean;
+
+import org.json.JSONObject;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -403,6 +406,8 @@ public interface ApiService {
     @POST("/v1/loan/get/reserved/account")
     Observable<Response<MonifyResult>>queryMonify(@Query("accountId") String accountId);
 
+    @POST("/v1/account/hardware")
+    Observable<Response<HardwareResponseBean>>hareware(@Body JSONObject jsonObject);
 
     /***
      * redocly

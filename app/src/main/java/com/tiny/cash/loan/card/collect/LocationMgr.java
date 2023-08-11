@@ -212,8 +212,8 @@ public class LocationMgr {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                       KvStorage.put(LocalConfig.LC_LONGITUDE, longitude + "");
-                       KvStorage.put(LocalConfig.LC_LATITUDE, latitude + "");
+                        KvStorage.put(LocalConfig.LC_LONGITUDE, "" + longitude);
+                        KvStorage.put(LocalConfig.LC_LATITUDE, "" + latitude);
 //                        OkGo.getInstance().addCommonHeaders(
 //                                BuildRequestJsonUtils.Companion.buildHeaderLocation(
 //                                        longitude + "", latitude + ""));
