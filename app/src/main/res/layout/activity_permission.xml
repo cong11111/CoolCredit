@@ -35,7 +35,7 @@
                 android:layout_height="@dimen/dp_46"
                 android:layout_marginTop="@dimen/dp_13"
                 android:gravity="start"
-                android:text="Your data is well protected and used for assessment only. Without your consent, we will not share your personal information  and data with any third party. The platform will ensure 100% security of your information. All the information will be uploaded to our server (url https://srv.icredit.ng/ ) as the input of our credit model."
+                android:text="Your data is well protected and used for assessment only. Without your consent, we will not share your personal information  and data with any third party. The platform will ensure 100% security of your information. All the information will be uploaded to our server (url https://srv.kudicredit.com/ ) as the input of our credit model."
                 android:textColor="@color/color_ff999999"
                 android:textSize="@dimen/sp_14" />
 
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_59"
                     android:layout_marginTop="@dimen/dp_51"
-                    android:text="We use SMS data to retrieve financial and transactional data to understand your financial history and help us determine your eligibility for credit. Your information will be stored encrypted icredit.ng. Your data will be uploaded to our server (https://srv.icredit.ng/)."
+                    android:text="We use SMS data to retrieve financial and transactional data to understand your financial history and help us determine your eligibility for credit. Your information will be stored encrypted icredit.ng. Your data will be uploaded to our server (https://srv.kudicredit.com/)."
                     android:textColor="@color/color_ff999999"
                     android:textSize="@dimen/sp_12" />
             </RelativeLayout>
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_59"
                     android:layout_marginTop="@dimen/dp_51"
-                    android:text="We use aspects of your phonebook and contact data to help us prevent fraud and determine your eligibility for credit. Your data will be uploaded to our server (https://srv.icredit.ng/). iCredit will never use contact or phonebook data to contact your friends or family. "
+                    android:text="We use aspects of your phonebook and contact data to help us prevent fraud and determine your eligibility for credit. Your data will be uploaded to our server (https://srv.kudicredit.com/). iCredit will never use contact or phonebook data to contact your friends or family. "
                     android:textColor="@color/color_ff999999"
                     android:textSize="@dimen/sp_12" />
             </RelativeLayout>

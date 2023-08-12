@@ -29,10 +29,10 @@ public class AgreementActivity extends BaseActivity {
         binding.llTitle.layoutToolbar.setVisibility(View.VISIBLE);
         if (Constants.ONE.equals(type)) {
             title = getString(R.string.str_terms_of_service);
-            mUrl = "https://www.icredit.ng/privacy.html";
+            mUrl = "https://www.kudicredit.com/terms.html";
         } else if (Constants.TWO.equals(type)) {
             title = getString(R.string.str_privacy_policy);
-            mUrl = "https://www.icredit.ng/terms.html";
+            mUrl = "https://www.kudicredit.com/privacy.html";
         } else  if (Constants.THREE.equals(type))  {
             WebSettings webSettings = binding.mWebView.getSettings();
             webSettings.setJavaScriptEnabled(true);
