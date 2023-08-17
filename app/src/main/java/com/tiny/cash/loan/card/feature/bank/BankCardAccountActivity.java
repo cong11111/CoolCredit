@@ -46,7 +46,7 @@ public class BankCardAccountActivity extends BaseActivity {
         mBinding = ActivityBankAccountBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());//DataBindingUtil.setContentView(this, R.layout.activity_bank_account);
         initData();
-        UpLoadUserInfo();
+//        UpLoadUserInfo();
     }
 
     private void initData() {

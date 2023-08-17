@@ -87,7 +87,7 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
         setContentView(mBinding.getRoot());//DataBindingUtil.setContentView(this, R.layout.activity_contact);
         initView();
         initData();
-        UpLoadUserInfo();
+//        UpLoadUserInfo();
 
         mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {

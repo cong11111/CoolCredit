@@ -56,7 +56,7 @@ public class WorkInfoActivity extends BaseActivity implements View.OnClickListen
         setContentView(mBinding.getRoot());//DataBindingUtil.setContentView(this, R.layout.activity_work_details);
         initView();
         initData();
-        UpLoadUserInfo();
+//        UpLoadUserInfo();
     }
 
     private void initView() {

@@ -65,7 +65,7 @@ public class BasicInfoActivity extends BaseActivity implements View.OnClickListe
         setContentView(mBinding.getRoot());//DataBindingUtil.setContentView(this, R.layout.activity_userinformation);
         initView();
         initData();
-        UpLoadUserInfo();
+//        UpLoadUserInfo();
     }
 
     private void initView() {
