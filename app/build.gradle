@@ -126,7 +126,7 @@ android {
             resValue "string", "app_name_1", "@string/app_name_test"
             buildConfigField "boolean", "USE_ONLINE_API", "false"
             manifestPlaceholders = [CHANNEL_VALUE: "KudiCredit"]
-            buildConfigField "String", "HOST", "\"https://srv.kudicredit.com/\""
+            buildConfigField "String", "HOST", "\"http://srv.chucard.com/\""
         }
         apiOnline {
             dimension "default"
