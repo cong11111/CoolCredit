@@ -17,6 +17,7 @@ import com.blankj.utilcode.util.ThreadUtils
 import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.KudiCreditApp
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
+import com.tiny.cash.loan.card.log.LogSaver
 import com.tiny.cash.loan.card.net.NetManager
 import com.tiny.cash.loan.card.net.NetObserver
 import com.tiny.cash.loan.card.net.response.HardwareResponseBean

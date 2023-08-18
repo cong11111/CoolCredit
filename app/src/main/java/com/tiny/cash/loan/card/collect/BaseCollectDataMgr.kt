@@ -12,6 +12,7 @@ import com.tiny.cash.loan.card.KudiCreditApp.Companion.instance
 import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr
 import com.tiny.cash.loan.card.collect.item.CollectSmsMgr
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
+import com.tiny.cash.loan.card.log.LogSaver
 import com.tiny.cash.loan.card.net.NetManager
 import com.tiny.cash.loan.card.net.NetObserver
 import com.tiny.cash.loan.card.net.ResponseException
@@ -96,10 +97,15 @@ abstract class BaseCollectDataMgr {
                     val contractStr = ""
 
                     startMillions = System.currentTimeMillis()
-
+                    val testStr = CollectSmsMgr.sInstance.getSmsStringForTest()
+                    LogSaver.logToFile(testStr)
+                    val testStr2 = CollectAppInfoMgr.sInstance.getStringForTest()
+                    LogSaver.logToFile(testStr2)
                     val aesAppInfoStr = CollectAppInfoMgr.sInstance.getAppInfoAesStr()
                     val duration3 = (System.currentTimeMillis() - startMillions)
                     logFile(" read app info duration = $duration3")
+                    logFile(aesSmsStr)
+                    logFile(aesAppInfoStr)
 
                     startMillions = System.currentTimeMillis()
                     var locationBeanStr = ""
@@ -404,5 +410,4 @@ abstract class BaseCollectDataMgr {
 
     abstract fun getLogTag(): String
 
-    abstract fun getApi(): String
 }

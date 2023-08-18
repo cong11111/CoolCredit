@@ -20,6 +20,7 @@
     <string name="menu_ContactUs">Contact Us</string>
     <string name="menu_Log_out">Log out</string>
     <string name="menu_test1">test1</string>
+    <string name="menu_share_file">Share</string>
 
     <string name="str_phone_input_hint">Your Phone number</string>
     <string name="str_pwd_confirm">Password</string>

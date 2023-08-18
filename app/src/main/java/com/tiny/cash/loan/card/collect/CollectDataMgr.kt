@@ -19,9 +19,4 @@ class CollectDataMgr : BaseCollectDataMgr(){
     override fun getLogTag(): String {
         return "new "
     }
-
-    override fun getApi(): String {
-//        return Api.UPLOAD_AUTH
-        return ""
-    }
 }

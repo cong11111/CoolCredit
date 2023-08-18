@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <files-path
+        name="image_root"
+        path="image_cache/" />
+
+    <files-path name="file_log" path="log"/>
+    <external-path path ="." name="external_storage_root"/>
+
+</paths>

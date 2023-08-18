@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.text.TextUtils
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.Utils
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr
@@ -35,6 +36,11 @@ class CollectAppInfoMgr {
             }
         }
         return aesAppInfoStr!!
+    }
+
+    @VisibleForTesting
+    fun getStringForTest() : String {
+        return GsonUtils.toJson(readAllAppInfo())
     }
 
      fun getAppInfoAesStrInternal(){

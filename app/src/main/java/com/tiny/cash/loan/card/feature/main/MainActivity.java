@@ -20,8 +20,10 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.JsonUtils;
 import com.blankj.utilcode.util.ThreadUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.SendFileUtils;
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
 import com.tiny.cash.loan.card.collect.CollectDataMgr;
 import com.tiny.cash.loan.card.collect.CollectHardwareMgr;
@@ -248,6 +250,9 @@ public class MainActivity extends BaseActivity {
                     break;
                 case R.string.menu_test1:
                     test1();
+                    break;
+                case R.string.menu_share_file:
+                    SendFileUtils.INSTANCE.startFeedBackEmail(MainActivity.this);
                     break;
             }
             if (drawerItemNormal.titleRes == R.string.menu_My_loan) {
@@ -784,6 +789,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void success(@Nullable AuthResult response) {
                 CollectHardwareMgr.Companion.getSInstance().collectHardware(MainActivity.this, null);
+                ToastUtils.showLong("upload success");
                 Log.e("Test", " collect data success = " + JSONObject.toJSONString(response));
             }
 

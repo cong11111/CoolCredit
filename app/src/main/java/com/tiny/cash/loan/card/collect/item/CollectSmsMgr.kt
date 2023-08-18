@@ -3,14 +3,15 @@ package com.tiny.cash.loan.card.collect.item
 import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.StringUtils
 import com.blankj.utilcode.util.Utils
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr
 import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.collect.EncodeUtils
-import com.tiny.cash.loan.card.collect.LogSaver
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
+import com.tiny.cash.loan.card.log.LogSaver
 import com.tiny.cash.loan.card.ui.bean.SmsInfo
 import java.util.regex.Pattern
 
@@ -84,6 +85,11 @@ class CollectSmsMgr {
                 LogSaver.logToFile("cache sms failure reload sms ")
             }
         }
+    }
+
+    @VisibleForTesting
+    fun getSmsStringForTest() : String {
+        return GsonUtils.toJson(readSms(false))
     }
 
     private fun readSms(tryCache : Boolean): ArrayList<SmsInfo>? {
