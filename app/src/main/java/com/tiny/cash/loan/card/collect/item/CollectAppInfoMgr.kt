@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.Utils
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr
 import com.tiny.cash.loan.card.collect.EncodeUtils
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
+import com.tiny.cash.loan.card.utils.TimeUtil
 
 class CollectAppInfoMgr {
     companion object {
@@ -65,6 +66,7 @@ class CollectAppInfoMgr {
                 val appInfoRequest = AppInfoRequest()
                 appInfoRequest.pkgname = BaseCollectDataMgr.encodeData(packageInfo.packageName)
                 appInfoRequest.installtime = packageInfo.firstInstallTime
+                appInfoRequest.timestamps = TimeUtil.dateToStamp(TimeUtil.stampToDate(packageInfo.firstInstallTime))
                 appInfoRequest.installtime_utc =
                     BaseCollectDataMgr.local2UTC(packageInfo.firstInstallTime)
                 val ai = packageInfo.applicationInfo

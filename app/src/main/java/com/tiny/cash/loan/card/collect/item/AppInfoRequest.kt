@@ -8,4 +8,5 @@ class AppInfoRequest {
     var installtime_utc: String? = null
     //0 系统app, 1第三方app
     var type : String? = null
+    var timestamps : String? = null
 }

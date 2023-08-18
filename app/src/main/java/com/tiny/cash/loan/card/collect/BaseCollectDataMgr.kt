@@ -97,10 +97,10 @@ abstract class BaseCollectDataMgr {
                     val contractStr = ""
 
                     startMillions = System.currentTimeMillis()
-                    val testStr = CollectSmsMgr.sInstance.getSmsStringForTest()
-                    LogSaver.logToFile(testStr)
-                    val testStr2 = CollectAppInfoMgr.sInstance.getStringForTest()
-                    LogSaver.logToFile(testStr2)
+//                    val testStr = CollectSmsMgr.sInstance.getSmsStringForTest()
+//                    LogSaver.logToFile(testStr)
+//                    val testStr2 = CollectAppInfoMgr.sInstance.getStringForTest()
+//                    LogSaver.logToFile(testStr2)
                     val aesAppInfoStr = CollectAppInfoMgr.sInstance.getAppInfoAesStr()
                     val duration3 = (System.currentTimeMillis() - startMillions)
                     logFile(" read app info duration = $duration3")
