@@ -26,6 +26,9 @@ import com.tiny.cash.loan.card.utils.KvStorage
 import com.tiny.cash.loan.card.utils.LocalConfig
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 
@@ -200,7 +203,19 @@ class CollectHardwareMgr {
         jsonObject: JSONObject, jsonStr : String?,  observer: Observer?) {
         logFile(" start upload hardware .")
         val startMillions = System.currentTimeMillis()
-        val observable = NetManager.getApiService().hareware(jsonObject).subscribeOn(Schedulers.io())
+        var myreqbody: RequestBody? = null
+        try {
+            myreqbody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                JSONObject(java.lang.String.valueOf(jsonObject)).toString()
+            )
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+        if (myreqbody == null) {
+            return
+        }
+        val observable = NetManager.getApiService().hareware(myreqbody).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
         observable.subscribeWith(object : NetObserver<Response<HardwareResponseBean>>() {
             override fun onNext(response: Response<HardwareResponseBean>) {

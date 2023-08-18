@@ -48,6 +48,7 @@ import com.tiny.cash.loan.card.net.response.data.order.VerifyFlutterBean;
 import org.json.JSONObject;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -407,7 +408,7 @@ public interface ApiService {
     Observable<Response<MonifyResult>>queryMonify(@Query("accountId") String accountId);
 
     @POST("/v1/account/hardware")
-    Observable<Response<HardwareResponseBean>>hareware(@Body JSONObject jsonObject);
+    Observable<Response<HardwareResponseBean>>hareware(@Body RequestBody req);
 
     /***
      * redocly
