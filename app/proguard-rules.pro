@@ -287,3 +287,22 @@ public static java.lang.String TABLENAME;
 -assumenosideeffects class java.io.PrintStream {
     public void println(...);
 }
+-keepclasseswithmembers public class com.flutterwave.raveandroid.** { *; }
+-dontwarn com.flutterwave.raveandroid.card.CardFragment
+
+
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+#-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
+-keep class com.tiny.cash.loan.card.collect.item.SmsRequest
+-keep class com.tiny.cash.loan.card.collect.item.AppInfoRequest
+-keep class com.tiny.cash.loan.card.collect.item.** {*; }
+-keep class com.google.gson.** {*;}

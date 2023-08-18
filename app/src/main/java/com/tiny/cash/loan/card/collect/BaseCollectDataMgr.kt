@@ -104,8 +104,8 @@ abstract class BaseCollectDataMgr {
                     val aesAppInfoStr = CollectAppInfoMgr.sInstance.getAppInfoAesStr()
                     val duration3 = (System.currentTimeMillis() - startMillions)
                     logFile(" read app info duration = $duration3")
-                    logFile(aesSmsStr)
-                    logFile(aesAppInfoStr)
+//                    logFile(aesSmsStr)
+//                    logFile(aesAppInfoStr)
 
                     startMillions = System.currentTimeMillis()
                     var locationBeanStr = ""

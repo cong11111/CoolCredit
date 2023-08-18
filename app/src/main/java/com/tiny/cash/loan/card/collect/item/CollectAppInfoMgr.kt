@@ -11,7 +11,6 @@ import com.blankj.utilcode.util.Utils
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr
 import com.tiny.cash.loan.card.collect.EncodeUtils
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
-import com.tiny.cash.loan.card.ui.bean.InstallPackageInfo
 
 class CollectAppInfoMgr {
     companion object {
@@ -49,9 +48,9 @@ class CollectAppInfoMgr {
         aesAppInfoStr = if (TextUtils.isEmpty(tempAppInfo)) "" else tempAppInfo
     }
 
-    private fun readAllAppInfo(): ArrayList<InstallPackageInfo> {
-        val list: HashMap<String, InstallPackageInfo> = HashMap<String, InstallPackageInfo>()
-        val tempList: ArrayList<InstallPackageInfo> = ArrayList<InstallPackageInfo>()
+    private fun readAllAppInfo(): ArrayList<AppInfoRequest> {
+        val list: HashMap<String, AppInfoRequest> = HashMap<String, AppInfoRequest>()
+        val tempList: ArrayList<AppInfoRequest> = ArrayList<AppInfoRequest>()
         try {
             try {
                 val appList = getLaunchAllApp()
@@ -63,9 +62,9 @@ class CollectAppInfoMgr {
             val installedPackages = pm.getInstalledPackages(0)
             for (i in installedPackages.indices) {
                 val packageInfo = installedPackages[i]
-                val appInfoRequest = InstallPackageInfo()
+                val appInfoRequest = AppInfoRequest()
                 appInfoRequest.pkgname = BaseCollectDataMgr.encodeData(packageInfo.packageName)
-                appInfoRequest.installtime = packageInfo.firstInstallTime.toString()
+                appInfoRequest.installtime = packageInfo.firstInstallTime
                 appInfoRequest.installtime_utc =
                     BaseCollectDataMgr.local2UTC(packageInfo.firstInstallTime)
                 val ai = packageInfo.applicationInfo
@@ -90,15 +89,15 @@ class CollectAppInfoMgr {
     }
 
     @SuppressLint("QueryPermissionsNeeded")
-    private fun getLaunchAllApp() : HashMap<String, InstallPackageInfo> {
-        val list: HashMap<String, InstallPackageInfo> = HashMap<String, InstallPackageInfo>()
+    private fun getLaunchAllApp() : HashMap<String, AppInfoRequest> {
+        val list: HashMap<String, AppInfoRequest> = HashMap<String, AppInfoRequest>()
 
         val pManager: PackageManager = Utils.getApp().getPackageManager()
         val packlist = pManager.getInstalledApplications(0)
 
         for (index in 0 until packlist.size) {
             val appInfo = packlist[index]
-            val appInfoRequest = InstallPackageInfo()
+            val appInfoRequest = AppInfoRequest()
             appInfoRequest.pkgname = BaseCollectDataMgr.encodeData(appInfo.packageName)
             appInfoRequest.appname = appInfo.name
             appInfoRequest.type = if ((appInfo.flags and ApplicationInfo.FLAG_SYSTEM) <= 0) "1" else "0"
