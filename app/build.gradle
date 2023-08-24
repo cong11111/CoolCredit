@@ -12,15 +12,15 @@ apply plugin: "AndResGuard"
 
 android {
 
-    compileSdkVersion 31
+    compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.cash.loan.kudicredit"
         minSdkVersion 19
-        targetSdkVersion 31
-        versionCode 30002
-        versionName "3.0.2"
+        targetSdkVersion 33
+        versionCode 30003
+        versionName "3.0.3"
         flavorDimensions("default")
         // dex突破65535的限制
         multiDexEnabled true
