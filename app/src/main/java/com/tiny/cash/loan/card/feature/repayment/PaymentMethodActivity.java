@@ -20,7 +20,6 @@ import com.tiny.cash.loan.card.kudicredit.databinding.ActivityPaywayBinding;
 import com.tiny.cash.loan.card.ui.dialog.fragment.PayStackStatusDialogFragment;
 import com.tiny.cash.loan.card.utils.AppUtils;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
@@ -232,7 +231,7 @@ public class PaymentMethodActivity extends BaseActivity implements View.OnClickL
                 doubleClick = true;
                 if (response.isSuccess()) {
                     if (Constants.ONE.equals(response.getBody().getStatus())) {
-                        FirebaseLogUtils.Log("PayMent");
+//                        FirebaseLogUtils.Log("PayMent");
                         EventBus.getDefault().post(new EventMessage(EventMessage.UPLOADACTIVITY));
                         finish();
                     } else {

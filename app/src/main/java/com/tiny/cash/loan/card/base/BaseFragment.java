@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.data.FirebaseData;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.ui.dialog.fragment.ProgressDialogFragment;
 import com.tiny.cash.loan.card.utils.CommonUtils;
@@ -26,7 +29,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
 import com.tiny.cash.loan.card.message.EventMessage;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -219,4 +224,25 @@ public class BaseFragment extends Fragment {
         setOnBackListener(null);
 
     }
+
+    public static String KEY_FIREBASE_DATA = "key_firebase_data";
+
+    public boolean checkNeedShowLog(String orderId) {
+        if (orderId == null) {
+            return false;
+        }
+        String dataStr = SPUtils.getInstance().getString(KEY_FIREBASE_DATA);
+        if (!TextUtils.isEmpty(dataStr)) {
+            FirebaseData firebaseData = GsonUtils.fromJson(dataStr, FirebaseData.class);
+            if (firebaseData != null) {
+                if (TextUtils.equals(firebaseData.getOrderId(), orderId)) {
+                    if (firebaseData.getStatus() == 1) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }

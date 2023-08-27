@@ -254,9 +254,8 @@ abstract class BaseCollectDataMgr {
                 logFile(" start upload auth success =  $totalDur")
                 if (authBean != null && authBean.isHasUpload) {
                     observer?.success(authBean)
-                    // TODO
-//                    FirebaseUtils.logEvent("fireb_upload_auth_duration", "uploadAuthDur", totalDur.toString()
-//                        ,"totalDur" , (System.currentTimeMillis() - startMillions1).toString())
+                    FirebaseUtils.logEvent("fireb_upload_auth_duration", "uploadAuthDur", totalDur.toString()
+                        ,"totalDur" , (System.currentTimeMillis() - startMillions1).toString())
 //                        log2File(originSms, originContract, originAppInfo, "")
                 } else {
                     var errorMsg: String? = null

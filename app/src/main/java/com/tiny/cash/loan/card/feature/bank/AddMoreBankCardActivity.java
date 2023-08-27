@@ -12,7 +12,7 @@ import com.tiny.cash.loan.card.kudicredit.databinding.ActivityBankcardBinding;
 import com.tiny.cash.loan.card.ui.dialog.fragment.OfflinePaymentTransferFragment;
 import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 
@@ -69,6 +69,7 @@ public class AddMoreBankCardActivity extends BaseActivity {
         mBinding.llTitle.ivBack.setOnClickListener(v -> {
             finish();
         });
+        FirebaseUtils.logEvent("fireb_band_card");
         mBinding.etBankDate.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -123,6 +124,7 @@ public class AddMoreBankCardActivity extends BaseActivity {
         if (card == null) {
             return;
         }
+        FirebaseUtils.logEvent("fireb_card_submit");
         mCharge = new Charge();
         mCharge.setCard(card);
         showProgressDialogFragment(getString(R.string.str_loading), false);
@@ -201,7 +203,7 @@ public class AddMoreBankCardActivity extends BaseActivity {
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
                     if (response.getBody().isHasUpload()) {
-                        FirebaseLogUtils.Log("af_add_more_bankcard");
+//                        FirebaseLogUtils.Log("af_add_more_bankcard");
                         finish();
                     } else {
                         boolean isNull = StringUtils.isEmpty(response.getBody().getCardMessage());

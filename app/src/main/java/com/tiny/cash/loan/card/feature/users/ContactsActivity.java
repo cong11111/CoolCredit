@@ -21,7 +21,7 @@ import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityContactBinding;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
@@ -167,7 +167,7 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
 
     private void initData() {
         EventBus.getDefault().register(this);
-        FirebaseLogUtils.Log("af_add_info2");
+//        FirebaseLogUtils.Log("af_add_info2");
         addTextChangedListener(mBinding.etFirstContactName, Constants.ONE);
         addTextChangedListener(mBinding.etSecondContactName, Constants.TWO);
         addTextChangedListener(mBinding.etThreeContactName, Constants.THREE);
@@ -314,6 +314,7 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
                 if (response.isSuccess()) {
                     KvStorage.put(LocalConfig.LC_TOKEN, response.getBody().getToken());
                     if (response.getBody().isHasProfile() && response.getBody().isHasContact() && !response.getBody().isHasOther()) {
+                        FirebaseUtils.logEvent("fireb_data2");
                         startIntent(WorkInfoActivity.class);
                         finish();
                     }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.KudiCreditApp;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
@@ -16,7 +17,7 @@ import com.tiny.cash.loan.card.ui.dialog.fragment.AppStarsDialogFragment;
 import com.tiny.cash.loan.card.ui.dialog.fragment.OfflinePaymentTransferFragment;
 import com.tiny.cash.loan.card.feature.repayment.PaymentMethodActivity;
 import com.tiny.cash.loan.card.utils.AppUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 
@@ -105,15 +106,22 @@ public class ActiveFragment extends BaseFragment {
                         }).show();
             }
         }
-        boolean orderSucess = KvStorage.get(LocalConfig.getNewKey(LocalConfig.LC_ORDERSUCESS), false);
-        if (!orderSucess) {
-            if (LocalConfig.isNewUser())
-                FirebaseLogUtils.Log("af_new_active");
-            else
-                FirebaseLogUtils.Log("af_old_active");
-            KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_ORDERSUCESS), true);
-        }
+        // TODO
+//        boolean orderSucess = KvStorage.get(LocalConfig.getNewKey(LocalConfig.LC_ORDERSUCESS), false);
+//        if (!orderSucess) {
+//            if (LocalConfig.isNewUser())
+//                FirebaseLogUtils.Log("af_new_active");
+//            else
+//                FirebaseLogUtils.Log("af_old_active");
+//            KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_ORDERSUCESS), true);
+//        }
         data = (LoanOrderDetail) getArguments().get("data");
+        if (checkNeedShowLog(data.getOrderId())){
+            if (Constant.Companion.getIS_FIRST_APPROVE()) {
+                FirebaseUtils.logEvent( "fireb_activity");
+            }
+            FirebaseUtils.logEvent( "fireb_activity_all");
+        }
         List<LoanOrderDetail.StageListBean> stageList = data.getStageList();
         mBinding.tvAllAmount.setText(getString(R.string.str_money, split(data.getTotalAmount())));
         mBinding.llLoanDetail.rlTermsTwo.setVisibility(View.GONE);

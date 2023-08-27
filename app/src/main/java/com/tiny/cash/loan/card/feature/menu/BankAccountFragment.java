@@ -11,7 +11,7 @@ import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.FragmentBankAccountBinding;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
@@ -134,6 +134,7 @@ public class BankAccountFragment extends BaseFragment {
                         showToast(response.getStatus().getMsg());
                     }
                 } else if (code == ApiServerImpl.OK) {
+                    FirebaseUtils.logEvent("fireb_bank");
                     success(response);
                 } else {
                     showToast(response.getStatus().getMsg());
@@ -151,7 +152,7 @@ public class BankAccountFragment extends BaseFragment {
 
     private void success(Response<BankResult> response) {
         if (response.getBody().isBankAccountChecked()) {
-            FirebaseLogUtils.Log("af_add_bankaccount");
+//            FirebaseLogUtils.Log("af_add_bankaccount");
             QueryBankDetail();
         } else {
             if (StringUtils.isEmpty(response.getBody().getAccountMessage())) {

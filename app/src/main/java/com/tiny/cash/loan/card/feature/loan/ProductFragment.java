@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.KudiCreditApp;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
@@ -27,7 +28,7 @@ import com.tiny.cash.loan.card.feature.users.ContactsActivity;
 import com.tiny.cash.loan.card.feature.users.BasicInfoActivity;
 import com.tiny.cash.loan.card.feature.users.WorkInfoActivity;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.GPSUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
@@ -360,8 +361,12 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                         return;
                     }
                     String orderId = response.getBody().getOrderId();
+                    if (Constant.Companion.getIS_FIRST_APPROVE()) {
+                        FirebaseUtils.logEvent("fireb_apply");
+                    }
+                    FirebaseUtils.logEvent("fireb_apply_all");
                     if ("-1".equals(orderId)) {
-                        FirebaseLogUtils.Log("af_apply_null");
+//                        FirebaseLogUtils.Log("af_apply_null");
                         if (!response.getBody().isHasProfile() || !response.getBody().isBvnChecked()) {
                             startIntent(BasicInfoActivity.class);
                             return;
@@ -405,10 +410,10 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void submitConfig(String orderId) {
-        if (LocalConfig.isNewUser())
-            FirebaseLogUtils.Log("af_new_apply");
-        else
-            FirebaseLogUtils.Log("af_old_apply");
+//        if (LocalConfig.isNewUser())
+//            FirebaseLogUtils.Log("af_new_apply");
+//        else
+//            FirebaseLogUtils.Log("af_old_apply");
 
         String acconutId = KvStorage.get(LocalConfig.LC_ACCOUNTID, "");
         ApplyParams applyParams = ApplyParams.createParams(acconutId, orderId, prodId, prodName, amount, period);

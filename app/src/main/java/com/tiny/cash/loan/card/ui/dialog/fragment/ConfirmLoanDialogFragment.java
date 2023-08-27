@@ -14,13 +14,18 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.KudiCreditApp;
+import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
 import com.tiny.cash.loan.card.collect.CollectDataMgr;
 import com.tiny.cash.loan.card.collect.CollectHardwareMgr;
 import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr;
 import com.tiny.cash.loan.card.collect.item.CollectSmsMgr;
+import com.tiny.cash.loan.card.data.FirebaseData;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.kudicredit.databinding.DialogConfirmLoanBinding;
 import com.tiny.cash.loan.card.message.EventMessage;
@@ -38,7 +43,7 @@ import com.tiny.cash.loan.card.ui.dialog.BaseDialogFragment;
 import com.tiny.cash.loan.card.ui.dialog.iface.INegativeButtonDialogListener;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.DeviceInfo;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.NetworkUtil;
@@ -190,11 +195,18 @@ public class ConfirmLoanDialogFragment extends BaseDialogFragment<ConfirmLoanDia
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
                     if (Constants.ONE.equals(response.getBody().getStatus())) {
-
-                        if (LocalConfig.isNewUser())
-                            FirebaseLogUtils.Log("af_new_apply_confirm");
-                        else
-                            FirebaseLogUtils.Log("af_old_apply_confirm");
+                        if (Constant.Companion.getIS_FIRST_APPROVE()) {
+                            FirebaseUtils.logEvent( "fireb_apply_confirm");
+                        }
+                        FirebaseUtils.logEvent( "fireb_apply_confirm_all");
+                        FirebaseData data = new FirebaseData();
+                        data.setOrderId(orderId);
+                        data.setStatus(1);
+                        SPUtils.getInstance().put(BaseFragment.KEY_FIREBASE_DATA, GsonUtils.toJson(data));
+//                        if (LocalConfig.isNewUser())
+//                            FirebaseLogUtils.Log("af_new_apply_confirm");
+//                        else
+//                            FirebaseLogUtils.Log("af_old_apply_confirm");
                         EventBus.getDefault().post(new EventMessage(EventMessage.UPLOADACTIVITY));
                         dismissAllowingStateLoss();
                     }
@@ -217,7 +229,7 @@ public class ConfirmLoanDialogFragment extends BaseDialogFragment<ConfirmLoanDia
     }
     @Override
     protected void build(DialogBuilder builder) {
-        FirebaseLogUtils.Log("ConfirmLoanProduct");
+//        FirebaseLogUtils.Log("ConfirmLoanProduct");
         final DialogConfirmLoanBinding binding = builder.getBinding();
         binding.cbAgree.setSelected(true);
         if (builder.applyParams != null) {

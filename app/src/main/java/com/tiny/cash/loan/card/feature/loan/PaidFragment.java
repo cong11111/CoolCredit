@@ -5,11 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.LayoutLoanPaidBinding;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 
 import com.tiny.cash.loan.card.net.response.data.order.LoanOrderDetail;
@@ -44,10 +45,10 @@ public class PaidFragment extends BaseFragment{
         initData();
     }
     private void initData() {
-        if (LocalConfig.isNewUser())
-            FirebaseLogUtils.Log("af_new_repay");
-        else
-            FirebaseLogUtils.Log("af_old_repay");
+//        if (LocalConfig.isNewUser())
+//            FirebaseLogUtils.Log("af_new_repay");
+//        else
+//            FirebaseLogUtils.Log("af_old_repay");
         LoanOrderDetail data = (LoanOrderDetail) getArguments().get("data");
         List<LoanOrderDetail.StageListBean> stageList = data.getStageList();
         mBinding.tvAllAmount.setText(getString(R.string.str_money,data.getTotalAmount()));

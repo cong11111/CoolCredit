@@ -19,9 +19,11 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.JsonUtils;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.SendFileUtils;
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
@@ -274,6 +276,9 @@ public class MainActivity extends BaseActivity {
     private void requestPermissions() {
         if (PermissionUtil.hasPermission(this, permissions)) {
             DeviceInfo.getInstance(this).init();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                PermissionUtils.permission(Manifest.permission.POST_NOTIFICATIONS).request();
+            }
             executeCache();
         } else {
 //            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -687,6 +692,7 @@ public class MainActivity extends BaseActivity {
 //                }
                 if (loanOrderDetail.getStatus().getCode() == ApiServerImpl.OK) {
                     mLoanDetail = loanOrderDetail.getBody();
+                    Constant.Companion.setIS_FIRST_APPROVE(mLoanDetail.getFirstApprove() == 1);
                     if (mLoanDetail == null || Constants.ZERO.equals(mLoanDetail.getReloan())) {
                         KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_FIRSTORDER), Constants.ZERO);
                     } else {

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.LayoutLoanProcessingBinding;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 
@@ -58,14 +57,14 @@ public class ProcessingFragment extends BaseFragment{
 //                    }).show();
 //        }
 
-        boolean orderProgress = KvStorage.get(LocalConfig.getNewKey(LocalConfig.LC_ORDERPROGRESS), false);
-        if (!orderProgress) {
-            if (LocalConfig.isNewUser())
-                FirebaseLogUtils.Log("af_new_progress");
-            else
-                FirebaseLogUtils.Log("af_old_progress");
-            KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_ORDERPROGRESS), true);
-        }
+//        boolean orderProgress = KvStorage.get(LocalConfig.getNewKey(LocalConfig.LC_ORDERPROGRESS), false);
+//        if (!orderProgress) {
+//            if (LocalConfig.isNewUser())
+//                FirebaseLogUtils.Log("af_new_progress");
+//            else
+//                FirebaseLogUtils.Log("af_old_progress");
+//            KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_ORDERPROGRESS), true);
+//        }
 
         LoanOrderDetail data = (LoanOrderDetail) getArguments().get("data");
         mBinding.tvAllAmount.setText(getString(R.string.str_money,split(data.getTotalAmount())));

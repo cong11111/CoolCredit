@@ -14,5 +14,7 @@ class Constant {
         const val CUR_VERSION_NAME = "2.2.9"
 
         const val IS_COLLECT= !BuildConfig.IS_AAB_BUILD
+
+        var IS_FIRST_APPROVE = false
     }
 }

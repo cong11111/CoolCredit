@@ -10,7 +10,7 @@ import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityWorkDetailsBinding;
 import com.tiny.cash.loan.card.feature.bank.BankCardAccountActivity;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
@@ -67,7 +67,7 @@ public class WorkInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initData() {
-        FirebaseLogUtils.Log("af_add_info3");
+//        FirebaseLogUtils.Log("af_add_info3");
         showProgressDialogFragment(getString(R.string.str_loading), false);
         List<String> dataset = new LinkedList<>(Arrays.asList("No", "Yes"));
         mBinding.spinnerForeignDebt.attachDataSource(dataset);
@@ -197,6 +197,7 @@ public class WorkInfoActivity extends BaseActivity implements View.OnClickListen
             public void onNext(Response<UserProfile> response) {
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
+                    FirebaseUtils.logEvent("fireb_data3");
                     startIntent(BankCardAccountActivity.class);
                     finish();
                 } else {

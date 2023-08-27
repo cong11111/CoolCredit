@@ -18,7 +18,7 @@ import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityRegisterBinding;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.RegexUtils;
@@ -52,7 +52,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());//DataBindingUtil.setContentView(this, R.layout.activity_register);
         initEvent();
-        FirebaseLogUtils.Log("af_registered_phone");
+//        FirebaseLogUtils.Log("af_registered_phone");
     }
 
     private void initEvent() {
@@ -211,6 +211,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             startActivity(intent);
         } else if (view == binding.btnValidate) {
             flag = false;
+            if (intCount == 0){
+                FirebaseUtils.logEvent("fireb_send_sms");
+            } else {
+                FirebaseUtils.logEvent("fireb_resend_sms");
+            }
             checkMobile();
         }else if (view == binding.tvCallSMSCode) {
             flag = true;
@@ -246,14 +251,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             showToast(getString(R.string.str_login_phone_error));
         }
     }
-
+    private int intCount = 0;
     private void checkMobile() {
         String phoneStr = FIRST_PHONE + binding.edtPhone.getText().toString().replaceAll(" ", "");
         if (!RegexUtils.isValidPhone(phoneStr)) {
             ToastManager.show(RegisterActivity.this, getString(R.string.str_correct_phone_number));
             return;
         }
-
         Observable observable = NetManager.getApiService().hasRegister(phoneStr)//“1”:注册，“2”：修改密码
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -364,7 +368,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void callSMSCode() {
-        FirebaseLogUtils.Log("callSMSCod");
+//        FirebaseLogUtils.Log("callSMSCod");
         String phoneStr = FIRST_PHONE + binding.edtPhone.getText().toString().replaceAll(" ", "");
         if (!RegexUtils.isValidPhone(phoneStr)) {
             ToastManager.show(RegisterActivity.this, getString(R.string.str_correct_phone_number));

@@ -17,7 +17,7 @@ import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityBasicInfoBinding;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
@@ -238,7 +238,7 @@ public class BasicInfoActivity extends BaseActivity implements View.OnClickListe
 
     private void initData() {
         EventBus.getDefault().register(this);
-        FirebaseLogUtils.Log("af_add_info1");
+//        FirebaseLogUtils.Log("af_add_info1");
         queryStateArea();
         mGender = Constants.ONE;
         mBinding.radioGroup.setOnCheckedChangeListener((RadioGroup group, int checkedId) -> {
@@ -345,6 +345,7 @@ public class BasicInfoActivity extends BaseActivity implements View.OnClickListe
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
                     if (response.getBody().isHasProfile() && !response.getBody().isHasContact()) {
+                        FirebaseUtils.logEvent("fireb_data1");
                         startIntent(ContactsActivity.class);
                         finish();
                     }

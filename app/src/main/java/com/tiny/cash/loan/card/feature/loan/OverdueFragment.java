@@ -7,13 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.LayoutLoanOverdueBinding;
 import com.tiny.cash.loan.card.ui.dialog.fragment.OfflinePaymentTransferFragment;
 import com.tiny.cash.loan.card.feature.repayment.PaymentMethodActivity;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 
 import com.tiny.cash.loan.card.net.response.data.order.LoanOrderDetail;
@@ -82,11 +83,17 @@ public class OverdueFragment extends BaseFragment {
         return "0";
     }
     private void initData() {
-        if (LocalConfig.isNewUser())
-            FirebaseLogUtils.Log("af_new_overdue");
-        else
-            FirebaseLogUtils.Log("af_old_overdue");
+//        if (LocalConfig.isNewUser())
+//            FirebaseLogUtils.Log("af_new_overdue");
+//        else
+//            FirebaseLogUtils.Log("af_old_overdue");
         data = (LoanOrderDetail) getArguments().get("data");
+        if (data != null && checkNeedShowLog(data.getOrderId())) {
+            if (Constant.Companion.getIS_FIRST_APPROVE()) {
+                FirebaseUtils.logEvent("fireb_overdue");
+            }
+            FirebaseUtils.logEvent("fireb_overdue_all");
+        }
         List<LoanOrderDetail.StageListBean> stageList = data.getStageList();
         mBinding.tvAllAmount.setText(getString(R.string.str_money, split(data.getTotalAmount())));
         mBinding.llLoanDetail.rlTermsTwo.setVisibility(View.GONE);

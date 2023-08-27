@@ -11,7 +11,7 @@ import com.tiny.cash.loan.card.kudicredit.databinding.ActivityBankcardBinding;
 import com.tiny.cash.loan.card.ui.dialog.fragment.OfflinePaymentTransferFragment;
 import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
@@ -170,7 +170,8 @@ public class AddBankCardActivity extends BaseActivity {
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
                     if (response.getBody().isHasUpload()) {
-                        FirebaseLogUtils.Log("af_add_bankcard");
+                        FirebaseUtils.logEvent("fireb_card_success");
+//                        FirebaseLogUtils.Log("af_add_bankcard");
                         EventBus.getDefault().post(new EventMessage(EventMessage.BANKCARDSUCCESS));
                         finish();
                     } else {

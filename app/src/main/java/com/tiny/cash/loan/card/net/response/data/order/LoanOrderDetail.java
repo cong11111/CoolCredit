@@ -23,6 +23,17 @@ public class LoanOrderDetail implements Serializable {
     private String limitday;
     private List<StageListBean> stageList;
 
+    //1是首次, 0是非首次
+    private int firstApprove = 0;
+
+    public int getFirstApprove() {
+        return firstApprove;
+    }
+
+    public void setFirstApprove(int firstApprove) {
+        this.firstApprove = firstApprove;
+    }
+
     public String getReloan() {
         return reloan;
     }

@@ -20,7 +20,7 @@ import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivitySetPwdBinding;
 import com.tiny.cash.loan.card.ui.dialog.fragment.AgreeTermsFragment;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.MD5Util;
@@ -195,6 +195,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
             v.setSelected(!selected);
             binding.btnSignUp.setEnabled(!selected && isValidPwd() && isValidPwdConfirm());
         } else if (v == binding.btnSignUp) {
+            FirebaseUtils.logEvent("fireb_click_register");
             quickRegistration();
         } else if (v == binding.ivBackReg) {
             finish();
@@ -256,7 +257,8 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
             public void onNext(Response<RegistrationBO> response) {
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
-                    FirebaseLogUtils.Log("af_registered_successful");
+                    FirebaseUtils.logEvent("fireb_register");
+//                    FirebaseLogUtils.Log("af_registered_successful");
                     KvStorage.put(LocalConfig.LC_ISLOGIN, true);
                     KvStorage.put(LocalConfig.LC_TOKEN, response.getBody().getToken());
                     KvStorage.put(LocalConfig.LC_ACCOUNTID, response.getBody().getAccountId());

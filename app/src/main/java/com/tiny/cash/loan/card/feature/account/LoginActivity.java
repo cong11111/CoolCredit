@@ -20,7 +20,7 @@ import com.tiny.cash.loan.card.feature.start.PermissionActivity;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityLoginBinding;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.MD5Util;
@@ -327,6 +327,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         }
         pwd = MD5Util.encryption(passWord);
+        FirebaseUtils.logEvent("fireb_click_sign");
         if (binding.llValidate.getVisibility() == View.VISIBLE){
             login(phone,pwd);
         }else {
@@ -344,7 +345,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onNext(Response<UserInfo> response) {
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
-                    FirebaseLogUtils.Log("af_log_in");
+//                    FirebaseLogUtils.Log("af_log_in");
                     KvStorage.put(LocalConfig.LC_ISLOGIN, true);
                     KvStorage.put(LocalConfig.LC_PASSWORD,
                             pwd);

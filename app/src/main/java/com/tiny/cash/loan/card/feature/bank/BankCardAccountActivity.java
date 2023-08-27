@@ -8,7 +8,7 @@ import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityBankAccountBinding;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.FirebaseLogUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
@@ -106,6 +106,7 @@ public class BankCardAccountActivity extends BaseActivity {
                         showToast(response.getStatus().getMsg());
                     }
                 } else if (code == ApiServerImpl.OK) {
+                    FirebaseUtils.logEvent("fireb_bank");
                     success(response);
                 } else {
                     showToast(response.getStatus().getMsg());
@@ -123,7 +124,7 @@ public class BankCardAccountActivity extends BaseActivity {
 
     private void success(Response<BankResult> response) {
         if (response.getBody().isBankAccountChecked()) {
-            FirebaseLogUtils.Log("af_add_bankaccount");
+//            FirebaseLogUtils.Log("af_add_bankaccount");
             startIntent(AddMoreBankCardActivity.class);
             finish();
         } else {
