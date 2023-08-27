@@ -11,7 +11,6 @@ import com.tiny.cash.loan.card.feature.account.RegisterActivity;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityHomeBinding;
 import com.tiny.cash.loan.card.utils.DeviceInfo;
-import com.tiny.cash.loan.card.utils.GoogleReferrerHelper;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.NetUtil;
@@ -39,11 +38,6 @@ public class HomeActivity extends BaseActivity {
      * 初始化请求头里参数
      */
     private void initHeardData() {
-        String s = KvStorage.get(LocalConfig.LC_UTMSOURCE, "");
-        String s1 = KvStorage.get(LocalConfig.LC_UTMMEDIUM, "");
-        if (TextUtils.isEmpty(s) || TextUtils.isEmpty(s1)) {
-            GoogleReferrerHelper.getIns(this).start();
-        }
         DeviceInfo.getInstance(this).getVerName();
         DeviceInfo.getInstance(this).getVersionCode();
         DeviceInfo.getInstance(this).getChannelName();
