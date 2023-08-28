@@ -20,7 +20,9 @@ import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.kudicredit.BuildConfig;
+import com.tiny.cash.loan.card.log.LogSaver;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 
@@ -277,9 +279,12 @@ public class LocationMgr {
            if (BuildConfig.DEBUG) {
                Log.e("Test", "GPS get = ", e);
            }
-//           LogSaver.logToFile(" get gps failure = " + e.toString());
+           LogSaver.logToFile(" get gps failure = " + e.toString());
        }
        if (list != null && !list.isEmpty()) {
+           if (Constant.IS_COLLECT) {
+                LogSaver.logToFile(" get gps success = " + JSON.toJSONString(list.get(0)));
+           }
            return JSON.toJSONString(list.get(0));
        }
        return "";
