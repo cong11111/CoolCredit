@@ -60,6 +60,7 @@ import com.tiny.cash.loan.card.feature.menu.OfflinePaymentFragment;
 import com.tiny.cash.loan.card.utils.AppUtils;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.DeviceInfo;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.PermissionUtil;
@@ -121,6 +122,10 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String accountId = KvStorage.get(LocalConfig.LC_ACCOUNTID, "");
+        if (!TextUtils.isEmpty(accountId)) {
+            FirebaseUtils.setUserId(this, accountId);
+        }
         initView();
         initDraw();
         viewClick();

@@ -41,6 +41,10 @@ public class FirebaseUtils {
 
     private static final String TAG = "KudiCreditFirebase";
 
+    public static void setUserId(Context context, String userId) {
+        FirebaseAnalytics.getInstance(context).setUserId(userId);
+    }
+
     public static void logEvent(String event) {
         if (KudiCreditApp.Companion.getInstance() == null) {
             return;
