@@ -213,6 +213,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             flag = false;
             if (intCount == 0){
                 FirebaseUtils.logEvent("fireb_send_sms");
+                intCount++
             } else {
                 FirebaseUtils.logEvent("fireb_resend_sms");
             }
