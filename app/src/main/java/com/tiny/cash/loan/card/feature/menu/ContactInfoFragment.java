@@ -359,6 +359,10 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
             public void onNext(Response<UserContact> response) {
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
+                    // TODO fireb_data
+//                    if (response.getBody().isHasContact()) {
+//                        FirebaseUtils.logEvent("fireb_data2");
+//                    }
                     KvStorage.put(LocalConfig.LC_TOKEN, response.getBody().getToken());
                     queryRefereeDetail();
                 } else {

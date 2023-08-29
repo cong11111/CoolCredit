@@ -12,6 +12,7 @@ import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.FragmentOtherDetailsBinding;
 import com.tiny.cash.loan.card.utils.CommonUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
@@ -296,6 +297,8 @@ public class OtherInfoFragment extends BaseFragment implements View.OnClickListe
             public void onNext(Response<UserProfile> response) {
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
+                    // TODO fireb_data
+//                    FirebaseUtils.logEvent("fireb_data3");
                    queryAddressDetail();
                 } else {
                     showToast(response.getStatus().getMsg());
