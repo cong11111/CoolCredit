@@ -3,6 +3,7 @@ package com.tiny.cash.loan.card.feature.loan;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,9 @@ public class OverdueFragment extends BaseFragment {
         });
     }
     public String split(String s){
+        if (TextUtils.isEmpty(s)) {
+            return "0";
+        }
         if (s.length()>2) {
             return s.substring(0, s.length() - 2);
         }
@@ -97,32 +101,34 @@ public class OverdueFragment extends BaseFragment {
         List<LoanOrderDetail.StageListBean> stageList = data.getStageList();
         mBinding.tvAllAmount.setText(getString(R.string.str_money, split(data.getTotalAmount())));
         mBinding.llLoanDetail.rlTermsTwo.setVisibility(View.GONE);
-        for (LoanOrderDetail.StageListBean trialBean : stageList) {
-            if (Constants.ONE.equals(trialBean.getStageNo())) {
-                mBinding.llLoanDetail.tvFirstInterest.setText(getString(R.string.str_money, split(trialBean.getInterest())));
-                mBinding.llLoanDetail.tvFirstFee.setText(getString(R.string.str_money, split(trialBean.getFee())));
-                mBinding.llLoanDetail.tvFirstDisburse.setText(getString(R.string.str_money, split(trialBean.getAmount())));
-                mBinding.llLoanDetail.tvFirstRepayment.setText(getString(R.string.str_money, split(trialBean.getTotalAmount())));
-                mBinding.llLoanDetail.tvFirstRepayDate.setText(trialBean.getRepayDate());
-                mBinding.llLoanDetail.tvFirstOverdueFee.setText(getString(R.string.str_money, split(trialBean.getPenalty())));
-                mBinding.llLoanDetail.btnFirstRepaymemt.setVisibility(trialBean.getPayable() ? View.VISIBLE : View.GONE);
-
-                mBinding.llLoanDetail.btnFirstRepaymemt.setOnClickListener(v -> {
-                    queryBankStatus();
-                });
-            } else {
-                mBinding.llLoanDetail.rlTermsTwo.setVisibility(View.VISIBLE);
-                mBinding.llLoanDetail.tvSecondInterest.setText(getString(R.string.str_money, split(trialBean.getInterest())));
-                mBinding.llLoanDetail.tvSecondFee.setText(getString(R.string.str_money, split(trialBean.getFee())));
-                mBinding.llLoanDetail.tvSecondDisburse.setText(getString(R.string.str_money, split(trialBean.getAmount())));
-                mBinding.llLoanDetail.tvSecondRepayment.setText(getString(R.string.str_money, split(trialBean.getTotalAmount())));
-                mBinding.llLoanDetail.tvSecondRepayDate.setText(trialBean.getRepayDate());
-                mBinding.llLoanDetail.tvSecondOverdueFee.setText(getString(R.string.str_money, split(trialBean.getPenalty())));
-                mBinding.llLoanDetail.btnSecondRepaymemt.setVisibility(trialBean.getPayable() ? View.VISIBLE : View.GONE);
-
-                mBinding.llLoanDetail.btnSecondRepaymemt.setOnClickListener(v -> {
-                    queryBankStatus();
-                });
+        if (stageList != null) {
+            for (LoanOrderDetail.StageListBean trialBean : stageList) {
+                if (Constants.ONE.equals(trialBean.getStageNo())) {
+                    mBinding.llLoanDetail.tvFirstInterest.setText(getString(R.string.str_money, split(trialBean.getInterest())));
+                    mBinding.llLoanDetail.tvFirstFee.setText(getString(R.string.str_money, split(trialBean.getFee())));
+                    mBinding.llLoanDetail.tvFirstDisburse.setText(getString(R.string.str_money, split(trialBean.getAmount())));
+                    mBinding.llLoanDetail.tvFirstRepayment.setText(getString(R.string.str_money, split(trialBean.getTotalAmount())));
+                    mBinding.llLoanDetail.tvFirstRepayDate.setText(trialBean.getRepayDate());
+                    mBinding.llLoanDetail.tvFirstOverdueFee.setText(getString(R.string.str_money, split(trialBean.getPenalty())));
+                    mBinding.llLoanDetail.btnFirstRepaymemt.setVisibility(trialBean.getPayable() ? View.VISIBLE : View.GONE);
+                    mBinding.llLoanDetail.btnFirstRepaymemt.setVisibility(View.GONE);
+                    mBinding.llLoanDetail.btnFirstRepaymemt.setOnClickListener(v -> {
+                        queryBankStatus();
+                    });
+                } else {
+                    mBinding.llLoanDetail.rlTermsTwo.setVisibility(View.VISIBLE);
+                    mBinding.llLoanDetail.tvSecondInterest.setText(getString(R.string.str_money, split(trialBean.getInterest())));
+                    mBinding.llLoanDetail.tvSecondFee.setText(getString(R.string.str_money, split(trialBean.getFee())));
+                    mBinding.llLoanDetail.tvSecondDisburse.setText(getString(R.string.str_money, split(trialBean.getAmount())));
+                    mBinding.llLoanDetail.tvSecondRepayment.setText(getString(R.string.str_money, split(trialBean.getTotalAmount())));
+                    mBinding.llLoanDetail.tvSecondRepayDate.setText(trialBean.getRepayDate());
+                    mBinding.llLoanDetail.tvSecondOverdueFee.setText(getString(R.string.str_money, split(trialBean.getPenalty())));
+//                    mBinding.llLoanDetail.btnSecondRepaymemt.setVisibility(trialBean.getPayable() ? View.VISIBLE : View.GONE);
+                    mBinding.llLoanDetail.btnSecondRepaymemt.setVisibility(View.GONE);
+                    mBinding.llLoanDetail.btnSecondRepaymemt.setOnClickListener(v -> {
+                        queryBankStatus();
+                    });
+                }
             }
         }
     }
