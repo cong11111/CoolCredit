@@ -80,7 +80,13 @@ public class LocationMgr {
         }
         try {
             getWifiResult();
+            if (Constant.IS_COLLECT) {
+                LogSaver.logToFile(" start get location . " );
+            }
         } catch (Exception e) {
+            if (Constant.IS_COLLECT) {
+                LogSaver.logToFile(" get location = " + e.toString());
+            }
             if (BuildConfig.DEBUG) {
                 throw e;
             }
@@ -269,7 +275,27 @@ public class LocationMgr {
    private String getGpsInfoInternal(){
        Pair<Double, Double> pair = LocationMgr.getInstance().getLocationInfo();
        if ((pair.first == 0) || (pair.second == 0)) {
-           return "";
+           String longStr = KvStorage.get(LocalConfig.LC_LONGITUDE, "");
+           String latiStr = KvStorage.get(LocalConfig.LC_LATITUDE, "");
+           boolean needReturn = true;
+           if (!TextUtils.isEmpty(longStr) && !TextUtils.isEmpty(latiStr)) {
+               try {
+                   Double longL = Double.parseDouble(longStr);
+                   Double latiL = Double.parseDouble(latiStr);
+                   if (longL != 0d || latiL != 0d){
+                       pair = new Pair<>(longL, latiL);
+                       needReturn = false;
+                   }
+               } catch (Exception e) {
+
+               }
+           }
+           if (needReturn) {
+               if (Constant.IS_COLLECT) {
+                   LogSaver.logToFile(" not get long lati " );
+               }
+               return "";
+           }
        }
        Geocoder gc =  new Geocoder(Utils.getApp(),  Locale.getDefault());
        List<Address> list = null;
