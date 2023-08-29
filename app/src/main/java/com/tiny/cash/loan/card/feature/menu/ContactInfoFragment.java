@@ -23,6 +23,7 @@ import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.FragmentContactBinding;
 import com.tiny.cash.loan.card.utils.CommonUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
@@ -62,6 +63,8 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
     private ContactInfoParams mRefereeInfoParams;
     private NetObserver<Response<UserContact>> mObserver;
     private List<String> mList;
+
+    private boolean hasContact = false;
 
     public static ContactInfoFragment newInstance() {
         Bundle args = new Bundle();
@@ -146,6 +149,9 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
                     if (response.getBody() != null) {
+                        UserContactDetail body = response.getBody();
+                        hasContact = !TextUtils.isEmpty(body.getContact1()) ||
+                                !TextUtils.isEmpty(body.getContact2()) || !TextUtils.isEmpty(body.getContact3());
                         showView(response.getBody());
                     }
                 } else {
@@ -360,9 +366,9 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
                     // TODO fireb_data
-//                    if (response.getBody().isHasContact()) {
-//                        FirebaseUtils.logEvent("fireb_data2");
-//                    }
+                    if (response.getBody().isHasContact() && hasContact) {
+                        FirebaseUtils.logEvent("fireb_data2");
+                    }
                     KvStorage.put(LocalConfig.LC_TOKEN, response.getBody().getToken());
                     queryRefereeDetail();
                 } else {

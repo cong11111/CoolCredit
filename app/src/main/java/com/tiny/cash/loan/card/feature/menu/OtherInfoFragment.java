@@ -133,6 +133,18 @@ public class OtherInfoFragment extends BaseFragment implements View.OnClickListe
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
                     if (response.getBody() != null) {
+                        UserAddressDetail detail = response.getBody();
+                        hasOther = !TextUtils.isEmpty(detail.getEducation())
+                                || !TextUtils.isEmpty(detail.getMarital())
+                                || !TextUtils.isEmpty(detail.getCompanyAddress())
+                                || !TextUtils.isEmpty(detail.getCompanyName())
+                                || !TextUtils.isEmpty(detail.getMarital())
+                                || !TextUtils.isEmpty(detail.getMaritalLabel())
+                                || !TextUtils.isEmpty(detail.getSalary())
+                                || !TextUtils.isEmpty(detail.getSalaryLabel())
+                                || !TextUtils.isEmpty(detail.getWork())
+                                || !TextUtils.isEmpty(detail.getWorkLabel());
+
                         initShowView(response.getBody());
                     }
                 } else {
@@ -254,7 +266,7 @@ public class OtherInfoFragment extends BaseFragment implements View.OnClickListe
     }
 
     NetObserver<Response<UserProfile>> mObserver;
-
+    private boolean hasOther = false;
     private void submit() {
         OtherInfoParams otherInfoParams = new OtherInfoParams();
         String mMarital = mBinding.spinnerNumberOfSpouses.getText().toString();
@@ -298,7 +310,9 @@ public class OtherInfoFragment extends BaseFragment implements View.OnClickListe
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
                     // TODO fireb_data
-//                    FirebaseUtils.logEvent("fireb_data3");
+                    if (response.getBody().isHasOther() && hasOther) {
+                        FirebaseUtils.logEvent("fireb_data3");
+                    }
                    queryAddressDetail();
                 } else {
                     showToast(response.getStatus().getMsg());
