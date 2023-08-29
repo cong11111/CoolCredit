@@ -93,7 +93,7 @@ public class OverdueFragment extends BaseFragment {
 //            FirebaseLogUtils.Log("af_old_overdue");
         data = (LoanOrderDetail) getArguments().get("data");
         if (data != null && checkNeedShowLog(data.getOrderId())) {
-            if (Constant.Companion.getIS_FIRST_APPROVE()) {
+            if (Constant.Companion.getIS_FIRST_APPLY()) {
                 FirebaseUtils.logEvent("fireb_overdue");
             }
             FirebaseUtils.logEvent("fireb_overdue_all");

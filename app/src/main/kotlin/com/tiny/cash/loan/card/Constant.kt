@@ -16,5 +16,7 @@ class Constant {
         const val IS_COLLECT= !BuildConfig.IS_AAB_BUILD
 
         var IS_FIRST_APPROVE = false
+
+        var IS_FIRST_APPLY = false
     }
 }

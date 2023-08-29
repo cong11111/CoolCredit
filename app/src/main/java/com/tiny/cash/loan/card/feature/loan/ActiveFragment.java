@@ -117,7 +117,7 @@ public class ActiveFragment extends BaseFragment {
 //        }
         data = (LoanOrderDetail) getArguments().get("data");
         if (checkNeedShowLog(data.getOrderId())){
-            if (Constant.Companion.getIS_FIRST_APPROVE()) {
+            if (Constant.Companion.getIS_FIRST_APPLY()) {
                 FirebaseUtils.logEvent( "fireb_activity");
             }
             FirebaseUtils.logEvent( "fireb_activity_all");

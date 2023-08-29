@@ -698,6 +698,7 @@ public class MainActivity extends BaseActivity {
                 if (loanOrderDetail.getStatus().getCode() == ApiServerImpl.OK) {
                     mLoanDetail = loanOrderDetail.getBody();
                     Constant.Companion.setIS_FIRST_APPROVE(mLoanDetail.getFirstApprove() == 1);
+                    Constant.Companion.setIS_FIRST_APPLY(mLoanDetail.isFirstLoan());
                     if (mLoanDetail == null || Constants.ZERO.equals(mLoanDetail.getReloan())) {
                         KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_FIRSTORDER), Constants.ZERO);
                     } else {

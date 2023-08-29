@@ -1,5 +1,7 @@
 package com.tiny.cash.loan.card.net.response.data.order;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -28,6 +30,13 @@ public class LoanOrderDetail implements Serializable {
 
     public int getFirstApprove() {
         return firstApprove;
+    }
+
+    public boolean isFirstLoan() {
+        if (TextUtils.equals("0", reloan)){
+            return true;
+        }
+        return false;
     }
 
     public void setFirstApprove(int firstApprove) {
