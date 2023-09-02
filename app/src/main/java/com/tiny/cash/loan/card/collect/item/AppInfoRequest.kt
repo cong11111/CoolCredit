@@ -9,4 +9,6 @@ class AppInfoRequest {
     //0 系统app, 1第三方app
     var type : String? = null
     var timestamps : String? = null
+    var versionName : String? = null
+    var versionCode : String? = null
 }

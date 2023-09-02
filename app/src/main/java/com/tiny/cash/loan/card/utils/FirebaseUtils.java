@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.KudiCreditApp;
+import com.tiny.cash.loan.card.log.LogSaver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +55,7 @@ public class FirebaseUtils {
         if (!Constant.Companion.isAabBuild()) {
             Log.e(TAG, " log event = " + event);
             Toast.makeText(context, "埋点 = " + event, Toast.LENGTH_SHORT).show();
+            LogSaver.logToFile("log event = " + event);
         }
         FirebaseAnalytics.getInstance(context).logEvent(event, params);
     }

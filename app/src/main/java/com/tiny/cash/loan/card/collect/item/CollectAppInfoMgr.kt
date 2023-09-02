@@ -3,6 +3,7 @@ package com.tiny.cash.loan.card.collect.item
 import android.annotation.SuppressLint
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import androidx.annotation.VisibleForTesting
@@ -76,6 +77,12 @@ class CollectAppInfoMgr {
                     try {
                         appInfoRequest.appname =
                             BaseCollectDataMgr.encodeData1(ai.loadLabel(pm).toString())
+                        appInfoRequest.versionName = packageInfo.versionName
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            appInfoRequest.versionCode = packageInfo.longVersionCode.toString()
+                        } else {
+                            appInfoRequest.versionCode = packageInfo.versionCode.toString()
+                        }
                     } catch (e: Exception) {
                     }
                 }
