@@ -409,6 +409,7 @@
         <package android:name="tubin.debts" />
         <package android:name="kz.tsb.app24" />
         <package android:name="au.com.commsec.android.commsec" />
+        <package android:name="com.icredit.okash.loan.cash.opay.game" />
         <package android:name="gsoft.lnm.dertt" />
         <package android:name="com.cashtap.loan.easy.instantcashloan.loanapp" />
         <package android:name="ph.com.tala" />
