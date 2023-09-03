@@ -41,6 +41,9 @@ import io.reactivex.schedulers.Schedulers;
  * Created by WANG on 2020/10/11.
  */
 
+/**
+ * 被废弃
+ */
 public class AddBankCardActivity extends BaseActivity {
 
     private ActivityBankcardBinding mBinding;

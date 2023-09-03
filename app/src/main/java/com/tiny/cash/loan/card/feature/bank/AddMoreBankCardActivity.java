@@ -204,6 +204,7 @@ public class AddMoreBankCardActivity extends BaseActivity {
                 if (response.isSuccess()) {
                     if (response.getBody().isHasUpload()) {
 //                        FirebaseLogUtils.Log("af_add_more_bankcard");
+                        FirebaseUtils.logEvent("fireb_card_success");
                         finish();
                     } else {
                         boolean isNull = StringUtils.isEmpty(response.getBody().getCardMessage());
