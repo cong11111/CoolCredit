@@ -1,0 +1,106 @@
+package com.tiny.cash.loan.card.ui.login2
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.Fragment
+import com.blankj.utilcode.util.BarUtils
+import com.tiny.cash.loan.card.base.BaseActivity
+import com.tiny.cash.loan.card.feature.main.MainActivity
+import com.tiny.cash.loan.card.kudicredit.R
+import com.tiny.cash.loan.card.ui.base.WebViewFragment
+
+
+class Login2Activity : BaseActivity() {
+    private var ivBack : AppCompatImageView? = null
+    private var llWebView : LinearLayout? = null
+
+    private var webViewFragment : WebViewFragment? = null
+    private var curFragment : Fragment? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        BarUtils.setStatusBarLightMode(this@Login2Activity, true)
+        BarUtils.setStatusBarColor(this@Login2Activity, android.graphics.Color.TRANSPARENT)
+        setContentView(R.layout.activity_login2)
+
+        ivBack = findViewById(R.id.iv_login2_back)
+        llWebView = findViewById(R.id.ll_login2_webview)
+
+        ivBack?.setOnClickListener{
+            backPressInternal()
+        }
+
+        toLoginFragment()
+    }
+
+    fun toOtpFragment(prex : String ,phoneNum : String){
+        val loginOtp = LoginOtpFragment()
+        loginOtp.setPhoneNum(prex, phoneNum)
+
+        curFragment = loginOtp
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction() // 开启一个事务
+        transaction.add(R.id.fl_login2_container, loginOtp, LoginOtpFragment.TAG)
+        transaction.commitAllowingStateLoss()
+    }
+
+    fun toLoginFragment() {
+        var login2Fragment = supportFragmentManager.findFragmentByTag(Login2Fragment.TAG)
+        if (login2Fragment == null) {
+            login2Fragment = Login2Fragment()
+        }
+        curFragment = login2Fragment
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction() // 开启一个事务
+        transaction.replace(R.id.fl_login2_container, login2Fragment, Login2Fragment.TAG)
+        transaction.commitAllowingStateLoss()
+    }
+
+    fun toWebView(url : String){
+        llWebView?.visibility = View.VISIBLE
+        if (webViewFragment == null) {
+            webViewFragment = WebViewFragment()
+        }
+        webViewFragment?.setUrl(url)
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction() // 开启一个事务
+        transaction.replace(R.id.fl_login2_webview, webViewFragment!!)
+        transaction.commitAllowingStateLoss()
+    }
+
+    override fun onBackPressed() {
+        backPressInternal()
+    }
+
+   private fun backPressInternal() {
+        if (llWebView != null) {
+            if (llWebView!!.visibility == View.VISIBLE) {
+                llWebView!!.visibility = View.GONE
+                return
+            }
+        }
+       if (curFragment != null && curFragment is LoginOtpFragment) {
+           toLoginFragment()
+           return
+       }
+        overridePendingTransition(R.anim.slide_in_left_my, R.anim.slide_out_right_my)
+        finish()
+    }
+
+    fun toHomePage() {
+        var intent: Intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        var login2Fragment = supportFragmentManager.findFragmentByTag(Login2Fragment.TAG)
+        if (login2Fragment != null && login2Fragment is Login2Fragment) {
+            login2Fragment.onWindowFocusChanged(hasFocus)
+        }
+    }
+}

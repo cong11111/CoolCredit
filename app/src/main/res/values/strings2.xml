@@ -1,0 +1,12 @@
+<resources>
+    <string name="please_enter_your_phone_number">Please enter your phone number to continue</string>
+    <string name="use_the_phone_number_linked">Use the phone number linked to your BVN can enjoy best service.</string>
+    <string name="enter_you_phone_number">Enter your phone number</string>
+    <string name="please_read_the_terms_1">Please read the </string>
+    <string name="please_read_the_terms_2">Terms</string>
+    <string name="please_read_the_terms_3">&amp;</string>
+    <string name="please_read_the_terms_4">Privacy.</string>
+    <string name="please_read_the_terms_5">By continuing, you agree to the terms and privacy.</string>
+    <string name="register_login">Register/Login</string>
+    <string name="must_agree_term">Please read and agree the Terms &amp; Privacy.</string>
+</resources>
