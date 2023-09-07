@@ -1,9 +1,13 @@
 package com.tiny.cash.loan.card
 
 import android.text.TextUtils
+import android.util.Log
 import androidx.multidex.MultiDexApplication
 import co.paystack.android.PaystackSdk
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.tiny.cash.loan.card.collect.LocationMgr
 import com.tiny.cash.loan.card.log.LogSaver
 import com.tiny.cash.loan.card.utils.GooglePlaySdk
@@ -25,6 +29,20 @@ class KudiCreditApp : MultiDexApplication() {
         if (TextUtils.isEmpty(s) || TextUtils.isEmpty(s1)) {
             GooglePlaySdk.getInstance(this)?.start()
         }
+        initTestLog()
+    }
+
+    private fun initTestLog() {
+        FirebaseAnalytics.getInstance(this).appInstanceId.addOnCompleteListener(
+            object :
+                OnCompleteListener<String> {
+                override fun onComplete(p0: Task<String>) {
+                    Log.e("Test", " task 222222 = " + p0.result)
+                    LogSaver.logToFile("firebase analytic id =  " +  p0.result)
+                }
+
+            }
+        )
     }
 
     companion object {
