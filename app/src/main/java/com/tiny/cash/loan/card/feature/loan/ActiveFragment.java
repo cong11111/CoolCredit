@@ -16,6 +16,7 @@ import com.tiny.cash.loan.card.kudicredit.databinding.LayoutLoanActiveBinding;
 import com.tiny.cash.loan.card.ui.dialog.fragment.AppStarsDialogFragment;
 import com.tiny.cash.loan.card.ui.dialog.fragment.OfflinePaymentTransferFragment;
 import com.tiny.cash.loan.card.feature.repayment.PaymentMethodActivity;
+import com.tiny.cash.loan.card.ui.pay2.PayActivity2;
 import com.tiny.cash.loan.card.utils.AppUtils;
 import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
@@ -80,12 +81,13 @@ public class ActiveFragment extends BaseFragment {
 //                        .show();
 //            }
 
-            Intent intent = new Intent();
-            intent.setClass(getActivity(),
-                    PaymentMethodActivity.class);
-            intent.putExtra("orderId",data.getOrderId());
-            intent.putExtra("totalAmount",data.getTotalAmount());
-            startActivity(intent);
+//            Intent intent = new Intent();
+//            intent.setClass(getActivity(),
+//                    PaymentMethodActivity.class);
+//            intent.putExtra("orderId",data.getOrderId());
+//            intent.putExtra("totalAmount",data.getTotalAmount());
+            PayActivity2.Companion.launchPayActivity(getActivity(), data.getOrderId(), data.getTotalAmount());
+//            startActivity(intent);
         });
     }
     public String split(String s){

@@ -1,6 +1,5 @@
 package com.tiny.cash.loan.card.feature.loan;
 
-import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,22 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tiny.cash.loan.card.Constant;
-import com.tiny.cash.loan.card.Constants;
-import com.tiny.cash.loan.card.kudicredit.R;
-import com.tiny.cash.loan.card.base.BaseFragment;
-import com.tiny.cash.loan.card.kudicredit.databinding.LayoutLoanOverdueBinding;
-import com.tiny.cash.loan.card.ui.dialog.fragment.OfflinePaymentTransferFragment;
-import com.tiny.cash.loan.card.feature.repayment.PaymentMethodActivity;
-import com.tiny.cash.loan.card.utils.FirebaseUtils;
-import com.tiny.cash.loan.card.utils.LocalConfig;
-
-import com.tiny.cash.loan.card.net.response.data.order.LoanOrderDetail;
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.tiny.cash.loan.card.Constant;
+import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.base.BaseFragment;
+import com.tiny.cash.loan.card.kudicredit.R;
+import com.tiny.cash.loan.card.kudicredit.databinding.LayoutLoanOverdueBinding;
+import com.tiny.cash.loan.card.net.response.data.order.LoanOrderDetail;
+import com.tiny.cash.loan.card.ui.dialog.fragment.OfflinePaymentTransferFragment;
+import com.tiny.cash.loan.card.ui.pay2.PayActivity2;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
+
+import java.util.List;
 
 public class OverdueFragment extends BaseFragment {
 
@@ -69,12 +66,14 @@ public class OverdueFragment extends BaseFragment {
         LoanOrderHelp.getInstant().existBankCard(it -> {
             if (it == null)
                 return;
-            Intent intent = new Intent();
-            intent.setClass(getActivity(),
-                    PaymentMethodActivity.class);
-            intent.putExtra("orderId",data.getOrderId());
-            intent.putExtra("totalAmount",data.getTotalAmount());
-            startActivity(intent);
+//            Intent intent = new Intent();
+//            intent.setClass(getActivity(),
+//                    PaymentMethodActivity.class);
+//            intent.putExtra("orderId",data.getOrderId());
+//            intent.putExtra("totalAmount",data.getTotalAmount());
+//            startActivity(intent);
+            PayActivity2.Companion.launchPayActivity(getActivity(), data.getOrderId(), data.getTotalAmount());
+//            startActivity(intent);
         });
     }
     public String split(String s){
