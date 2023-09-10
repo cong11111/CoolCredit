@@ -13,6 +13,7 @@ import com.tiny.cash.loan.card.data.FirebaseData
 import com.tiny.cash.loan.card.kudicredit.R
 import com.tiny.cash.loan.card.net.response.data.order.LoanOrderDetail
 import com.tiny.cash.loan.card.ui.base.BaseFragment2
+import com.tiny.cash.loan.card.ui.pay2.PayActivity2
 
 abstract class BaseLoanFragment : BaseFragment2() {
 
@@ -116,8 +117,7 @@ abstract class BaseLoanFragment : BaseFragment2() {
         if (activity == null || requireActivity().isDestroyed || requireActivity().isFinishing) {
             return
         }
-        // TODO
-//        PayActivity2.launchPayActivity(requireActivity(), mOrderInfo?.orderId!!, amount!!)
+        PayActivity2.launchPayActivity(requireActivity(), mOrderInfo?.orderId!!, amount!!)
     }
 
     fun checkNeedShowLog() : Boolean{

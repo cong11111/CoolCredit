@@ -43,4 +43,31 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <declare-styleable name="select_view">
+        <attr name="select_view_hint" format="string" />
+        <attr name="select_view_desc" format="string" />
+        <attr name="select_view_icon" format="reference" />
+    </declare-styleable>
+
+    <style name="view_divide">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.8dp</item>
+        <item name="android:background">@color/view_line_unselect</item>
+    </style>
+
+    <declare-styleable name="WaveSideBar">
+        <attr name="sidebar_lazy_respond" format="boolean"/>
+        <attr name="sidebar_text_size" format="dimension"/>
+        <attr name="sidebar_text_color" format="color"/>
+        <attr name="sidebar_max_offset" format="dimension"/>
+        <attr name="sidebar_position" format="enum">
+            <enum name="right" value="0"/>
+            <enum name="left" value="1"/>
+        </attr>
+        <attr name="sidebar_text_alignment" format="enum">
+            <enum name="center" value="0"/>
+            <enum name="left" value="1"/>
+            <enum name="right" value="2" />
+        </attr>
+    </declare-styleable>
 </resources>

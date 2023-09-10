@@ -1,6 +1,10 @@
 package com.tiny.cash.loan.card.net.api;
 
 import com.tiny.cash.loan.card.bean.ServerLiveBean;
+import com.tiny.cash.loan.card.bean.TextInfoResponse;
+import com.tiny.cash.loan.card.bean.bank.AccessCodeResponseBean;
+import com.tiny.cash.loan.card.bean.bank.CardResponseBean;
+import com.tiny.cash.loan.card.bean.bank.UploadCardResponseBean;
 import com.tiny.cash.loan.card.bean.loan.DiscountAmountBean;
 import com.tiny.cash.loan.card.bean.loan.DiscountRequest;
 import com.tiny.cash.loan.card.bean.loan.ProductResponseBean;
@@ -8,6 +12,10 @@ import com.tiny.cash.loan.card.bean.loan.TrialResponseBean;
 import com.tiny.cash.loan.card.bean.login2.RegLoginBean;
 import com.tiny.cash.loan.card.bean.login2.UssdBean;
 import com.tiny.cash.loan.card.bean.login2.VerifySmsCodeBean;
+import com.tiny.cash.loan.card.bean.repay.FlutterwareResponse1Bean;
+import com.tiny.cash.loan.card.bean.repay.FlutterwareResponse2Bean;
+import com.tiny.cash.loan.card.bean.repay.FlutterwareResultBean;
+import com.tiny.cash.loan.card.bean.repay.MonifyResponseBean;
 import com.tiny.cash.loan.card.net.request.params.ApplyParams;
 import com.tiny.cash.loan.card.net.request.params.AuthParams;
 import com.tiny.cash.loan.card.net.request.params.BankCardParams;
@@ -212,7 +220,7 @@ public interface ApiService {
      * @return
      */
     @POST("/v1/account/card/upload")
-    Observable<Response<BankResult>> verifyReference(@Body BankCardParams bankCardParams);
+    Observable<Response<UploadCardResponseBean>> verifyReference(@Body BankCardParams bankCardParams);
 
 
     /***
@@ -447,5 +455,18 @@ public interface ApiService {
 
     @POST("v1/loan/trial")
     Observable<Response<TrialResponseBean>> loanTrial2(@Query("prodId") String prodId, @Query("loanAmount") String loanAmount);
+
+    @POST("/v1/loan/uploadJson")
+    Observable<Response<FlutterwareResponse2Bean>> uploadJson2(@Body FlutterWaveParams params);
+
+    @POST("/v1/loan/getTxRef")
+    Observable<Response<FlutterwareResponse1Bean>> getFlutterwaveTxRef2(@Query("account_id") String account_id, @Query("token") String token, @Query("orderId") String orderId,
+                                                                        @Query("chargeType") String chargeType);
+
+    @POST("/v1/loan/getFlutterwaveResult")
+    Observable<Response<FlutterwareResultBean>> getFlutterStatus2(@Query("accountId") String accountId, @Query("orderId") String orderId, @Query("txRef") String txRef);
+
+
+
 }
 

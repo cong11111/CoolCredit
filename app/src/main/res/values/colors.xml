@@ -34,4 +34,6 @@
     <color name="translucent_bg">#7F000000</color>
     <color name="color_2F6EFE">#2F6EFE</color>
 
+    <color name="view_line_unselect">#EBEBEB</color>
+    <color name="view_line_select">#03A6B9</color>
 </resources>

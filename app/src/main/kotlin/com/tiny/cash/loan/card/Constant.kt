@@ -1,5 +1,7 @@
 package com.tiny.cash.loan.card
 
+import com.tiny.cash.loan.card.bean.TextInfoResponse
+import com.tiny.cash.loan.card.bean.bank.CardResponseBean
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
 import com.tiny.cash.loan.card.net.response.data.order.LoanOrderDetail
 
@@ -21,6 +23,8 @@ class Constant {
 
         const val KEY_FIREBASE_DATA = "key_firebase_data"
 
+        const val SHOW_BIND_CARD : Boolean = true
+
         var mToken : String? = null
 
         var mAccountId : String? = null
@@ -28,6 +32,10 @@ class Constant {
         var mMobile : String? = null
 
         var mLaunchOrderInfo: LoanOrderDetail? = null
+
+        var textInfoResponse: TextInfoResponse? = null
+
+        var bankList : ArrayList<CardResponseBean.Bank> = ArrayList()
 
         var imei : String? = null
 

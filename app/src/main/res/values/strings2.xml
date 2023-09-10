@@ -20,4 +20,19 @@
     <string name="repay_now">Repay Now</string>
     <string name="loan_apply_title">Please do not transfer money to any stranger. Be careful not to be cheated.</string>
     <string name="load_apply_apply_now">apply now</string>
+    <string name="profile3_item_desc">Choose from list</string>
+    <string name="bind_new_card_desc1">Bank Name</string>
+    <string name="bind_new_card_desc2">Bank Account Number</string>
+    <string name="add_bank_num_desc1">Card number</string>
+    <string name="profile1_submit">submit</string>
+    <string name="click_to_choose_method">Click to choose methods</string>
+
+    <string name="bind_new_card_title1">Bank Account</string>
+    <string name="bind_new_card_title2">Bank Card</string>
+    <string name="bind_new_card_title3">Verification</string>
+    <string name="bind_new_card2_expitydate">Expiry date</string>
+    <string name="bind_new_card2_cvv">CVV</string>
+    <string name="bind_new_card2_choose_date">Expiry date</string>
+    <string name="loan_person_profile_gender">Gender </string>
+    <string name="bank_list">Bank List</string>
 </resources>
