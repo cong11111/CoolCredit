@@ -2574,17 +2574,46 @@
 <!--                android:resource="@xml/file_paths" />-->
 <!--        </provider>-->
 
+<!--        <activity-->
+<!--            android:exported="true"-->
+<!--            android:name="com.tiny.cash.loan.card.feature.start.StartActivity"-->
+<!--            android:launchMode="singleTop"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:theme="@style/ActivityTheme">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+
+
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+
+<!--                <data-->
+<!--                    android:host="mainactivity"-->
+<!--                    android:scheme="afshopapp" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
         <activity
+            android:name="com.tiny.cash.loan.card.feature.start.AgreementActivity"
+            android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity android:name="com.tiny.cash.loan.card.feature.start.SplashActivity"
             android:exported="true"
-            android:name="com.tiny.cash.loan.card.feature.start.StartActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -2596,18 +2625,12 @@
                     android:host="mainactivity"
                     android:scheme="afshopapp" />
             </intent-filter>
+
         </activity>
 
-        <activity
-            android:name="com.tiny.cash.loan.card.feature.start.AgreementActivity"
-            android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.tiny.cash.loan.card.feature.main.HomeActivity"
-            android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+        <activity android:name="com.tiny.cash.loan.card.ui.login2.Login2Activity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name="com.tiny.cash.loan.card.feature.account.SetPasswordActivity"
             android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"

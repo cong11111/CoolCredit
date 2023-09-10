@@ -18,11 +18,26 @@ import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.tiny.cash.loan.card.Constant
+import com.tiny.cash.loan.card.Constants
+import com.tiny.cash.loan.card.bean.ServerLiveBean
+import com.tiny.cash.loan.card.kudicredit.BuildConfig
 import com.tiny.cash.loan.card.kudicredit.R
 import com.tiny.cash.loan.card.log.LogSaver
+import com.tiny.cash.loan.card.net.NetManager
+import com.tiny.cash.loan.card.net.NetObserver
+import com.tiny.cash.loan.card.net.ResponseException
+import com.tiny.cash.loan.card.net.api.Api
+import com.tiny.cash.loan.card.net.response.Response
 import com.tiny.cash.loan.card.presenter.PhoneNumPresenter
 import com.tiny.cash.loan.card.ui.base.BaseFragment2
+import com.tiny.cash.loan.card.ui.dialog.term.TermsDialog
+import com.tiny.cash.loan.card.utils.CommonUtils
+import com.tiny.cash.loan.card.utils.FirebaseUtils
+import com.tiny.cash.loan.card.utils.RegexUtils
 import com.tiny.cash.loan.card.widget.BlankTextWatcher
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -206,11 +221,11 @@ class Login2Fragment : BaseFragment2() {
         })
     }
 
+    private var sendCodeObserver: NetObserver<Response<*>?>? = null
     //申请发送短信
     private fun requestSendSms(phoneNum : String) {
         flLoading?.visibility = View.VISIBLE
         tvCommit?.isEnabled = false
-        val jsonObject: JSONObject = BuildRequestJsonUtils.buildRequestJson()
         val mPrex: String? = mPresenter?.getSelectString(0)
         var finalPhoneNum = phoneNum
         try {
@@ -221,88 +236,73 @@ class Login2Fragment : BaseFragment2() {
                 }
                 finalPhoneNum = mPrex + realNum
             }
-            jsonObject.put("mobile", finalPhoneNum)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-        //“1”:注册，“2”：修改密码 3 设备更换
-        jsonObject.put("captchaType",  "1")
-
-        OkGo.post<String>(Api.GET_SMS_CODE).tag(TAG)
-            .upJson(jsonObject)
-            .execute(object : StringCallback() {
-                override fun onSuccess(response: Response<String>) {
-                    flLoading?.visibility = View.GONE
-                    tvCommit?.isEnabled = true
-                    var responseBean: BaseResponseBean? = null
-                    try {
-                        responseBean = com.alibaba.fastjson.JSONObject.parseObject(
-                            response.body().toString(),
-                            BaseResponseBean::class.java
-                        )
-                    } catch (e: Exception) {
-                        if (BuildConfig.DEBUG) {
-                            throw e
-                        }
-                    }
-                    if (response == null){
-                        ToastUtils.showShort(" send sms failure.")
-                        return
-                    }
-                    if (responseBean!!.isRequestSuccess() != true) {
-                        ToastUtils.showShort("" + responseBean.getMessage())
-                        return
-                    }
-                    if (activity is Login2Activity) {
-                        ToastUtils.showShort("send sms success")
-                        FirebaseUtils.logEvent("fireb_send_sms")
-                        (activity as Login2Activity).toOtpFragment(mPrex!!, phoneNum)
-                    }
+        if (!RegexUtils.isValidPhone(finalPhoneNum)) {
+            ToastUtils.showShort(getString(R.string.str_correct_phone_number))
+            return
+        }
+        val observable: Observable<Response<*>> =
+            NetManager.getApiService().sendSmsCode(finalPhoneNum, Constants.ONE) //“1”:注册，“2”：修改密码
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        CommonUtils.disposable(sendCodeObserver)
+        sendCodeObserver = object : NetObserver<Response<*>?>() {
+            override fun onNext(response: Response<*>) {
+                flLoading?.visibility = View.GONE
+                tvCommit?.isEnabled = true
+                if (response == null){
+                    ToastUtils.showShort(" send sms failure." )
+                    return
                 }
-
-                override fun onError(response: Response<String>) {
-                    super.onError(response)
-                    flLoading?.visibility = View.GONE
-                    tvCommit?.isEnabled = true
-                    Log.e(TAG, "request send sms error")
-                    ToastUtils.showShort("request send sms error ...")
+                if (response.isSuccess != true) {
+                    ToastUtils.showShort(getString(R.string.str_validate_has_recived))
+                    return
                 }
-            })
+                if (activity is Login2Activity) {
+                    ToastUtils.showShort("send sms success")
+                    FirebaseUtils.logEvent("fireb_send_sms")
+                    (activity as Login2Activity).toOtpFragment(mPrex!!, phoneNum)
+                }
+            }
+
+            override fun onException(netException: ResponseException) {
+                flLoading?.visibility = View.GONE
+                tvCommit?.isEnabled = true
+                Log.e(TAG, "request send sms error")
+                ToastUtils.showShort("request send sms error ...")
+            }
+        }
+        observable.subscribeWith(sendCodeObserver)
     }
 
+    private var getServerObserver: NetObserver<Response<ServerLiveBean>>? = null
     private fun checkServerAvailable(callBack: CallBack?) {
-        val jsonObject: JSONObject? = BuildRequestJsonUtils.buildRequestJson()
-        try {
-
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        //        Log.e(TAG, " = " + jsonObject.toString());
-        OkGo.post<String>(Api.CHECK_SERVER_ALIVE).tag(TAG)
-            .upJson(jsonObject)
-            .execute(object : StringCallback() {
-                override fun onSuccess(response: Response<String>) {
-                    val serverLiveBean: ServerLiveBean? =
-                        checkResponseSuccess(response, ServerLiveBean::class.java)
-                    if (serverLiveBean != null && serverLiveBean.isServerLive()) {
-                        if (BuildConfig.DEBUG) {
-                            Log.d(TAG, "the server is alive")
-                        }
-                        callBack?.onEnd()
-                    }
-                }
-
-                override fun onError(response: Response<String>) {
-                    super.onError(response)
+        val observable: Observable<Response<ServerLiveBean>> =
+            NetManager.getApiService().checkServerAlive().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        CommonUtils.disposable(getServerObserver)
+        getServerObserver = object : NetObserver<Response<ServerLiveBean>>() {
+            override fun onNext(response: Response<ServerLiveBean>) {
+                val serverLiveBean: ServerLiveBean? = response.body
+                if (serverLiveBean != null && serverLiveBean.isServerLive()) {
                     if (BuildConfig.DEBUG) {
-                        Log.e(TAG, "the server is not alive")
+                        Log.d(TAG, "the server is alive")
                     }
-                    if (isDestroy()){
-                        return
-                    }
-                    ToastUtils.showShort(resources.getString(R.string.server_is_not_alive))
+                    callBack?.onEnd()
                 }
-            })
+            }
+
+            override fun onException(netException: ResponseException) {
+                if (BuildConfig.DEBUG) {
+                    Log.e(TAG, "the server is not alive")
+                }
+                if (isDestroy()){
+                    return
+                }
+                ToastUtils.showShort(resources.getString(R.string.server_is_not_alive))
+            }
+        }
+        observable.subscribeWith(getServerObserver)
     }
 
     interface CallBack {
@@ -310,49 +310,50 @@ class Login2Fragment : BaseFragment2() {
     }
 
     private fun requestCheckMobile(phoneNum : String){
-        flLoading?.visibility = View.VISIBLE
-        val jsonObject: JSONObject = BuildRequestJsonUtils.buildRequestJson()
-        try {
-            var finalPhoneNum = phoneNum
-            var temp: String? = mPresenter?.getSelectString(0)
-            if (!TextUtils.isEmpty(temp)) {
-                var realNum = phoneNum
-                if (phoneNum.startsWith("0")){
-                    realNum = phoneNum.substring(1, phoneNum.length)
-                }
-                finalPhoneNum = temp + realNum
-            }
-            jsonObject.put("mobile", finalPhoneNum)
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        OkGo.post<String>(Api.CHECK_MOBILE).tag(TAG)
-            .upJson(jsonObject)
-            .execute(object : StringCallback() {
-                override fun onSuccess(response: Response<String>) {
-                    flLoading?.visibility = View.GONE
-                    val verifyPhoneNumBean: VerifyPhoneNumBean? = checkResponseSuccess(response, VerifyPhoneNumBean::class.java)
-                    if (verifyPhoneNumBean == null) {
-//                        ToastUtils.showShort("sign in failure.")
-                        return
-                    }
-                    if (verifyPhoneNumBean.hasRegisted) {
-                        ToastUtils.showShort("phone num has registed.")
-                        return
-                    }
-                    Log.e(TAG, "sign in error")
-                }
-
-                override fun onError(response: Response<String>) {
-                    super.onError(response)
-                    flLoading?.visibility = View.GONE
-                    Log.e(TAG, "sign in error")
-                    ToastUtils.showShort("sign in error..")
-                }
-            })
+//        flLoading?.visibility = View.VISIBLE
+//        val jsonObject: JSONObject = BuildRequestJsonUtils.buildRequestJson()
+//        try {
+//            var finalPhoneNum = phoneNum
+//            var temp: String? = mPresenter?.getSelectString(0)
+//            if (!TextUtils.isEmpty(temp)) {
+//                var realNum = phoneNum
+//                if (phoneNum.startsWith("0")){
+//                    realNum = phoneNum.substring(1, phoneNum.length)
+//                }
+//                finalPhoneNum = temp + realNum
+//            }
+//            jsonObject.put("mobile", finalPhoneNum)
+//        } catch (e: JSONException) {
+//            e.printStackTrace()
+//        }
+//        OkGo.post<String>(Api.CHECK_MOBILE).tag(TAG)
+//            .upJson(jsonObject)
+//            .execute(object : StringCallback() {
+//                override fun onSuccess(response: Response<String>) {
+//                    flLoading?.visibility = View.GONE
+//                    val verifyPhoneNumBean: VerifyPhoneNumBean? = checkResponseSuccess(response, VerifyPhoneNumBean::class.java)
+//                    if (verifyPhoneNumBean == null) {
+////                        ToastUtils.showShort("sign in failure.")
+//                        return
+//                    }
+//                    if (verifyPhoneNumBean.hasRegisted) {
+//                        ToastUtils.showShort("phone num has registed.")
+//                        return
+//                    }
+//                    Log.e(TAG, "sign in error")
+//                }
+//
+//                override fun onError(response: Response<String>) {
+//                    super.onError(response)
+//                    flLoading?.visibility = View.GONE
+//                    Log.e(TAG, "sign in error")
+//                    ToastUtils.showShort("sign in error..")
+//                }
+//            })
     }
     override fun onDestroy() {
-        OkGo.getInstance().cancelTag(TAG)
+        CommonUtils.disposable(getServerObserver)
+        CommonUtils.disposable(sendCodeObserver)
         if (dialog != null && dialog!!.isShowing){
             dialog?.dismiss()
         }

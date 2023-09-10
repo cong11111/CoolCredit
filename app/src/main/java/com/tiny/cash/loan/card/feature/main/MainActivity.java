@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.JsonUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -57,6 +58,7 @@ import com.tiny.cash.loan.card.feature.menu.HelpFragment;
 import com.tiny.cash.loan.card.feature.menu.MessageFragment;
 import com.tiny.cash.loan.card.feature.menu.MyProfileFragment;
 import com.tiny.cash.loan.card.feature.menu.OfflinePaymentFragment;
+import com.tiny.cash.loan.card.ui.login2.Login2Activity;
 import com.tiny.cash.loan.card.utils.AppUtils;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.DeviceInfo;
@@ -136,6 +138,7 @@ public class MainActivity extends BaseActivity {
         }
         initData();
         init();
+        SPUtils.getInstance().put(Constant.KEY_LOGIN_TIME, System.currentTimeMillis());
     }
 
     public void init() {
@@ -376,7 +379,7 @@ public class MainActivity extends BaseActivity {
                 if (response.isSuccess()) {
                     KvStorage.put(LocalConfig.LC_ISLOGIN, false);
                     FirebaseMessaging.getInstance().deleteToken();
-                    startIntent(HomeActivity.class);
+                    startIntent(Login2Activity.class);
                     finish();
                 } else {
                     showToast(response.getStatus().getMsg());

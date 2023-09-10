@@ -9,4 +9,10 @@
     <string name="please_read_the_terms_5">By continuing, you agree to the terms and privacy.</string>
     <string name="register_login">Register/Login</string>
     <string name="must_agree_term">Please read and agree the Terms &amp; Privacy.</string>
+    <string name="login_otp">Please enter the OTP we sent to +%s via sms</string>
+    <string name="the_otp_is_4_digit">The OTP is 4 digit</string>
+    <string name="can_not_recieve_sms">Can\'t recieve SMS ? \nDial USSD code to get OTP</string>
+    <string name="check_sms_code_verify_failure">check sms code verify failure.</string>
+    <string name="ussd_login_failure">ussd login failure</string>
+    <string name="ussd_login_error">ussd login error</string>
 </resources>

@@ -1,5 +1,9 @@
 package com.tiny.cash.loan.card.net.api;
 
+import com.tiny.cash.loan.card.bean.ServerLiveBean;
+import com.tiny.cash.loan.card.bean.login2.RegLoginBean;
+import com.tiny.cash.loan.card.bean.login2.UssdBean;
+import com.tiny.cash.loan.card.bean.login2.VerifySmsCodeBean;
 import com.tiny.cash.loan.card.net.request.params.ApplyParams;
 import com.tiny.cash.loan.card.net.request.params.AuthParams;
 import com.tiny.cash.loan.card.net.request.params.BankCardParams;
@@ -98,6 +102,9 @@ public interface ApiService {
     @POST("v1/account/captcha/check")
     Observable<Response<CheckCode>> checkSmsCode(@Query("mobile") String mobile, @Query("captchaCode") String captchaCode);
 
+    @POST("v1/account/captcha/check")
+    Observable<Response<VerifySmsCodeBean>> checkSmsCodeV2(@Query("mobile") String mobile, @Query("captchaCode") String captchaCode);
+
     /***
      * 验证码检查
      * @return
@@ -110,7 +117,7 @@ public interface ApiService {
      * @return
      */
     @POST("v1/account/register")
-    Observable<Response<RegistrationBO>> registration( @Query("password") String password,@Query("mobile") String mobile);
+    Observable<Response<RegistrationBO>> registration(@Query("password") String password, @Query("mobile") String mobile);
 
     /***
      * 谷歌FCM上报token
@@ -131,7 +138,7 @@ public interface ApiService {
      * @return
      */
     @POST("v1/account/device/captcha")
-    Observable<Response<DeviceCheck>> deviceCaptcha(@Query("mobile") String mobile,@Query("captchaType") String captchaType);
+    Observable<Response<DeviceCheck>> deviceCaptcha(@Query("mobile") String mobile, @Query("captchaType") String captchaType);
 
 
     /***
@@ -186,14 +193,14 @@ public interface ApiService {
      * @return
      */
     @POST("v1/account/other/detail")
-    Observable<Response<UserAddressDetail>>otherDetail(@Query("accountId") String accountId);
+    Observable<Response<UserAddressDetail>> otherDetail(@Query("accountId") String accountId);
 
     /***
      * 生成银行卡订单接口AccessCode
      * @return
      */
     @POST("v1/account/access/code")
-    Observable<Response<BankResult>>fetchAccessCode(@Query("accountId") String accountId);
+    Observable<Response<BankResult>> fetchAccessCode(@Query("accountId") String accountId);
 
 
     /***
@@ -201,7 +208,7 @@ public interface ApiService {
      * @return
      */
     @POST("/v1/account/card/upload")
-    Observable<Response<BankResult>>verifyReference(@Body BankCardParams bankCardParams);
+    Observable<Response<BankResult>> verifyReference(@Body BankCardParams bankCardParams);
 
 
     /***
@@ -209,7 +216,7 @@ public interface ApiService {
      * @return
      */
     @POST("v1/account/bank/list")
-    Observable<Response<BankNameList>>queryBankList();
+    Observable<Response<BankNameList>> queryBankList();
 
 
     /***
@@ -218,7 +225,7 @@ public interface ApiService {
      */
 
     @POST("v1/account/bankaccount/check")
-    Observable<Response<BankResult>>checkBankaccount(@Query("accountId") String accountId, @Query("bankCode") String bankCode, @Query("bankName") String bankName, @Query("bankAccountNumber") String bankAccountNumber,@Query("bvn") String bvn);
+    Observable<Response<BankResult>> checkBankaccount(@Query("accountId") String accountId, @Query("bankCode") String bankCode, @Query("bankName") String bankName, @Query("bankAccountNumber") String bankAccountNumber, @Query("bvn") String bvn);
 
     /***
      * 银行账号和银行卡信息
@@ -226,7 +233,7 @@ public interface ApiService {
      */
 
     @POST("v1/account/bank/detail")
-    Observable<Response<BankDetail>>queryBankDetail(@Query("accountId") String accountId);
+    Observable<Response<BankDetail>> queryBankDetail(@Query("accountId") String accountId);
 
 
     /***
@@ -234,28 +241,28 @@ public interface ApiService {
      * @return
      */
     @POST("v1/start/detail")
-    Observable<Response<UpLoadAPPVersion>>checkUpVersion();
+    Observable<Response<UpLoadAPPVersion>> checkUpVersion();
 
     /***
      * 授权信息上传
      * @return
      */
     @POST("v1/account/auth/upload")
-    Observable<Response<AuthResult>>upLoadAuthInfo(@Body AuthParams body);
+    Observable<Response<AuthResult>> upLoadAuthInfo(@Body AuthParams body);
 
     /***
      * 产品列表
      * @return
      */
     @POST("v1/loan/products")
-    Observable<Response<ProductList>>productList(@Query("accountId") String accountId);//不传用户ID；为最高金额产品；预览页使用
+    Observable<Response<ProductList>> productList(@Query("accountId") String accountId);//不传用户ID；为最高金额产品；预览页使用
 
     /***
      * 产品试算
      * @return
      */
     @POST("v1/loan/trial")
-    Observable<Response<LoanTrial>>loanTrial(@Query("prodId") String prodId, @Query("loanAmount") String loanAmount);
+    Observable<Response<LoanTrial>> loanTrial(@Query("prodId") String prodId, @Query("loanAmount") String loanAmount);
 
 
     /***
@@ -263,28 +270,28 @@ public interface ApiService {
      * @return
      */
     @POST("v1/loan/check")
-    Observable<Response<QueryOrderId>>QueryOrderId();
+    Observable<Response<QueryOrderId>> QueryOrderId();
 
     /***
      * 还款
      * @return
      */
     @POST("v1/loan/repay")
-    Observable<Response<OrderStatus>>SubmitOrderRepay(@Query("accountId") String accountId, @Query("orderId") String orderId, @Query("amount") String amount, @Query("cardNumber") String cardNumber);
+    Observable<Response<OrderStatus>> SubmitOrderRepay(@Query("accountId") String accountId, @Query("orderId") String orderId, @Query("amount") String amount, @Query("cardNumber") String cardNumber);
 
     /***
      * 获取借款信息
      * @return
      */
     @POST("v1/loan/detail")
-    Observable<Response<LoanOrderDetail>>QueryOrderDetail(@Query("accountId") String accountId);
+    Observable<Response<LoanOrderDetail>> QueryOrderDetail(@Query("accountId") String accountId);
 
     /***
      * 申请贷款
      * @return
      */
     @POST("v1/loan/apply")
-    Observable<Response<OrderStatus>>SubmitOrderApply(@Body ApplyParams params);
+    Observable<Response<OrderStatus>> SubmitOrderApply(@Body ApplyParams params);
 
 
     /***
@@ -292,29 +299,28 @@ public interface ApiService {
      * @return
      */
     @POST("v1/text/info")
-    Observable<Response<AppConfigFile>>QueryAppConfig();
+    Observable<Response<AppConfigFile>> QueryAppConfig();
 
     /***
      * 无验证码登录
      * @return
      */
     @POST("v1/account/ussd/check")
-    Observable<Response<OrderStatus>>USSDLogin(@Query("mobile") String mobile);
+    Observable<Response<OrderStatus>> USSDLogin(@Query("mobile") String mobile);
 
     /***
      * 添加多张银行卡
      * @return
      */
     @POST("v1/account/card/verify")
-    Observable<Response<BankResult>>addVerifyCard(@Body BankCardParams bankCardParams);
+    Observable<Response<BankResult>> addVerifyCard(@Body BankCardParams bankCardParams);
 
     /***
      * 获取银行卡列表
      * @return
      */
     @POST("v1/account/card/list")
-    Observable<Response<BankList>>queryBankCardList(@Query("accountId") String accountId);
-
+    Observable<Response<BankList>> queryBankCardList(@Query("accountId") String accountId);
 
 
     /***
@@ -322,29 +328,29 @@ public interface ApiService {
      * @return
      */
     @POST("/v1/account/card/exist")
-    Observable<Response<BankResult>>existBankCard(@Query("account_id") String account_id,@Query("token") String token);
+    Observable<Response<BankResult>> existBankCard(@Query("account_id") String account_id, @Query("token") String token);
 
     /***
      * 没有绑卡的通知
      * @return
      */
     @POST("/v1/account/card/bindnotify")
-    Observable<Response<BankResult>>bindCardNotify(@Query("account_id") String account_id,@Query("token") String token);
+    Observable<Response<BankResult>> bindCardNotify(@Query("account_id") String account_id, @Query("token") String token);
 
     /***
      * 获取Flutterwave参数
      *  chargeType // 1 绑卡 2 主动还款
      */
     @POST("/v1/loan/getTxRef")
-    Observable<Response<FlutterWaveBean>>getFlutterwaveTxRef(@Query("account_id") String account_id, @Query("token") String token, @Query("orderId") String orderId,
-                                                             @Query("chargeType") String chargeType);
+    Observable<Response<FlutterWaveBean>> getFlutterwaveTxRef(@Query("account_id") String account_id, @Query("token") String token, @Query("orderId") String orderId,
+                                                              @Query("chargeType") String chargeType);
 
     /***
      * 上传后端校验Flutterwave
      * @return
      */
     @POST("/v1/loan/uploadJson")
-    Observable<Response<VerifyFlutterBean>>uploadJson(@Body FlutterWaveParams params);
+    Observable<Response<VerifyFlutterBean>> uploadJson(@Body FlutterWaveParams params);
 
 
     /***
@@ -352,17 +358,18 @@ public interface ApiService {
      * @return
      */
     @POST("/v1/station/list")
-    Observable<Response<MessageResult>>getListMessage(@Query("account_id") String account_id, @Query("page") String page, @Query("pageSize") String pageSize);
+    Observable<Response<MessageResult>> getListMessage(@Query("account_id") String account_id, @Query("page") String page, @Query("pageSize") String pageSize);
 
     /**
      * 查询flutter订单状态
+     *
      * @param accountId
      * @param orderId
      * @param txRef
      * @return
      */
     @POST("/v1/loan/getFlutterwaveResult")
-    Observable<Response<OrderStatus>>getFlutterStatus(@Query("accountId") String accountId, @Query("orderId") String orderId,@Query("txRef") String txRef);
+    Observable<Response<OrderStatus>> getFlutterStatus(@Query("accountId") String accountId, @Query("orderId") String orderId, @Query("txRef") String txRef);
 
 
     /***
@@ -370,8 +377,7 @@ public interface ApiService {
      * @return
      */
     @POST("/v1/loan/repay/paystack")
-    Observable<Response<PayStackBean>>getPayStackUrl(@Query("accountId") String accountId, @Query("orderId") String orderId);
-
+    Observable<Response<PayStackBean>> getPayStackUrl(@Query("accountId") String accountId, @Query("orderId") String orderId);
 
 
     /***
@@ -379,8 +385,7 @@ public interface ApiService {
      * @return
      */
     @POST("/v1/loan/repay/paystack/result")
-    Observable<Response<PayStackResult>>payStackResult(@Query("accountId") String accountId, @Query("orderId") String orderId , @Query("reference") String reference);
-
+    Observable<Response<PayStackResult>> payStackResult(@Query("accountId") String accountId, @Query("orderId") String orderId, @Query("reference") String reference);
 
 
     /***
@@ -388,7 +393,7 @@ public interface ApiService {
      * @return
      */
     @POST("/v1/station/unread")
-    Observable<Response<MessageBean>>getMessageUnread(@Query("accountId") String accountId);
+    Observable<Response<MessageBean>> getMessageUnread(@Query("accountId") String accountId);
 
 
     /***
@@ -396,8 +401,7 @@ public interface ApiService {
      * @return
      */
     @POST("/v1/account/card/bound")
-    Observable<Response<BankBoundResult>>queryCardBound(@Query("accountId") String accountId, @Query("cardNumber") String cardNumber);
-
+    Observable<Response<BankBoundResult>> queryCardBound(@Query("accountId") String accountId, @Query("cardNumber") String cardNumber);
 
 
     /***
@@ -405,17 +409,26 @@ public interface ApiService {
      * @return
      */
     @POST("/v1/loan/get/reserved/account")
-    Observable<Response<MonifyResult>>queryMonify(@Query("accountId") String accountId);
+    Observable<Response<MonifyResult>> queryMonify(@Query("accountId") String accountId);
 
     @POST("/v1/account/hardware")
-    Observable<Response<HardwareResponseBean>>hareware(@Body RequestBody req);
+    Observable<Response<HardwareResponseBean>> hareware(@Body RequestBody req);
 
     /***
      * redocly
      * @return
      */
     @POST("/v1/loan/get/redocly/repay/page")
-    Observable<Response<RedoclyBean>>queryRedocly(@Query("accountId") String accountId, @Query("orderId") String orderId, @Query("amount") String amount);
+    Observable<Response<RedoclyBean>> queryRedocly(@Query("accountId") String accountId, @Query("orderId") String orderId, @Query("amount") String amount);
 
+    //检测服务器是否存活
+    @POST("/v1/start/live")
+    Observable<Response<ServerLiveBean>> checkServerAlive();
+
+    @POST("/v1/account/reg_login")
+    Observable<Response<RegLoginBean>> regOrLogin(@Query("mobile") String mobile);
+
+    @POST("v1/account/ussd/check")
+    Observable<Response<UssdBean>> ussdLogin2(@Query("mobile") String mobile);
 }
 

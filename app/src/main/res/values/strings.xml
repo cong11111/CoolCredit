@@ -154,4 +154,6 @@
     <string name="str_keep_a_good_credit_history">Dear customer, your current credit score does not support this loan duration.
 Please  keep a good credit history by in time repayment.  This will greatly improve your credit score.</string>
     <string name="please_bind_your_bank_card">please bind your bank card</string>
+    <string name="server_is_not_alive">server is not alive .</string>
+    <string name="resend">Resend</string>
 </resources>

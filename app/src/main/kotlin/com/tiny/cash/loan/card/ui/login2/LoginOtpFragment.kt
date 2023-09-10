@@ -16,9 +16,28 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.blankj.utilcode.util.*
 import com.blankj.utilcode.util.KeyboardUtils.OnSoftInputChangedListener
+import com.tiny.cash.loan.card.Constant
+import com.tiny.cash.loan.card.Constants
+import com.tiny.cash.loan.card.bean.login2.RegLoginBean
+import com.tiny.cash.loan.card.bean.login2.UssdBean
+import com.tiny.cash.loan.card.bean.login2.VerifySmsCodeBean
+import com.tiny.cash.loan.card.kudicredit.BuildConfig
+import com.tiny.cash.loan.card.kudicredit.R
+import com.tiny.cash.loan.card.log.LogSaver
+import com.tiny.cash.loan.card.mgr.ReadSmsMgr
+import com.tiny.cash.loan.card.net.NetManager
+import com.tiny.cash.loan.card.net.NetObserver
+import com.tiny.cash.loan.card.net.ResponseException
+import com.tiny.cash.loan.card.net.response.Response
 import com.tiny.cash.loan.card.ui.base.BaseFragment2
-import org.json.JSONException
-import org.json.JSONObject
+import com.tiny.cash.loan.card.utils.CommonUtils
+import com.tiny.cash.loan.card.utils.FirebaseUtils
+import com.tiny.cash.loan.card.utils.KvStorage
+import com.tiny.cash.loan.card.utils.LocalConfig
+import com.tiny.cash.loan.card.widget.InputVerifyCodeView2
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class LoginOtpFragment : BaseFragment2(){
     private var mPhoneNum : String? = null
@@ -231,84 +250,83 @@ class LoginOtpFragment : BaseFragment2(){
         requestVerifySmsCode(verifyCode)
     }
 
+    private var checkCodeObserver: NetObserver<Response<VerifySmsCodeBean>>? = null
     private fun requestVerifySmsCode(verifyCode: String?) {
-        val jsonObject: JSONObject = BuildRequestJsonUtils.buildRequestJson()
-        try {
-            jsonObject.put("mobile", getFinalPhoneNum())
-            jsonObject.put("captchaCode", verifyCode)
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
         flLoading?.visibility = View.VISIBLE
-        OkGo.post<String>(Api.CHECK_SMS_CODE).tag(TAG)
-            .upJson(jsonObject)
-            .execute(object : StringCallback() {
-                override fun onSuccess(response: Response<String>) {
-                    if (isDestroy()){
-                        return
-                    }
-                    flLoading?.visibility = View.GONE
-                    val baseResponseBean: VerifySmsCodeBean? = checkResponseSuccess(response, VerifySmsCodeBean::class.java)
-                    if (baseResponseBean == null) {
-                        return
-                    }
-                    if (!baseResponseBean.verifyed) {
-                        ToastUtils.showShort(resources.getString(R.string.check_sms_code_verify_failure))
-                        return
-                    }
-                    regOrLogin()
+        val finalPhoneNum = getFinalPhoneNum()
+        val observable: Observable<Response<VerifySmsCodeBean>> =
+            NetManager.getApiService().checkSmsCodeV2(finalPhoneNum, verifyCode) //“1”:注册，“2”：修改密码
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        CommonUtils.disposable(checkCodeObserver)
+        checkCodeObserver = object : NetObserver<Response<VerifySmsCodeBean>>() {
+            override fun onNext(response: Response<VerifySmsCodeBean>) {
+                if (isDestroy()){
+                    return
                 }
+                flLoading?.visibility = View.GONE
+                val baseResponseBean: VerifySmsCodeBean? = response.body
+                if (baseResponseBean == null) {
+                    ToastUtils.showShort(resources.getString(R.string.str_Illegal_verification_code))
+                    return
+                }
+                if (!baseResponseBean.verifyed) {
+                    ToastUtils.showShort(resources.getString(R.string.check_sms_code_verify_failure))
+                    return
+                }
+                regOrLogin()
+            }
 
-                override fun onError(response: Response<String>) {
-                    super.onError(response)
-                    flLoading?.visibility = View.GONE
-                    Log.e(TAG, "request send sms error")
-                    ToastUtils.showShort("request send sms error ...")
-                }
-            })
+            override fun onException(netException: ResponseException) {
+                flLoading?.visibility = View.GONE
+                Log.e(TAG, "request send sms error")
+                ToastUtils.showShort("verify sms code error ...")
+            }
+        }
+        observable.subscribeWith(checkCodeObserver)
     }
 
+    private var regOrLoginObserver: NetObserver<Response<RegLoginBean>>? = null
     private fun regOrLogin(){
         flLoading?.visibility = View.VISIBLE
-        val jsonObject: JSONObject = BuildRequestJsonUtils.buildRequestJson()
-        try {
-            var finalPhoneNum = getFinalPhoneNum()
-            jsonObject.put("mobile", finalPhoneNum)
-        } catch (e: JSONException) {
-            e.printStackTrace()
+        // TODO 清空token
+        val finalPhoneNum = getFinalPhoneNum()
+        val observable: Observable<Response<RegLoginBean>> =
+            NetManager.getApiService().regOrLogin(finalPhoneNum) //“1”:注册，“2”：修改密码
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        CommonUtils.disposable(regOrLoginObserver)
+        regOrLoginObserver = object : NetObserver<Response<RegLoginBean>>() {
+            override fun onNext(response: Response<RegLoginBean>) {
+                if (isDestroy()){
+                    return
+                }
+                flLoading?.visibility = View.GONE
+                val regLoginBean: RegLoginBean? = response.body
+                if (regLoginBean == null) {
+                    return
+                }
+                if (TextUtils.isEmpty(regLoginBean.token)){
+                    return
+                }
+                toHomePage(regLoginBean)
+
+            }
+
+            override fun onException(netException: ResponseException) {
+                flLoading?.visibility = View.GONE
+                Log.e(TAG, "sign in error")
+                var errorStr = ""
+                if (netException != null){
+                    try {
+                        errorStr = netException.msg
+                    } catch (e : Exception) {
+
+                    }
+                }
+                ToastUtils.showShort("sign in error..$errorStr")
+            }
         }
-        OkGo.post<String>(Api.REG_LOGIN_V2).tag(TAG)
-            .headers("token", "")
-            .upJson(jsonObject)
-            .execute(object : StringCallback() {
-                override fun onSuccess(response: Response<String>) {
-                    flLoading?.visibility = View.GONE
-                    val regLoginBean: RegLoginBean? =
-                        checkResponseSuccess(response, RegLoginBean::class.java)
-                    if (regLoginBean == null) {
-                        return
-                    }
-                    if (TextUtils.isEmpty(regLoginBean.token)){
-                        return
-                    }
-                    toHomePage(regLoginBean)
-                }
+        observable.subscribeWith(regOrLoginObserver)
 
-                override fun onError(response: Response<String>) {
-                    super.onError(response)
-                    flLoading?.visibility = View.GONE
-                    Log.e(TAG, "sign in error")
-                    var errorStr = ""
-                    if (response != null){
-                        try {
-                            errorStr = response.body()
-                        } catch (e : Exception) {
-
-                        }
-                    }
-                    ToastUtils.showShort("sign in error..$errorStr")
-                }
-            })
     }
 
     private var startFlag = false
@@ -323,7 +341,10 @@ class LoginOtpFragment : BaseFragment2(){
     }
 
     override fun onDestroy() {
-        OkGo.getInstance().cancelTag(TAG)
+        CommonUtils.disposable(checkCodeObserver)
+        CommonUtils.disposable(regOrLoginObserver)
+        CommonUtils.disposable(mUssdObserver)
+        CommonUtils.disposable(sendCodeObserver)
         super.onDestroy()
         ReadSmsMgr.onDestroy()
     }
@@ -337,103 +358,97 @@ class LoginOtpFragment : BaseFragment2(){
         startFlag = true
     }
 
+    private var sendCodeObserver: NetObserver<Response<*>?>? = null
     private fun requestSendSms(phoneNum : String) {
         flLoading?.visibility = View.VISIBLE
         tvCommit?.isEnabled = false
-        val jsonObject: JSONObject = BuildRequestJsonUtils.buildRequestJson()
-        jsonObject.put("mobile", phoneNum)
-        //“1”:注册，“2”：修改密码 3 设备更换
-        jsonObject.put("captchaType", "1")
-        OkGo.post<String>(Api.GET_SMS_CODE).tag(TAG)
-            .upJson(jsonObject)
-            .execute(object : StringCallback() {
-                override fun onSuccess(response: Response<String>) {
-                    flLoading?.visibility = View.GONE
-                    var responseBean: BaseResponseBean? = null
-                    try {
-                        responseBean = com.alibaba.fastjson.JSONObject.parseObject(
-                            response.body().toString(),
-                            BaseResponseBean::class.java
-                        )
-                    } catch (e: Exception) {
-                        if (BuildConfig.DEBUG) {
-                            throw e
-                        }
-                    }
-                    if (response == null) {
-                        ToastUtils.showShort(" send sms failure.")
-                        tvCommit?.isEnabled = true
-                        return
-                    }
-                    if (responseBean!!.isRequestSuccess() != true) {
-                        ToastUtils.showShort("" + responseBean.getMessage())
-                        tvCommit?.isEnabled = true
-                        return
-                    }
-                    tvCommit?.isEnabled = false
-                    ToastUtils.showShort("send sms success")
-                    FirebaseUtils.logEvent("fireb_send_sms")
-                }
+        val observable: Observable<Response<*>> =
+            NetManager.getApiService().sendSmsCode(phoneNum, Constants.ONE) //“1”:注册，“2”：修改密码
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        CommonUtils.disposable(sendCodeObserver)
+        sendCodeObserver = object : NetObserver<Response<*>?>() {
+            override fun onNext(response: Response<*>) {
+                flLoading?.visibility = View.GONE
 
-                override fun onError(response: Response<String>) {
-                    super.onError(response)
-                    flLoading?.visibility = View.GONE
+                if (response == null) {
+                    ToastUtils.showShort(" send sms failure.")
                     tvCommit?.isEnabled = true
-                    Log.e(TAG, "request send sms error")
-                    ToastUtils.showShort("request send sms error ...")
+                    return
                 }
-            })
+                if (response.isSuccess != true) {
+                    ToastUtils.showShort("" + response.status)
+                    tvCommit?.isEnabled = true
+                    return
+                }
+                tvCommit?.isEnabled = false
+                ToastUtils.showShort("send sms success")
+                FirebaseUtils.logEvent("fireb_send_sms")
+            }
+
+            override fun onException(netException: ResponseException) {
+                flLoading?.visibility = View.GONE
+                tvCommit?.isEnabled = true
+                Log.e(TAG, "request send sms error")
+                ToastUtils.showShort("request send sms error ...")
+            }
+        }
+        observable.subscribeWith(sendCodeObserver)
     }
 
+    private var mUssdObserver: NetObserver<Response<UssdBean>>? = null
     private fun ussdLogin(){
-        val jsonObject: JSONObject = BuildRequestJsonUtils.buildRequestJson()
-        try {
-            jsonObject.put("mobile", getFinalPhoneNum())
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
         flLoading?.visibility = View.VISIBLE
-        Log.d(TAG, "ussd login  = " + jsonObject.toString());
-        OkGo.post<String>(Api.USSD_CHECK).tag(TAG)
-            .upJson(jsonObject)
-            .execute(object : StringCallback() {
-                override fun onSuccess(response: Response<String>) {
-                    flLoading?.visibility = View.GONE
-                    val ussdBean: UssdBean? =
-                        checkResponseSuccess(response, UssdBean::class.java)
-                    if (ussdBean == null) {
-                        return
-                    }
-                    try {
-                        LogSaver.logToFile("ussd login response = " + GsonUtils.toJson(ussdBean)
-                                + "   mobile = " + (jsonObject.optString("mobile")))
-                    } catch (e : Exception) {
-                        if (BuildConfig.DEBUG) {
-                            throw e
-                        }
-                    }
-                    if (TextUtils.equals(ussdBean.verify, "1")){
-                        regOrLogin()
-                    } else {
-                        ToastUtils.showShort(resources.getString(R.string.ussd_login_failure))
-                    }
+        val phoneNum = getFinalPhoneNum()
+        val observable: Observable<Response<UssdBean>> = NetManager.getApiService().ussdLogin2(phoneNum)
+            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        CommonUtils.disposable(mUssdObserver)
+        mUssdObserver = object : NetObserver<Response<UssdBean>>() {
+            override fun onNext(response: Response<UssdBean>) {
+                flLoading?.visibility = View.GONE
+                val ussdBean: UssdBean? = response.body
+                if (ussdBean == null) {
+                    return
                 }
-
-                override fun onError(response: Response<String>) {
-                    super.onError(response)
-                    flLoading?.visibility = View.GONE
+                try {
+                    LogSaver.logToFile("ussd login response = " + GsonUtils.toJson(ussdBean)
+                            + "   mobile = " + phoneNum)
+                } catch (e : Exception) {
                     if (BuildConfig.DEBUG) {
-                        Log.e(TAG, "ussd login error")
+                        throw e
                     }
-                    ToastUtils.showShort(resources.getString(R.string.ussd_login_error))
                 }
-            })
+                if (TextUtils.equals(ussdBean.verify, "1")){
+                    regOrLogin()
+                } else {
+                    ToastUtils.showShort(resources.getString(R.string.ussd_login_failure))
+                }
+            }
+
+            override fun onException(netException: ResponseException) {
+                flLoading?.visibility = View.GONE
+                if (BuildConfig.DEBUG) {
+                    Log.e(TAG, "ussd login error")
+                }
+                ToastUtils.showShort(resources.getString(R.string.ussd_login_error))
+            }
+        }
+        observable.subscribeWith(mUssdObserver)
     }
 
     private fun toHomePage(bean: RegLoginBean){
         Constant.mAccountId = bean.accountId
         Constant.mToken = bean.token
         Constant.mMobile = bean.mobile
+
+//                    FirebaseLogUtils.Log("af_log_in");
+        KvStorage.put(LocalConfig.LC_ISLOGIN, true)
+//        KvStorage.put(
+//            LocalConfig.LC_PASSWORD,
+//            pwd
+//        )
+        KvStorage.put(LocalConfig.LC_TOKEN, bean.token)
+        KvStorage.put(LocalConfig.LC_MOBILE, bean.mobile)
+        KvStorage.put(LocalConfig.LC_ACCOUNTID, bean.accountId)
         if (TextUtils.equals(bean.active, "1")){
             FirebaseUtils.logEvent("fireb_click_register")
         } else if (TextUtils.equals(bean.active, "2")) {
