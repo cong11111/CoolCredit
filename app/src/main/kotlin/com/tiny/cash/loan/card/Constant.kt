@@ -19,6 +19,8 @@ class Constant {
 
         const val TEST_KEY_NOT_AUTO_LOGIN_EXECUTE = "test_key_not_auto_login_execute"
 
+        const val KEY_FIREBASE_DATA = "key_firebase_data"
+
         var mToken : String? = null
 
         var mAccountId : String? = null

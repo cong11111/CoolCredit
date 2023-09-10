@@ -66,7 +66,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Utils.hasLollipop()) {
-            StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.color_ff3865cb));
+            StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.theme_color));
         }
         ActivityCollector.addActivity(this);
     }
