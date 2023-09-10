@@ -378,6 +378,7 @@ public class MainActivity extends BaseActivity {
             public void onNext(BaseResponse response) {
                 if (response.isSuccess()) {
                     KvStorage.put(LocalConfig.LC_ISLOGIN, false);
+                    KvStorage.put(LocalConfig.LC_ACCOUNTID, "");
                     FirebaseMessaging.getInstance().deleteToken();
                     startIntent(Login2Activity.class);
                     finish();

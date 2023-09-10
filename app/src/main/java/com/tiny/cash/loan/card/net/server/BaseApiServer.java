@@ -123,6 +123,7 @@ public abstract class BaseApiServer {
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .sslSocketFactory(sslSocketFactory, x509TrustManager)
+                .retryOnConnectionFailure(true)
                 .hostnameVerifier(hostnameVerifier)
                 .build();
 
