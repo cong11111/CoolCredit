@@ -16,7 +16,7 @@
     </style>
 
     <style name="ActivityTheme" parent="AppTheme.NoActionBar">
-        <item name="android:windowBackground">@drawable/bg_home</item>
+        <item name="android:windowBackground">@color/theme_color</item>
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
