@@ -78,6 +78,7 @@ import com.tiny.cash.loan.card.net.response.data.order.MessageBean;
 import com.tiny.cash.loan.card.net.response.data.order.OrderStatus;
 import com.tiny.cash.loan.card.net.server.ApiServerImpl;
 import com.tiny.cash.loan.card.ui.adapter.DrawerAdapter;
+import com.tiny.cash.loan.card.ui.card.BindNewCardActivity;
 import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
 import com.tiny.cash.loan.card.ui.login2.Login2Activity;
 import com.tiny.cash.loan.card.ui.pay2.PayActivity2;
@@ -578,9 +579,10 @@ public class MainActivity extends BaseActivity {
                         .setPositiveButtonTxt("Ignore")
                         .setNegativeButtonTxt("Go binding card")
                         .setNegativeListener(() -> {
-                            Intent intent = new Intent(this, AddMoreBankCardActivity.class);
-                            intent.putExtra("type", "main");
-                            startActivity(intent);
+                            BindNewCardActivity.Companion.launchAddBankCard(this);
+//                            Intent intent = new Intent(this, AddMoreBankCardActivity.class);
+//                            intent.putExtra("type", "main");
+//                            startActivity(intent);
                         }).show();
             }
         });

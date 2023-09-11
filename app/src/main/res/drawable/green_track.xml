@@ -8,7 +8,7 @@
 
 	<!-- 变化率 -->
 	<gradient
-		android:endColor="#ff3865cb"
-		android:startColor="#ff3865cb" />
+		android:endColor="@color/theme_color"
+		android:startColor="@color/theme_color" />
 
 </shape>

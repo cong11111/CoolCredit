@@ -444,7 +444,8 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                 .setMessage(message)
                 .setPositiveButtonTxt("No")
                 .setPositiveListener(() -> {
-                    startIntent(AddMoreBankCardActivity.class);
+                    BindNewCardActivity.Companion.launchAddBankCard(getContext());
+//                    startIntent(AddMoreBankCardActivity.class);
                 })
                 .setNegativeButtonTxt("Yes")
                 .setNegativeListener(() -> {
