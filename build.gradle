@@ -1,5 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+//def userHome = System.properties['user.home']
 buildscript {
+    ext {
+        userHome = System.properties['user.home']
+    }
+
     repositories {
         google()
         jcenter()
@@ -10,6 +15,9 @@ buildscript {
         mavenCentral()
 
         mavenLocal()
+        maven {
+            url =userHome + '/.m2/repository'
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.2"
