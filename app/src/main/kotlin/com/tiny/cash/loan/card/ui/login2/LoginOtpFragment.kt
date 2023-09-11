@@ -440,12 +440,6 @@ class LoginOtpFragment : BaseFragment2(){
         Constant.mToken = bean.token
         Constant.mMobile = bean.mobile
 
-//                    FirebaseLogUtils.Log("af_log_in");
-        KvStorage.put(LocalConfig.LC_ISLOGIN, true)
-//        KvStorage.put(
-//            LocalConfig.LC_PASSWORD,
-//            pwd
-//        )
         KvStorage.put(LocalConfig.LC_TOKEN, bean.token)
         KvStorage.put(LocalConfig.LC_MOBILE, bean.mobile)
         KvStorage.put(LocalConfig.LC_ACCOUNTID, bean.accountId)

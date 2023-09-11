@@ -345,8 +345,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onNext(Response<UserInfo> response) {
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
-//                    FirebaseLogUtils.Log("af_log_in");
-                    KvStorage.put(LocalConfig.LC_ISLOGIN, true);
                     KvStorage.put(LocalConfig.LC_PASSWORD,
                             pwd);
                     KvStorage.put(LocalConfig.LC_TOKEN,

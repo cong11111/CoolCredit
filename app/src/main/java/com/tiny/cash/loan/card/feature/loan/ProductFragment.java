@@ -20,6 +20,7 @@ import com.tiny.cash.loan.card.ui.adapter.AmountAdapter;
 import com.tiny.cash.loan.card.ui.adapter.TermAdapter;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.LayoutLoanProductBinding;
+import com.tiny.cash.loan.card.ui.card.BindNewCardActivity;
 import com.tiny.cash.loan.card.ui.dialog.fragment.ConfirmLoanDialogFragment;
 import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
 import com.tiny.cash.loan.card.feature.bank.AddMoreBankCardActivity;
@@ -381,12 +382,13 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                         }
 
                         if (!response.getBody().isAccountChecked()) {
-                            startIntent(BankCardAccountActivity.class);
+                            BindNewCardActivity.Companion.launchAddBankAccount(getContext());
                             return;
                         }
 
                         if (paystackCardBind &&!response.getBody().isCardChecked()) {
                             startIntent(AddMoreBankCardActivity.class);
+                            BindNewCardActivity.Companion.launchAddBankCard(getContext());
                             return;
                         }
                     } else {

@@ -2662,11 +2662,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name="com.tiny.cash.loan.card.feature.bank.AddBankCardActivity"
-            android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+<!--        <activity-->
+<!--            android:name="com.tiny.cash.loan.card.feature.bank.AddBankCardActivity"-->
+<!--            android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"-->
+<!--            android:launchMode="singleTop"-->
+<!--            android:screenOrientation="portrait" />-->
 
         <activity
             android:name="com.tiny.cash.loan.card.feature.users.BasicInfoActivity"
@@ -2734,6 +2734,10 @@
 
 
         <activity android:name="com.tiny.cash.loan.card.ui.card.BindNewCardActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name="com.tiny.cash.loan.card.ui.banklist.BankListActivity"
             android:screenOrientation="portrait"
             />
 

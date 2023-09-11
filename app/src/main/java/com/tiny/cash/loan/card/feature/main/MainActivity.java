@@ -80,6 +80,7 @@ import com.tiny.cash.loan.card.net.server.ApiServerImpl;
 import com.tiny.cash.loan.card.ui.adapter.DrawerAdapter;
 import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
 import com.tiny.cash.loan.card.ui.login2.Login2Activity;
+import com.tiny.cash.loan.card.ui.pay2.PayActivity2;
 import com.tiny.cash.loan.card.utils.AppUtils;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.DeviceInfo;
@@ -372,7 +373,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onNext(BaseResponse response) {
                 if (response.isSuccess()) {
-                    KvStorage.put(LocalConfig.LC_ISLOGIN, false);
+
                     KvStorage.put(LocalConfig.LC_ACCOUNTID, "");
                     FirebaseMessaging.getInstance().deleteToken();
                     startIntent(Login2Activity.class);
@@ -793,10 +794,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test1() {
-//        startIntent(PaymentMethodActivity.class);
-//        if (true) {
-//            return;
-//        }
+        PayActivity2.Companion.launchPayActivity(this, "","");
+        if (true) {
+            return;
+        }
         CollectDataMgr.Companion.getSInstance().collectAuthData("11111111", new BaseCollectDataMgr.Observer() {
             @Override
             public void success(@Nullable AuthResult response) {

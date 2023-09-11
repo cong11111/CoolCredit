@@ -12,7 +12,6 @@ public class LocalConfig {
     public static final String LC_MOBILE = "mobile";//Mobile
     public static final String LC_PASSWORD = "password";//password
     public static final String LC_UUID = "uuid";//UUID
-    public static final String LC_ISLOGIN = "islogin";//是否登陆
     public static final String LC_ISAGREEMENT = "isAgreement";//是否同意协议
 
     public static final String LC_PLATFORM = "platform"; //应用平台
