@@ -7,11 +7,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.KudiCreditApp;
 import com.tiny.cash.loan.card.Constants;
@@ -385,10 +387,13 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                             BindNewCardActivity.Companion.launchAddBankAccount(getContext());
                             return;
                         }
-
                         if (paystackCardBind &&!response.getBody().isCardChecked()) {
-                            startIntent(AddMoreBankCardActivity.class);
+//                            startIntent(AddMoreBankCardActivity.class);
                             BindNewCardActivity.Companion.launchAddBankCard(getContext());
+                            return;
+                        }
+                        if (TextUtils.isEmpty(orderId) || TextUtils.equals(orderId, "-1")) {
+                            ToastUtils.showShort("need correct loan apply orderId " + orderId);
                             return;
                         }
                     } else {

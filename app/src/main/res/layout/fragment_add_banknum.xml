@@ -102,27 +102,43 @@
                 </LinearLayout>
 
             </LinearLayout>
-        </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/fl_add_bank_num_commit"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="70dp"
-            android:background="@drawable/add_profile_bg">
-
-            <TextView
+            <com.text.alginlib.XQJustifyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/profile1_submit"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp" />
-        </FrameLayout>
+                android:layout_marginTop="@dimen/dp_25"
+                android:text="Our app will withdraw ₦50 card binding fee from your bank account.Please make sure you have at least ₦ 50 in your bank account."
+                android:textColor="@color/color_FF0000"
+                android:textSize="@dimen/sp_16" />
+
+            <FrameLayout
+                android:id="@+id/fl_add_bank_num_commit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_25"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="@drawable/add_profile_bg">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/profile1_submit"
+                    android:textColor="#FFFFFF"
+                    android:textAllCaps="true"
+                    android:textSize="16sp" />
+            </FrameLayout>
+
+            <com.text.alginlib.XQJustifyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_25"
+                android:text="If you fail to receive OTP when binding your card, please try to skip that step via Return option on your phone, then continue the loan application process."
+                android:textColor="@color/color_FF0000"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
 
     </FrameLayout>
 

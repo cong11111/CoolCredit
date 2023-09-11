@@ -17,9 +17,9 @@ import co.paystack.android.PaystackSdk
 import co.paystack.android.Transaction
 import co.paystack.android.model.Card
 import co.paystack.android.model.Charge
-import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.tiny.cash.loan.card.Constant
+import com.tiny.cash.loan.card.Constants
 import com.tiny.cash.loan.card.bean.bank.AccessCodeResponseBean
 import com.tiny.cash.loan.card.bean.bank.UploadCardResponseBean
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
@@ -30,6 +30,7 @@ import com.tiny.cash.loan.card.net.NetObserver
 import com.tiny.cash.loan.card.net.ResponseException
 import com.tiny.cash.loan.card.net.request.params.BankCardParams
 import com.tiny.cash.loan.card.net.response.Response
+import com.tiny.cash.loan.card.net.response.data.bean.BankBoundResult
 import com.tiny.cash.loan.card.ui.base.BaseFragment2
 import com.tiny.cash.loan.card.utils.CommonUtils
 import com.tiny.cash.loan.card.utils.FirebaseUtils
@@ -134,21 +135,43 @@ class AddBankNum2Fragment : BaseFragment2() {
                         TAG, " first = " + first + " second = " + second
                                 + " cardNum = " + cardNum
                     )
-                    bindCardAccess(cardNum.toString(), cvv.toString(), first, second)
+                    checkNeedBindCard(cardNum.toString(), cvv.toString(), first, second)
                 }
             }
         })
     }
 
-    private fun bindCardAccess(
+    private var bankBoundObserver: NetObserver<Response<BankBoundResult>>? = null
+    private fun checkNeedBindCard(
         cardNum: String, cvc: String,
         mouth: Int, year: Int
     ) {
-        val card: Card = Card.Builder(cardNum, mouth, year, cvc).build()
-        Log.e(TAG, " is valid = " + card.isValid)
-        val charge = Charge()
-        charge.card = card
-        getAccessCode(charge, cardNum, cvc, mouth, year)
+        mHandler?.sendEmptyMessage(TYPE_SHOW_LOADING)
+        val accountId = KvStorage.get(LocalConfig.LC_ACCOUNTID, "")
+        val observable: Observable<Response<BankBoundResult>> =
+            NetManager.getApiService().queryCardBound(accountId, cardNum)
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        CommonUtils.disposable(bankBoundObserver)
+        bankBoundObserver = object : NetObserver<Response<BankBoundResult>>() {
+            override fun onNext(response: Response<BankBoundResult>) {
+                mHandler?.sendEmptyMessage(TYPE_HIDE_LOADING)
+                val body = response.body
+                if (Constants.ZERO == body.cardBound) {
+                    val card: Card = Card.Builder(cardNum, mouth, year, cvc).build()
+                    Log.e(TAG, " is valid = " + card.isValid)
+                    val charge = Charge()
+                    charge.card = card
+                    getAccessCode(charge, cardNum, cvc, mouth, year)
+                } else {
+                    ToastUtils.showShort(body.cardBoundMessage)
+                }
+            }
+
+            override fun onException(netException: ResponseException) {
+                mHandler?.sendEmptyMessage(TYPE_HIDE_LOADING)
+            }
+        }
+        observable.subscribeWith(bankBoundObserver)
     }
 
     private fun checkBankNum(): Boolean {
@@ -345,6 +368,9 @@ class AddBankNum2Fragment : BaseFragment2() {
     }
 
     override fun onDestroy() {
+        CommonUtils.disposable(bankBoundObserver)
+        CommonUtils.disposable(accessObserver)
+        CommonUtils.disposable(accessObserver)
         mHandler?.removeCallbacksAndMessages(null)
         super.onDestroy()
     }
