@@ -19,6 +19,7 @@ import com.tiny.cash.loan.card.net.NetManager
 import com.tiny.cash.loan.card.net.NetObserver
 import com.tiny.cash.loan.card.net.ResponseException
 import com.tiny.cash.loan.card.net.response.Response
+import com.tiny.cash.loan.card.ui.loan.LoanDeclinedFragment
 import com.tiny.cash.loan.card.utils.CommonUtils
 import com.tiny.cash.loan.card.utils.FirebaseUtils
 import com.tiny.cash.loan.card.utils.MyAppUtils
@@ -37,6 +38,15 @@ class LoanActiveFragment2 : BaseLoanFragment() {
     private var tvTotalAmount: AppCompatTextView? = null
 
     private var flCommit: FrameLayout? = null
+
+    companion object {
+        fun newInstance(): LoanActiveFragment2? {
+            val args = Bundle()
+            val fragment = LoanActiveFragment2()
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

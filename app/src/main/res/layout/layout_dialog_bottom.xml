@@ -24,7 +24,7 @@
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginRight="@dimen/dp_16"
                 android:gravity="center"
-                android:textColor="@color/color_4E5BFF"
+                android:textColor="@color/theme_color"
                 android:textSize="@dimen/sp_14"
                 tools:text="@string/str_cancel" />
 

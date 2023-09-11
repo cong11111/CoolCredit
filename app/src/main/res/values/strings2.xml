@@ -35,4 +35,8 @@
     <string name="bind_new_card2_choose_date">Expiry date</string>
     <string name="loan_person_profile_gender">Gender </string>
     <string name="bank_list">Bank List</string>
+
+    <string name="loan_declined_desc1">Sorry!!! \nWe could not approve your loan at the moment because of certain reasons. Please keep better records and apply later.</string>
+    <string name="loan_declined_desc2_1">Possible Reason ：\n• Low credit Score\n• We got your credit score from an \n independent credit agency and you can improve it by building good credit history</string>
+    <string name="loan_declined_apply_again">apply again</string>
 </resources>

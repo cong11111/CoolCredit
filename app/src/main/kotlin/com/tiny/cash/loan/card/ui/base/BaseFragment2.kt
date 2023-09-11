@@ -2,8 +2,9 @@ package com.tiny.cash.loan.card.ui.base
 
 import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.ToastUtils
+import com.tiny.cash.loan.card.base.BaseFragment
 
-open class BaseFragment2 : Fragment() {
+open class BaseFragment2 : BaseFragment() {
 
     private var lastClickMillions: Long = 0
 

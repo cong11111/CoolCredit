@@ -19,15 +19,6 @@ abstract class BaseLoanFragment : BaseFragment2() {
 
     private val TAG = "base_loan_fragment"
 
-    companion object {
-        fun newInstance(): ActiveFragment? {
-            val args = Bundle()
-            val fragment = ActiveFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
     var mOrderInfo : LoanOrderDetail? = null
 
     private var tvDisburseDate: AppCompatTextView? = null
@@ -40,6 +31,9 @@ abstract class BaseLoanFragment : BaseFragment2() {
     private var llOverdueFee: LinearLayout? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (arguments != null) {
+            mOrderInfo = requireArguments().getSerializable("data") as LoanOrderDetail?
+        }
         super.onViewCreated(view, savedInstanceState)
         // TODO
 //        boolean orderSucess = KvStorage.get(LocalConfig.getNewKey(LocalConfig.LC_ORDERSUCESS), false);
@@ -50,9 +44,6 @@ abstract class BaseLoanFragment : BaseFragment2() {
 //                FirebaseLogUtils.Log("af_old_active");
 //            KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_ORDERSUCESS), true);
 //        }
-        if (arguments != null) {
-            mOrderInfo = requireArguments().getSerializable("data") as LoanOrderDetail?
-        }
         tvDisburseDate = view.findViewById(R.id.tv_loan_process_disburse_date)
         tvDueDate = view.findViewById(R.id.tv_loan_process_due_date)
         tvLoanAMount = view.findViewById(R.id.tv_loan_process_loan_amount)

@@ -13,6 +13,10 @@ class Constant {
             return if (BuildConfig.DEBUG) false else BuildConfig.IS_AAB_BUILD
         }
 
+        fun isNotAutoFill() : Boolean {
+            return BuildConfig.DEBUG
+        }
+
         const val IS_COLLECT= !BuildConfig.IS_AAB_BUILD
 
         var IS_FIRST_APPROVE = false

@@ -80,6 +80,7 @@ import com.tiny.cash.loan.card.net.server.ApiServerImpl;
 import com.tiny.cash.loan.card.ui.adapter.DrawerAdapter;
 import com.tiny.cash.loan.card.ui.card.BindNewCardActivity;
 import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
+import com.tiny.cash.loan.card.ui.loan.LoanDeclinedFragment;
 import com.tiny.cash.loan.card.ui.login2.Login2Activity;
 import com.tiny.cash.loan.card.ui.pay2.PayActivity2;
 import com.tiny.cash.loan.card.utils.AppUtils;
@@ -662,7 +663,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case Constants.FIVE:
                     mLoanTitle = getString(R.string.str_declined);
-                    fragment = DeclinedFragment.newInstance();
+                    fragment = LoanDeclinedFragment.Companion.newInstance();
                     break;
                 case Constants.SIX:
                     mLoanTitle = getString(R.string.str_repayment);
@@ -796,7 +797,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test1() {
-        PayActivity2.Companion.launchPayActivity(this, "","");
+        PayActivity2.Companion.launchPayActivity(this, "11111","111111");
         if (true) {
             return;
         }
