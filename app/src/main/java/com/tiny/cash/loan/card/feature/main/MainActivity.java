@@ -82,6 +82,7 @@ import com.tiny.cash.loan.card.ui.card.BindNewCardActivity;
 import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
 import com.tiny.cash.loan.card.ui.loan.LoanDeclinedFragment;
 import com.tiny.cash.loan.card.ui.login2.Login2Activity;
+import com.tiny.cash.loan.card.ui.menu.VirtualAccountFragment;
 import com.tiny.cash.loan.card.ui.pay2.PayActivity2;
 import com.tiny.cash.loan.card.utils.AppUtils;
 import com.tiny.cash.loan.card.utils.CommonUtils;
@@ -734,6 +735,21 @@ public class MainActivity extends BaseActivity {
         ft.commitAllowingStateLoss();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PayActivity2.REQUEST_CODE_TO_PAY) {
+            if (resultCode == PayActivity2.RESULT_CODE_SELECT_BANK_TRANFER) {
+                VirtualAccountFragment homeFragment = new VirtualAccountFragment();
+                showFragment(homeFragment);
+                mTv_title.setText(getText(R.string.setting_virtual_account));
+                if (drawerAdapter != null) {
+                    drawerAdapter.selectPosition(-1);
+                }
+                requestTime = System.currentTimeMillis();
+            }
+        }
+    }
 
     /**
      * 第三种方法

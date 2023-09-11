@@ -100,6 +100,7 @@ public interface ApiService2 {
     @POST("/v1/loan/repay/paystack/result")
     Observable<Response<PayStackResult>> payStackResult(@Query("accountId") String accountId, @Query("orderId") String orderId, @Query("reference") String reference);
 
-
+    @POST("/v1/loan/get/reserved/account")
+    Observable<Response<MonifyResponseBean>> queryMonify(@Query("accountId") String accountId);
 }
 

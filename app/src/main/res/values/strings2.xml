@@ -39,4 +39,7 @@
     <string name="loan_declined_desc1">Sorry!!! \nWe could not approve your loan at the moment because of certain reasons. Please keep better records and apply later.</string>
     <string name="loan_declined_desc2_1">Possible Reason ：\n• Low credit Score\n• We got your credit score from an \n independent credit agency and you can improve it by building good credit history</string>
     <string name="loan_declined_apply_again">apply again</string>
+    <string name="bank_transfer_title">Personal repayment account</string>
+    <string name="bank_transfer_desc">The account only available for you， order will auto settled in 1 hour after repayment</string>
+    <string name="setting_virtual_account">Virtual Account</string>
 </resources>

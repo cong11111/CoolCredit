@@ -2,6 +2,7 @@ package com.tiny.cash.loan.card
 
 import com.tiny.cash.loan.card.bean.TextInfoResponse
 import com.tiny.cash.loan.card.bean.bank.CardResponseBean
+import com.tiny.cash.loan.card.bean.repay.MonifyResponseBean
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
 import com.tiny.cash.loan.card.net.response.data.order.LoanOrderDetail
 
@@ -54,5 +55,6 @@ class Constant {
 
         const val KEY_LOGIN_TIME = "key_sign_in_login_time"
 
+        var monifyBean : MonifyResponseBean? = null
     }
 }
