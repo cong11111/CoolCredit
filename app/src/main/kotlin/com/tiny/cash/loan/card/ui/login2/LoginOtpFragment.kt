@@ -243,9 +243,9 @@ class LoginOtpFragment : BaseFragment2(){
 //            verifyCodeView?.clearAll()
             return
         }
-        if (checkClickFast()){
-            return
-        }
+//        if (checkClickFast()){
+//            return
+//        }
 //        FirebaseUtils.logEvent("fireb_register_start")
         requestVerifySmsCode(verifyCode)
     }
@@ -288,7 +288,7 @@ class LoginOtpFragment : BaseFragment2(){
     private var regOrLoginObserver: NetObserver<Response<RegLoginBean>>? = null
     private fun regOrLogin(){
         flLoading?.visibility = View.VISIBLE
-        // TODO 清空token
+        KvStorage.put(LocalConfig.LC_TOKEN, "")
         val finalPhoneNum = getFinalPhoneNum()
         val observable: Observable<Response<RegLoginBean>> =
             NetManager.getApiService().regOrLogin(finalPhoneNum) //“1”:注册，“2”：修改密码
@@ -302,6 +302,7 @@ class LoginOtpFragment : BaseFragment2(){
                 flLoading?.visibility = View.GONE
                 val regLoginBean: RegLoginBean? = response.body
                 if (regLoginBean == null) {
+                    ToastUtils.showShort(response.status.msg)
                     return
                 }
                 if (TextUtils.isEmpty(regLoginBean.token)){

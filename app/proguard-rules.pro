@@ -306,4 +306,4 @@ public static java.lang.String TABLENAME;
 -keep class com.tiny.cash.loan.card.collect.item.AppInfoRequest
 -keep class com.tiny.cash.loan.card.collect.item.** {*; }
 -keep class com.google.gson.** {*;}
--keep class com.tiny.cash.loan.card.collect.bean.** {*; }
+-keep class com.tiny.cash.loan.card.bean.** {*; }
