@@ -26,7 +26,7 @@
 //import com.tiny.cash.loan.card.collect.CollectHardwareMgr
 //import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr
 //import com.tiny.cash.loan.card.collect.item.CollectSmsMgr
-//import com.tiny.cash.loan.card.feature.loan.BaseLoanFragment
+//import com.tiny.cash.loan.card.ui.base.BaseLoanFragment
 //import com.tiny.cash.loan.card.kudicredit.BuildConfig
 //import com.tiny.cash.loan.card.kudicredit.R
 //import com.tiny.cash.loan.card.net.NetManager

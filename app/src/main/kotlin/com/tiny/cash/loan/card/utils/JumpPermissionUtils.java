@@ -161,4 +161,20 @@ public class JumpPermissionUtils {
         activity.startActivity(intent);
     }
 
+    public static void goToNotifySetting(Activity activity) {
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT >= 26) {// android 8.0引导
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("android.provider.extra.APP_PACKAGE", activity.getPackageName());
+        } else if (Build.VERSION.SDK_INT >= 21) { // android 5.0-7.0
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("app_package", activity.getPackageName());
+            intent.putExtra("app_uid", activity.getApplicationInfo().uid);
+        } else {//其它
+            intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            intent.setData(Uri.fromParts("package", activity.getPackageName(), null));
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+    }
 }

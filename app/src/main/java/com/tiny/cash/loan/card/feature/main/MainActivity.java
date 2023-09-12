@@ -5,9 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,10 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -30,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ThreadUtils;
@@ -44,11 +39,9 @@ import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
 import com.tiny.cash.loan.card.collect.CollectDataMgr;
 import com.tiny.cash.loan.card.collect.CollectHardwareMgr;
 import com.tiny.cash.loan.card.collect.LocationMgr;
-import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr;
 import com.tiny.cash.loan.card.collect.item.CollectSmsMgr;
-import com.tiny.cash.loan.card.feature.bank.AddMoreBankCardActivity;
-import com.tiny.cash.loan.card.feature.loan.DeclinedFragment;
-import com.tiny.cash.loan.card.feature.loan.LoanActiveFragment2;
+import com.tiny.cash.loan.card.dialog.RequestPermissionDialog;
+import com.tiny.cash.loan.card.ui.loan.LoanActiveFragment2;
 import com.tiny.cash.loan.card.feature.loan.LoanOrderHelp;
 import com.tiny.cash.loan.card.feature.loan.OverdueFragment;
 import com.tiny.cash.loan.card.feature.loan.PaymentProgressFragment;
@@ -86,12 +79,9 @@ import com.tiny.cash.loan.card.ui.menu.VirtualAccountFragment;
 import com.tiny.cash.loan.card.ui.pay2.PayActivity2;
 import com.tiny.cash.loan.card.utils.AppUtils;
 import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.DeviceInfo;
 import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
-import com.tiny.cash.loan.card.utils.PermissionUtil;
-import com.tiny.cash.loan.card.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -108,13 +98,6 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawer;
     private Fragment mCurrentFragment;
     private ImageView mImageView;//, android.Manifest.permission.CAMERA  , android.Manifest.permission.RECORD_AUDIO
-    private String[] permissions = new String[]{
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
-//            , android.Manifest.permission.READ_CONTACTS, android.Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            android.Manifest.permission.READ_SMS};
-
-    public static final int REQUEST_PERMISSIONS = 60;
     private NetObserver loutObserver, UpVersionObserver, orderObserver, flutterObserver;
     private TextView mRefresh;
     DrawerAdapter drawerAdapter;
@@ -155,15 +138,15 @@ public class MainActivity extends BaseActivity {
                 upLoadFcmtoken();
             });
         } catch (Exception e) {
-            if(BuildConfig.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 e.printStackTrace();
             }
         }
 
-        boolean b = NotificationManagerCompat.from(this).areNotificationsEnabled();
-        if (!b) {
-            goToSetting();
-        }
+//        boolean b = NotificationManagerCompat.from(this).areNotificationsEnabled();
+//        if (!b) {
+//            goToSetting();
+//        }
     }
 
     NetObserver configObserver;
@@ -199,7 +182,7 @@ public class MainActivity extends BaseActivity {
 
                 String str = body.getPaystackCardBind();
                 if (!StringUtils.isEmpty(str)) {
-                    boolean paystackCardBind = Constants.ONE.equals(str)? true : false;
+                    boolean paystackCardBind = Constants.ONE.equals(str) ? true : false;
 
                     if (paystackCardBind) {
                         showBankNotify();
@@ -281,37 +264,54 @@ public class MainActivity extends BaseActivity {
     }
 
     private void requestPermissions() {
-        if (PermissionUtil.hasPermission(this, permissions)) {
-            DeviceInfo.getInstance(this).init();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                PermissionUtils.permission(Manifest.permission.POST_NOTIFICATIONS).request();
-            }
+        boolean hasPermission = PermissionUtils.isGranted(
+//            PermissionConstants.LOCATION,
+//            PermissionConstants.CAMERA,
+                PermissionConstants.SMS
+//            PermissionConstants.CONTACTS,
+//            PermissionConstants.STORAGE,
+        );
+        boolean hasPermissionCoarseLocation = PermissionUtils.isGranted(Manifest.permission.ACCESS_COARSE_LOCATION);
+//        val hasPermissionCallLog = PermissionUtils.isGranted(Manifest.permission.READ_CALL_LOG)
+//        val hasPermissionReadPhoneState =
+//            PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)
+//                if (false && hasPermission) {
+        if (hasPermissionCoarseLocation && hasPermission) {
             executeCache();
         } else {
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-//                Utils.showToast(this, "Storage permissions are needed for Exploring.", 500);
-//            } else {
-            ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSIONS);
-//            }
+            requestPermissionInternal();
         }
+
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_PERMISSIONS: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    DeviceInfo.getInstance(this).init();
-                    executeCache();
+    private void requestPermissionInternal() {
+        RequestPermissionDialog dialog = new RequestPermissionDialog(this);
+        dialog.setOnItemClickListener(new RequestPermissionDialog.OnItemClickListener() {
+            @Override
+            public void onClickAgree() {
+                PermissionUtils utils;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    utils = PermissionUtils.permission(Manifest.permission.READ_SMS,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.POST_NOTIFICATIONS);
                 } else {
-                    Utils.showToast(MainActivity.this, "Permission grating failed", 500);
-                    requestPermissions();
+                    utils = PermissionUtils.permission(Manifest.permission.READ_SMS,
+                            Manifest.permission.ACCESS_COARSE_LOCATION);
                 }
-                return;
+                utils.callback(new PermissionUtils.SimpleCallback() {
+                    @Override
+                    public void onGranted() {
+                        executeCache();
+                    }
+
+                    @Override
+                    public void onDenied() {
+                        ToastUtils.showShort("please allow permission.");
+                    }
+                }).request();
             }
-        }
+        });
+        dialog.show();
     }
 
     private void RequestUpVersion() {
@@ -537,38 +537,6 @@ public class MainActivity extends BaseActivity {
                     pushUI("push");
                 })
                 .show();
-    }
-
-    private void goToSetting() {
-
-        Intent intent = new Intent();
-
-        if (Build.VERSION.SDK_INT >= 26) {// android 8.0引导
-
-            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-
-            intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
-
-        } else if (Build.VERSION.SDK_INT >= 21) { // android 5.0-7.0
-
-            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-
-            intent.putExtra("app_package", getPackageName());
-
-            intent.putExtra("app_uid", getApplicationInfo().uid);
-
-        } else {//其它
-
-            intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-
-            intent.setData(Uri.fromParts("package", getPackageName(), null));
-
-        }
-
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        startActivity(intent);
-
     }
 
     public void showBankNotify() {

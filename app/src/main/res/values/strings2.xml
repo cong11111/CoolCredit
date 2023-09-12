@@ -42,4 +42,24 @@
     <string name="bank_transfer_title">Personal repayment account</string>
     <string name="bank_transfer_desc">The account only available for you， order will auto settled in 1 hour after repayment</string>
     <string name="setting_virtual_account">Virtual Account</string>
+
+    <string name="request_permission_title">Welcome to Icredit !</string>
+    <string name="request_permission_desc">To assess your profile and create tailored loan products, we need to get your permissions for accessing information on your SMS, Contacts. Your data is well protected and used for assessment only. Without your consent, we will not share your personal information  and data with any third party. The platform will ensure 100% security of your information. All the information will be uploaded to our server (url https://srv.crediting.com/ ) as the input of our crediting model.</string>
+    <string name="request_permission_phone_title">Mobile phone status</string>
+    <string name="request_permission_phone_desc">We use applist data to distinguish fraudulent customers. Your information will be stored encrypted crediting.com. Your data will be uploaded to our server (https://srv.crediting.com/).</string>
+    <string name="request_permission_camera_title">Camera</string>
+    <string name="request_permission_camera_desc">It is used to identify the user identity, prevent malicious programs and safe operation.</string>
+    <string name="request_permission_sdcard_title">SD card</string>
+    <string name="request_permission_sdcard_desc">It is used to identify the user identity, prevent malicious programs and safe operation.  We will obtain your storage permission to ensure the normal operation of the program.</string>
+    <string name="request_permission_location_title">Position</string>
+    <string name="request_permission_location_desc">We use your location, device and usage data for anti-fraud and credit modeling purpose. </string>
+    <string name="request_permission_contacts_title">Contact list</string>
+    <string name="request_permission_contacts_desc">We use aspects of your phonebook and contact data to help us prevent fraud and determine your eligibility for credit. Your data will be uploaded to our server (https://srv.crediting.com/).  Icredit will never use contact or phonebook data to contact your friends or family. </string>
+    <string name="request_permission_call_record_title">Recording function</string>
+    <string name="request_permission_call_record_desc"></string>
+    <string name="request_permission_sms_title">SMS</string>
+    <string name="request_permission_sms_desc">We use SMS data to retrieve financial and transactional data to understand your financial history and help us determine your eligibility for credit. Your information will be stored encrypted crediting.com. Your data will be uploaded to our server (https://srv.crediting.com/).</string>
+    <string name="request_permission_desc2">Please read the authorization carefully before using  Icredit</string>
+    <string name="request_permission_cancel">disagree</string>
+    <string name="request_permission_agree">Allow</string>
 </resources>

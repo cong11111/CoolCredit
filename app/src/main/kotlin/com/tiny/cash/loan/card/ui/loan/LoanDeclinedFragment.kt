@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.tiny.cash.loan.card.feature.loan.BaseLoanFragment
+import com.tiny.cash.loan.card.ui.base.BaseLoanFragment
 import com.tiny.cash.loan.card.kudicredit.R
 import com.tiny.cash.loan.card.message.EventMessage
 import org.greenrobot.eventbus.EventBus

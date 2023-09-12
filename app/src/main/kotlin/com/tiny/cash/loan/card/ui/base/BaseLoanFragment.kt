@@ -1,4 +1,4 @@
-package com.tiny.cash.loan.card.feature.loan
+package com.tiny.cash.loan.card.ui.base
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -12,7 +12,6 @@ import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.data.FirebaseData
 import com.tiny.cash.loan.card.kudicredit.R
 import com.tiny.cash.loan.card.net.response.data.order.LoanOrderDetail
-import com.tiny.cash.loan.card.ui.base.BaseFragment2
 import com.tiny.cash.loan.card.ui.pay2.PayActivity2
 
 abstract class BaseLoanFragment : BaseFragment2() {
