@@ -256,7 +256,7 @@ class Login2Fragment : BaseFragment2() {
                     return
                 }
                 if (response.isSuccess != true) {
-                    ToastUtils.showShort(getString(R.string.str_validate_has_recived))
+                    ToastUtils.showShort(response.status.msg)
                     return
                 }
                 if (activity is Login2Activity) {

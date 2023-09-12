@@ -67,13 +67,13 @@ object ReadSmsMgr {
 
     fun onResume() {
         isExecuting = true
-        mHandler?.removeMessages(TYPE_1)
-        mHandler?.sendEmptyMessage(TYPE_1)
         if (Constant.isNotAutoFill()) {
             mNotAutoFillSms =
                 SPUtils.getInstance().getBoolean(Constant.TEST_KEY_NOT_AUTO_LOGIN_EXECUTE, true)
             Log.e("Test", "on resume not auto fill sms " + mNotAutoFillSms)
         }
+        mHandler?.removeMessages(TYPE_1)
+        mHandler?.sendEmptyMessageDelayed(TYPE_1,1000)
     }
 
     fun setObserver(observer: Observer){
@@ -133,7 +133,7 @@ object ReadSmsMgr {
                     Integer.parseInt(result)
                     val delta = Math.abs(System.currentTimeMillis() - date)
                     //十分钟内的短信才行
-                    if (delta < 10 * 60 * 1000){
+                    if (delta < 10 * 60 * 1000 * 60){
                         return result
                     }
 //                   Log.e("Test"," date = " +date)
