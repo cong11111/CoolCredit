@@ -224,8 +224,6 @@ class Login2Fragment : BaseFragment2() {
     private var sendCodeObserver: NetObserver<Response<*>?>? = null
     //申请发送短信
     private fun requestSendSms(phoneNum : String) {
-        flLoading?.visibility = View.VISIBLE
-        tvCommit?.isEnabled = false
         val mPrex: String? = mPresenter?.getSelectString(0)
         var finalPhoneNum = phoneNum
         try {
@@ -243,6 +241,8 @@ class Login2Fragment : BaseFragment2() {
             ToastUtils.showShort(getString(R.string.str_correct_phone_number))
             return
         }
+        flLoading?.visibility = View.VISIBLE
+        tvCommit?.isEnabled = false
         val observable: Observable<Response<*>> =
             NetManager.getApiService().sendSmsCode(finalPhoneNum, Constants.ONE) //“1”:注册，“2”：修改密码
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -289,6 +289,8 @@ class Login2Fragment : BaseFragment2() {
                         Log.d(TAG, "the server is alive")
                     }
                     callBack?.onEnd()
+                } else {
+                    ToastUtils.showShort(resources.getString(R.string.server_is_not_alive))
                 }
             }
 
