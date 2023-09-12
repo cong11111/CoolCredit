@@ -59,6 +59,8 @@ class LoginOtpFragment : BaseFragment2(){
     private val MAX_TIME = 60
     private var mCurTime: Int = MAX_TIME
 
+    private var isResend = false
+
     companion object {
         private const val TYPE_TIME_REDUCE = 1111
 
@@ -80,6 +82,7 @@ class LoginOtpFragment : BaseFragment2(){
                             mHandler?.removeMessages(TYPE_TIME_REDUCE)
                             tvCommit?.text = StringUtils.getString(R.string.resend)
                             tvCommit?.isEnabled = true
+                            isResend = true
 //                            tvCommit?.setTextColor(Color.parseColor("#0EC6A2"))
                             mCurTime = MAX_TIME
                         } else {
@@ -383,7 +386,11 @@ class LoginOtpFragment : BaseFragment2(){
                 }
                 tvCommit?.isEnabled = false
                 ToastUtils.showShort("send sms success")
-                FirebaseUtils.logEvent("fireb_send_sms")
+                if (isResend) {
+                    FirebaseUtils.logEvent("fireb_resend_sms")
+                } else {
+                    FirebaseUtils.logEvent("fireb_send_sms")
+                }
             }
 
             override fun onException(netException: ResponseException) {
@@ -408,6 +415,7 @@ class LoginOtpFragment : BaseFragment2(){
                 flLoading?.visibility = View.GONE
                 val ussdBean: UssdBean? = response.body
                 if (ussdBean == null) {
+                    ToastUtils.showShort("ussd login response null")
                     return
                 }
                 try {
