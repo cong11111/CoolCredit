@@ -20,6 +20,7 @@ import com.tiny.cash.loan.card.bean.repay.FlutterwareResponse1Bean;
 import com.tiny.cash.loan.card.bean.repay.FlutterwareResponse2Bean;
 import com.tiny.cash.loan.card.bean.repay.FlutterwareResultBean;
 import com.tiny.cash.loan.card.bean.repay.MonifyResponseBean;
+import com.tiny.cash.loan.card.bean.upload.InstallRequest;
 import com.tiny.cash.loan.card.net.request.params.ApplyParams;
 import com.tiny.cash.loan.card.net.request.params.AuthParams;
 import com.tiny.cash.loan.card.net.request.params.BankCardParams;
@@ -102,5 +103,10 @@ public interface ApiService2 {
 
     @POST("/v1/loan/get/reserved/account")
     Observable<Response<MonifyResponseBean>> queryMonify(@Query("accountId") String accountId);
+
+    @POST("/v1/account/install")
+    Observable<Response> recordInstall(@Body InstallRequest request);
+
+
 }
 

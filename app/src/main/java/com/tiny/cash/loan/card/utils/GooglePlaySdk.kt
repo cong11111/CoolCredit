@@ -4,12 +4,26 @@ import android.content.Context
 import android.os.RemoteException
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
+import com.blankj.utilcode.util.GsonUtils
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.tiny.cash.loan.card.Constant
+import com.tiny.cash.loan.card.bean.repay.MonifyResponseBean
+import com.tiny.cash.loan.card.bean.upload.InstallRequest
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
 import com.tiny.cash.loan.card.log.LogSaver
+import com.tiny.cash.loan.card.net.NetManager
+import com.tiny.cash.loan.card.net.NetObserver
+import com.tiny.cash.loan.card.net.ResponseException
+import com.tiny.cash.loan.card.net.response.Response
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class GooglePlaySdk {
     var referrerClient: InstallReferrerClient? = null
@@ -48,12 +62,14 @@ class GooglePlaySdk {
                                         KvStorage.put(LocalConfig.LC_UTMMEDIUM, utmMedium)
                                     }
                                 }
+                                initInstanceId(referrerUrl)
                             }
                         } catch (e: RemoteException) {
                             e.printStackTrace()
                         }
 
                         referrerClient?.endConnection()
+
                     }
                     InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED -> {
                     }
@@ -134,5 +150,71 @@ class GooglePlaySdk {
             mContext = context
             return instance
         }
+    }
+
+    private fun initInstanceId(referrerUrl : String) {
+        if (mContext == null) {
+            return
+        }
+        FirebaseAnalytics.getInstance(mContext!!).appInstanceId.addOnCompleteListener(
+            object : OnCompleteListener<String> {
+                override fun onComplete(p0: Task<String>) {
+                    val analyticId = p0.result
+                    uploadInstall(analyticId, referrerUrl)
+                    LogSaver.logToFile("firebase analytic id =  " +  analyticId)
+                }
+
+            }
+        )
+    }
+
+    private var mUploadInstallObserver: NetObserver<Response<*>>? = null
+    private fun uploadInstall(instanceId : String, referrerUrl : String) {
+        val mediumStr = tryGetUtmMedium(referrerUrl)
+        var sourceStr = "other"
+        val gclid = tryGetGCLID(referrerUrl)
+        if (!TextUtils.isEmpty(gclid)) {
+            sourceStr = "google play"
+        } else {
+            if (!TextUtils.isEmpty(mediumStr)) {
+                sourceStr = mediumStr!!
+            } else {
+               val tempStr = tryGetUtmSource(referrerUrl)
+                if (!TextUtils.isEmpty(tempStr)) {
+                    sourceStr = tempStr!!
+                }
+            }
+        }
+        val request = InstallRequest()
+        request.source = sourceStr
+        request.instanceId = instanceId
+
+        request.channel = mediumStr
+        if (Constant.IS_COLLECT) {
+            LogSaver.logToFile("request install " + GsonUtils.toJson(request))
+        }
+        val observable: Observable<Response<*>> =
+            NetManager.getApiService2().recordInstall(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        CommonUtils.disposable(mUploadInstallObserver)
+        mUploadInstallObserver = object : NetObserver<Response<*>>() {
+            override fun onNext(response: Response<*>) {
+                if (response == null) {
+                    return
+                }
+                if (response.isSuccess == true) {
+
+                }
+                if (Constant.IS_COLLECT) {
+                    LogSaver.logToFile("request install " + GsonUtils.toJson(response))
+                }
+            }
+
+            override fun onException(netException: ResponseException) {
+
+            }
+        }
+        observable.subscribeWith(mUploadInstallObserver)
     }
 }

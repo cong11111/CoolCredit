@@ -34,20 +34,6 @@ class KudiCreditApp : MultiDexApplication() {
         if (TextUtils.isEmpty(s) || TextUtils.isEmpty(s1)) {
             GooglePlaySdk.getInstance(this)?.start()
         }
-        initTestLog()
-    }
-
-    private fun initTestLog() {
-        FirebaseAnalytics.getInstance(this).appInstanceId.addOnCompleteListener(
-            object :
-                OnCompleteListener<String> {
-                override fun onComplete(p0: Task<String>) {
-                    Log.e("Test", " task 222222 = " + p0.result)
-                    LogSaver.logToFile("firebase analytic id =  " +  p0.result)
-                }
-
-            }
-        )
     }
 
     companion object {
