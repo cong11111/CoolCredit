@@ -813,7 +813,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test1() {
-        PayActivity2.Companion.launchPayActivity(this, "11111","111111");
+        BindNewCardActivity.Companion.launchAddBankAccount(this);
+//        PayActivity2.Companion.launchPayActivity(this, "11111","111111");
         if (true) {
             return;
         }

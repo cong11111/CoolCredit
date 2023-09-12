@@ -8,11 +8,8 @@ open class BaseFragment2 : BaseFragment() {
 
     private var lastClickMillions: Long = 0
 
-    protected fun checkClickFast(): Boolean {
-        return checkClickFast(true)
-    }
 
-    protected fun checkClickFast(showFlag : Boolean): Boolean {
+    protected fun checkClickFast(showFlag : Boolean = true): Boolean {
         val delay = System.currentTimeMillis() - lastClickMillions
         if (delay < 3000) {
             if (showFlag) {
