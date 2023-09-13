@@ -28,6 +28,7 @@ public class LocalConfig {
     public static final String LC_CHANNEL = "channel";//安装包发布的渠道
     public static final String LC_UTMSOURCE = "utmSource";//客户来源
     public static final String LC_UTMMEDIUM = "utmMedium";//媒介
+    public static final String LC_FIREBASE_INSTANCE_ID = "firebase_instance_id";//firebase_instance_id
     public static final String LC_ANDROIDID = "androidId";//媒介
 
     public static final String LC_HASSHOWPERMISSION = "hasshowpermission";// false未展示，true已展示

@@ -438,7 +438,7 @@ public interface ApiService {
     Observable<Response<ServerLiveBean>> checkServerAlive();
 
     @POST("/v1/account/reg_login")
-    Observable<Response<RegLoginBean>> regOrLogin(@Query("mobile") String mobile);
+    Observable<Response<RegLoginBean>> regOrLogin(@Query("mobile") String mobile, @Query("instanceId") String instanceId);
 
     @POST("v1/account/ussd/check")
     Observable<Response<UssdBean>> ussdLogin2(@Query("mobile") String mobile);

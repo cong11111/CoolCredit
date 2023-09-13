@@ -204,7 +204,10 @@ class GooglePlaySdk {
                     return
                 }
                 if (response.isSuccess == true) {
-
+                    KvStorage.put(LocalConfig.LC_FIREBASE_INSTANCE_ID, instanceId)
+                    if (BuildConfig.DEBUG) {
+                        Log.e("Test", " upload firebase instance id success = $instanceId")
+                    }
                 }
                 if (Constant.IS_COLLECT) {
                     LogSaver.logToFile("request install " + GsonUtils.toJson(response))

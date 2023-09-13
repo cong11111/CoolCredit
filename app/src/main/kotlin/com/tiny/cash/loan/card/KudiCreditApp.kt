@@ -31,7 +31,8 @@ class KudiCreditApp : MultiDexApplication() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         val s = KvStorage.get(LocalConfig.LC_UTMSOURCE, "")
         val s1 = KvStorage.get(LocalConfig.LC_UTMMEDIUM, "")
-        if (TextUtils.isEmpty(s) || TextUtils.isEmpty(s1)) {
+        val instanceId = KvStorage.get(LocalConfig.LC_FIREBASE_INSTANCE_ID, "")
+        if (TextUtils.isEmpty(s) || TextUtils.isEmpty(s1) || TextUtils.isEmpty(instanceId)) {
             GooglePlaySdk.getInstance(this)?.start()
         }
     }

@@ -292,9 +292,10 @@ class LoginOtpFragment : BaseFragment2(){
     private fun regOrLogin(){
         flLoading?.visibility = View.VISIBLE
         KvStorage.put(LocalConfig.LC_TOKEN, "")
+        val instanceId = KvStorage.get(LocalConfig.LC_FIREBASE_INSTANCE_ID, "")
         val finalPhoneNum = getFinalPhoneNum()
         val observable: Observable<Response<RegLoginBean>> =
-            NetManager.getApiService().regOrLogin(finalPhoneNum) //“1”:注册，“2”：修改密码
+            NetManager.getApiService().regOrLogin(finalPhoneNum, instanceId) //“1”:注册，“2”：修改密码
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         CommonUtils.disposable(regOrLoginObserver)
         regOrLoginObserver = object : NetObserver<Response<RegLoginBean>>() {
