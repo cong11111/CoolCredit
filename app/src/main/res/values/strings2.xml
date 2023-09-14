@@ -62,4 +62,5 @@
     <string name="request_permission_desc2">Please read the authorization carefully before using  Icredit</string>
     <string name="request_permission_cancel">disagree</string>
     <string name="request_permission_agree">Allow</string>
+    <string name="my_loan_title_declined">Application Result</string>
 </resources>

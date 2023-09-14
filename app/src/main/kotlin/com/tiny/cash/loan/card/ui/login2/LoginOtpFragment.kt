@@ -454,9 +454,9 @@ class LoginOtpFragment : BaseFragment2(){
         KvStorage.put(LocalConfig.LC_MOBILE, bean.mobile)
         KvStorage.put(LocalConfig.LC_ACCOUNTID, bean.accountId)
         if (TextUtils.equals(bean.active, "1")){
-            FirebaseUtils.logEvent("fireb_click_register")
+            FirebaseUtils.logEvent("fireb_register")
         } else if (TextUtils.equals(bean.active, "2")) {
-            FirebaseUtils.logEvent("fireb_click_sign")
+            FirebaseUtils.logEvent("fireb_sign")
         }
         SPUtils.getInstance().put(Login2Fragment.KEY_PHONE_NUM_2, mPhoneNum)
         if (KeyboardUtils.isSoftInputVisible(requireActivity())){

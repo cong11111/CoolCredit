@@ -631,7 +631,7 @@ public class MainActivity extends BaseActivity {
                     fragment = OverdueFragment.newInstance();
                     break;
                 case Constants.FIVE:
-                    mLoanTitle = getString(R.string.str_declined);
+                    mLoanTitle = getString(R.string.my_loan_title_declined);
                     fragment = LoanDeclinedFragment.Companion.newInstance();
                     break;
                 case Constants.SIX:

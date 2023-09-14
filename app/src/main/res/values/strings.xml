@@ -135,7 +135,6 @@
     <string name="str_change_password">Change Password</string>
 
     <string name="str_uploadfail">loading fail</string>
-    <string name="str_declined">Declined</string>
     <string name="str_repayment">Repayment</string>
     <string name="str_overdue">Overdue</string>
     <string name="str_active">Active</string>
