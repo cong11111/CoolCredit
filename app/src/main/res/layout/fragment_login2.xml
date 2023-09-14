@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -26,7 +27,7 @@
             app:layout_constraintVertical_weight="84"
             app:layout_constraintTop_toBottomOf="@id/view_login2_top"
             app:layout_constraintBottom_toTopOf="@id/tv_login2_icon_desc"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher_round" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_login2_icon_desc"
@@ -202,10 +203,11 @@
         <View
             android:id="@+id/view_login2_bottom"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/fl_login2_et_container"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fl_login2_et_container"
             app:layout_constraintVertical_weight="256"
-            android:layout_height="0dp"/>
+            tools:layout_editor_absoluteX="37dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -324,15 +326,28 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_login2_icon"
-            android:layout_width="@dimen/dp_70"
-            android:layout_height="@dimen/dp_70"
+            android:layout_width="@dimen/dp_65"
+            android:layout_height="@dimen/dp_65"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_7"
             android:src="@drawable/ic_fcc_pc"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintEnd_toStartOf="@id/iv_login2_icon_two_year"
             app:layout_constraintTop_toBottomOf="@id/tv_login2_commit" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_login2_icon_two_year"
+            android:layout_width="@dimen/dp_65"
+            android:src="@drawable/ic_logo_two"
+            app:layout_constraintTop_toTopOf="@id/iv_login2_icon"
+            app:layout_constraintBottom_toBottomOf="@id/iv_login2_icon"
+            app:layout_constraintStart_toEndOf="@id/iv_login2_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_height="@dimen/dp_65"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
