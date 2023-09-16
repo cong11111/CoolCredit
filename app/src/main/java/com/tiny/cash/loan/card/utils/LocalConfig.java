@@ -11,8 +11,6 @@ public class LocalConfig {
     public static final String LC_TOKEN = "token";//TOKEN
     public static final String LC_MOBILE = "mobile";//Mobile
     public static final String LC_PASSWORD = "password";//password
-    public static final String LC_UUID = "uuid";//UUID
-    public static final String LC_ISAGREEMENT = "isAgreement";//是否同意协议
 
     public static final String LC_PLATFORM = "platform"; //应用平台
     public static final String LC_DEVICE = "device";    //设备型号
@@ -45,9 +43,6 @@ public class LocalConfig {
     public static final String LC_AUDITMSG = "auditMsg";
     public static final String LC_FIVESTARTITLE = "fiveStarTitle";
     public static final String LC_FIVESTARCONTENT = "fiveStarContent ";
-
-    public static final String LC_ORDERSUCESS = "ordersucess";
-    public static final String LC_ORDERPROGRESS = "orderprogress";
 
     public static final String LC_SHOW_APP_RELOAN = "showappreloan";// 是否首贷
     public static final String LC_SHOW_APP_STARS2 = "showappstars2";

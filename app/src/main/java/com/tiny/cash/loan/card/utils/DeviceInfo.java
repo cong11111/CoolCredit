@@ -544,13 +544,17 @@ public class DeviceInfo {
             try {
                 ApplicationInfo applicationInfo = packageManager.getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA);
                 channelName = String.valueOf(applicationInfo.metaData.get(Constants.KEY_CHANNEL));
-                KvStorage.put(LocalConfig.LC_CHANNEL, channelName);
+
             } catch (PackageManager.NameNotFoundException e) {
                 if (BuildConfig.DEBUG) {
                     e.printStackTrace();
                 }
             }
         }
+        if (TextUtils.isEmpty(channelName)) {
+            channelName = BuildConfig.CREDIT_CHANNEL;
+        }
+        KvStorage.put(LocalConfig.LC_CHANNEL, channelName);
         return channelName;
     }
 
