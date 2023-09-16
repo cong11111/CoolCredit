@@ -25,8 +25,6 @@ import com.tiny.cash.loan.card.kudicredit.databinding.LayoutLoanProductBinding;
 import com.tiny.cash.loan.card.ui.card.BindNewCardActivity;
 import com.tiny.cash.loan.card.ui.dialog.fragment.ConfirmLoanDialogFragment;
 import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
-import com.tiny.cash.loan.card.feature.bank.AddMoreBankCardActivity;
-import com.tiny.cash.loan.card.feature.bank.BankCardAccountActivity;
 import com.tiny.cash.loan.card.feature.users.ContactsActivity;
 import com.tiny.cash.loan.card.feature.users.BasicInfoActivity;
 import com.tiny.cash.loan.card.feature.users.WorkInfoActivity;
