@@ -2604,7 +2604,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.tiny.cash.loan.card.feature.start.SplashActivity"
+        <activity android:name="com.tiny.cash.loan.card.ui.SplashActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -2615,16 +2615,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="mainactivity"
-                    android:scheme="afshopapp" />
-            </intent-filter>
 
         </activity>
 
@@ -2687,12 +2678,6 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.tiny.cash.loan.card.feature.bank.BankCardAccountActivity"
-            android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name="com.tiny.cash.loan.card.feature.account.ForgotPwdActivity"
             android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"
             android:launchMode="singleTop"
@@ -2707,11 +2692,7 @@
             android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.tiny.cash.loan.card.feature.bank.AddMoreBankCardActivity"
-            android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name="com.tiny.cash.loan.card.message.MessageDetailsActivity"
             android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"

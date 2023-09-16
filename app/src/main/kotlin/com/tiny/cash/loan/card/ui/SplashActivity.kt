@@ -1,4 +1,4 @@
-package com.tiny.cash.loan.card.feature.start
+package com.tiny.cash.loan.card.ui
 
 import android.content.Intent
 import android.os.Bundle

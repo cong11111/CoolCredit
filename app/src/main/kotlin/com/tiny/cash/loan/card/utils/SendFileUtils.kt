@@ -1,4 +1,4 @@
-package com.tiny.cash.loan.card
+package com.tiny.cash.loan.card.utils
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.blankj.utilcode.util.ZipUtils
+import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.log.LogSaver
 import java.io.File
 
@@ -59,7 +60,8 @@ object SendFileUtils {
             if (!TextUtils.isEmpty(traceFile)) {
                 data.putExtra(
                     Intent.EXTRA_STREAM,
-                    getFileUri(context, File(traceFile!!), getAuthority(context)))
+                    getFileUri(context, File(traceFile!!), getAuthority(context))
+                )
             }
             context.startActivity(Intent.createChooser(data, "Icredit Feedback:"))
         } catch (e: Exception) {

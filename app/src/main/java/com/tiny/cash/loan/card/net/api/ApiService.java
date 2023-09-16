@@ -446,16 +446,6 @@ public interface ApiService {
     @POST("/v1/loan/online/discount/amount")
     Observable<Response<DiscountAmountBean>> discountAmount(@Body DiscountRequest request);
 
-    /***
-     * 产品列表
-     * @return
-     */
-    @POST("v1/loan/products")
-    Observable<Response<ProductResponseBean>> productList2(@Query("accountId") String accountId);//不传用户ID；为最高金额产品；预览页使用
-
-    @POST("v1/loan/trial")
-    Observable<Response<TrialResponseBean>> loanTrial2(@Query("prodId") String prodId, @Query("loanAmount") String loanAmount);
-
     @POST("/v1/loan/uploadJson")
     Observable<Response<FlutterwareResponse2Bean>> uploadJson2(@Body FlutterWaveParams params);
 

@@ -2,14 +2,10 @@ package com.tiny.cash.loan.card
 
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatDelegate
-import android.util.Log
 import androidx.multidex.MultiDexApplication
 import co.paystack.android.PaystackSdk
 import com.blankj.utilcode.util.LanguageUtils
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.tiny.cash.loan.card.collect.LocationMgr
 import com.tiny.cash.loan.card.log.LogSaver
 import com.tiny.cash.loan.card.utils.GooglePlaySdk

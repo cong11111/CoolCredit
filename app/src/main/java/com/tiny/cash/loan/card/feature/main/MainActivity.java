@@ -32,7 +32,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
-import com.tiny.cash.loan.card.SendFileUtils;
+import com.tiny.cash.loan.card.utils.SendFileUtils;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
