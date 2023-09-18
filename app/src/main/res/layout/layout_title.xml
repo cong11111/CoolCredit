@@ -7,7 +7,7 @@
         android:id="@+id/layout_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_42"
-        android:background="@color/color_ff3865cb">
+        android:background="@color/theme_color">
 
         <ImageView
             android:id="@+id/iv_back"

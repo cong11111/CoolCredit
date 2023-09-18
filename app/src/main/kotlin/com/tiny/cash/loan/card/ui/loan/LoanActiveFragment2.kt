@@ -111,10 +111,6 @@ class LoanActiveFragment2 : BaseLoanFragment() {
                     return
                 }
                 val discountAmountBean: DiscountAmountBean? = response.body
-                if (discountAmountBean == null) {
-                    Log.e(TAG, " order info error ." + response.body)
-                    return
-                }
                 updateLoanRepaying(discountAmountBean)
             }
 
@@ -134,8 +130,9 @@ class LoanActiveFragment2 : BaseLoanFragment() {
         observable.subscribeWith(mDiscountAmount)
     }
 
-    private fun updateLoanRepaying(bean: DiscountAmountBean) {
-        if (TextUtils.equals(bean.discountSwitch, "0")) {
+    private fun updateLoanRepaying(bean: DiscountAmountBean?) {
+        if (bean == null || TextUtils.isEmpty(bean.discountSwitch) || TextUtils.equals(bean.discountSwitch, "0")
+            || TextUtils.isEmpty(bean.discountAmount)) {
             //关闭
             llBtnTop?.visibility = View.GONE
             viewBottom?.visibility = View.GONE

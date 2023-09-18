@@ -24,6 +24,7 @@ android {
         flavorDimensions("default")
         // dex突破65535的限制
         multiDexEnabled true
+        buildConfigField "String", "CREDIT_CHANNEL", "\"google_play\""
         ndk {
             // 设置支持的SO库架构，第三方给的so库哪几种架构，就配置这几种架构
             abiFilters 'armeabi-v7a', 'arm64-v8a'//,'x86'
@@ -81,7 +82,7 @@ android {
             debuggable false
             // 开启ZipAlign优化
             zipAlignEnabled true
-            buildConfigField "boolean", "IS_AAB_BUILD", "true"
+            buildConfigField "boolean", "IS_AAB_BUILD", "false"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
             signingConfig signingConfigs.release

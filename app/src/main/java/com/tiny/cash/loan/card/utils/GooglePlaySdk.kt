@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.RemoteException
 import android.text.TextUtils
 import android.util.Log
-import android.view.View
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
@@ -13,7 +12,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.tiny.cash.loan.card.Constant
-import com.tiny.cash.loan.card.bean.repay.MonifyResponseBean
 import com.tiny.cash.loan.card.bean.upload.InstallRequest
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
 import com.tiny.cash.loan.card.log.LogSaver
@@ -188,8 +186,9 @@ class GooglePlaySdk {
         val request = InstallRequest()
         request.source = sourceStr
         request.instanceId = instanceId
-
+        val channelName = BuildConfig.CREDIT_CHANNEL
         request.channel = mediumStr
+        KvStorage.put(LocalConfig.LC_CHANNEL, channelName)
         if (Constant.IS_COLLECT) {
             LogSaver.logToFile("request install " + GsonUtils.toJson(request))
         }

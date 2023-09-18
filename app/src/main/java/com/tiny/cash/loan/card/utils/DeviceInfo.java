@@ -551,10 +551,6 @@ public class DeviceInfo {
                 }
             }
         }
-        if (TextUtils.isEmpty(channelName)) {
-            channelName = BuildConfig.CREDIT_CHANNEL;
-        }
-        KvStorage.put(LocalConfig.LC_CHANNEL, channelName);
         return channelName;
     }
 

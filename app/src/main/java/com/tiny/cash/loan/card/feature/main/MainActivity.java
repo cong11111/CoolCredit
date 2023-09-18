@@ -618,7 +618,7 @@ public class MainActivity extends BaseActivity {
                     fragment = ProcessingFragment.newInstance();
                     break;
                 case Constants.TWO:
-                    mLoanTitle = getString(R.string.str_active);
+                    mLoanTitle = getString(R.string.str_repayment);
 //                    fragment = ActiveFragment.newInstance();
                     fragment = LoanActiveFragment2.Companion.newInstance();
                     break;
