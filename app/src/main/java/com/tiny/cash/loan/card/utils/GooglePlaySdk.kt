@@ -186,9 +186,8 @@ class GooglePlaySdk {
         val request = InstallRequest()
         request.source = sourceStr
         request.instanceId = instanceId
-        val channelName = BuildConfig.CREDIT_CHANNEL
-        request.channel = mediumStr
-        KvStorage.put(LocalConfig.LC_CHANNEL, channelName)
+        request.channel = BuildConfig.CREDIT_CHANNEL
+        KvStorage.put(LocalConfig.LC_CHANNEL, mediumStr)
         if (Constant.IS_COLLECT) {
             LogSaver.logToFile("request install " + GsonUtils.toJson(request))
         }

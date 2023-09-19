@@ -19,8 +19,8 @@ android {
         applicationId "com.cash.loan.kudicredit"
         minSdkVersion 19
         targetSdkVersion 33
-        versionCode 30005
-        versionName "3.0.5"
+        versionCode 30006
+        versionName "3.0.6"
         flavorDimensions("default")
         // dex突破65535的限制
         multiDexEnabled true
