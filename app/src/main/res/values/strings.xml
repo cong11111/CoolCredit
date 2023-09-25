@@ -48,12 +48,12 @@
     <string name="str_permission_details">It is used to identify the user identity, prevent malicious programs and safe operation.</string>
     <string name="str_welcome">Welcome to iCredit!</string>
     <string name="str_all_permission_details">To assess your profile and create tailored loan products, we need to get your permissions for accessing information on your Phone, SMS.</string>
-	<string name="str_peace_in_mind">LOAN UP TO</string>
+    <string name="str_peace_in_mind">LOAN UP TO</string>
     <string name="str_make_your_finance">Safe and reliable personal</string>
-	<string name="str_register">REGISTER</string>
-	<string name="str_insert_sim_card">Please insert a SIM card to continue</string>
+    <string name="str_register">REGISTER</string>
+    <string name="str_insert_sim_card">Please insert a SIM card to continue</string>
     <string name="str_not_network">You are not connected to any Network. Please check your internet connection and try again</string>
-	<string name="str_submit">SUBMIT</string>
+    <string name="str_submit">SUBMIT</string>
     <string name="str_bind_new_card">BIND NEW CARD</string>
     <string name="str_Illegal_verification_code">Illegal verification code</string>
     <string name="str_Inconsistent_passwords">Your password does not match the confirm password</string>
@@ -155,4 +155,5 @@ Please  keep a good credit history by in time repayment.  This will greatly impr
     <string name="please_bind_your_bank_card">please bind your bank card</string>
     <string name="server_is_not_alive">server is not alive .</string>
     <string name="resend">Resend</string>
+
 </resources>

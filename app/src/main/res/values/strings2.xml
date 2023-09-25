@@ -63,4 +63,15 @@
     <string name="request_permission_cancel">disagree</string>
     <string name="request_permission_agree">Allow</string>
     <string name="my_loan_title_declined">Application Result</string>
+    <!---->
+    <string name="camera_title">Identity authentication</string>
+    <string name="camera_desc1">Please take the photo of your Voter\'s Card or NIN card.</string>
+    <string name="camera_nin">NIN</string>
+    <string name="camera_voter">Voter\'s Card</string>
+    <string name="camera_btu_tap">Tap to shot</string>
+    <string name="camera_btu_retake">Retake</string>
+    <string name="camera_btu_next">NEXT</string>
+    <string name="camera_btu_selfie">NEXT TO SELFIE</string>
+    <string name="camera_desc2">Please take your Selfie</string>
+    <string name="camera_tips">The photo will only be used to verify your identity and will not be stored.</string>
 </resources>

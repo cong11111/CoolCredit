@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.tiny.cash.loan.card.identification.BlankFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_text"
+            app:layout_constraintBottom_toTopOf="@+id/ll_btus"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_weight="5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="18.75dp"
+            android:layout_marginEnd="18.75dp"
+            android:gravity="start|center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:text="@string/camera_desc1"
+            android:textColor="#1C1F3E"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/ll_btus"
+            app:layout_constraintBottom_toTopOf="@+id/ll_camera_photo"
+            app:layout_constraintTop_toBottomOf="@+id/tv_text"
+            app:layout_constraintVertical_weight="6"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="18.75dp"
+            android:layout_marginEnd="18.75dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_nin"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="18.75dp"
+                android:layout_weight="1"
+                android:background="@drawable/tv_camera_select_btu"
+                android:gravity="center"
+                android:text="@string/camera_nin"
+                android:textColor="#FF3FC2A3"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_voter_card"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="18.75dp"
+                android:layout_weight="1"
+                android:background="@drawable/tv_camera_noselect_btu"
+                android:gravity="center"
+                android:text="@string/camera_voter"
+                android:textColor="#661C1F3E"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/ll_camera_photo"
+            app:layout_constraintBottom_toTopOf="@+id/view_test1"
+            app:layout_constraintTop_toBottomOf="@+id/ll_btus"
+            app:layout_constraintVertical_weight="15"
+            android:layout_width="match_parent"
+
+            android:layout_height="0dp"
+            android:layout_marginStart="18.75dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="18.75dp"
+            android:background="#F8F8FA"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_picture_nincard"
+                    android:layout_width="288dp"
+                    android:layout_height="208dp"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_camera_nin"
+
+                    />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_picture_votercard"
+                    android:layout_width="288dp"
+                    android:layout_height="208dp"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_camrea_voter"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_camera_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="45dp"
+                    android:background="@drawable/tv_camera_color_top"
+                    android:drawableLeft="@drawable/ic_camera_picture"
+                    android:paddingStart="85dp"
+                    android:paddingEnd="85dp"
+                    android:gravity="center"
+                    android:text="@string/camera_btu_tap"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+            <!-- android:drawablePadding="-95dp"
+                    android:paddingLeft="80dp"-->
+        </FrameLayout>
+
+        <View
+            android:id="@+id/view_test1"
+            app:layout_constraintBottom_toTopOf="@+id/tv_camera_tips"
+            app:layout_constraintTop_toBottomOf="@+id/ll_camera_photo"
+            app:layout_constraintVertical_weight="1.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_camera_tips"
+            app:layout_constraintBottom_toTopOf="@+id/view_test2"
+            app:layout_constraintTop_toBottomOf="@+id/view_test1"
+            app:layout_constraintVertical_weight="2.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="18.75dp"
+            android:layout_marginEnd="18.75dp"
+            android:background="@drawable/tv_camera_color_tips"
+            android:drawableLeft="@drawable/ic_camera_security"
+            android:gravity="center_vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/camera_tips"
+            android:textColor="#F9B023"
+            android:textSize="12sp" />
+
+        <View
+            android:id="@+id/view_test2"
+            app:layout_constraintBottom_toTopOf="@+id/view_test3"
+            app:layout_constraintTop_toBottomOf="@+id/tv_camera_tips"
+            app:layout_constraintVertical_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+        <FrameLayout
+            android:id="@+id/view_test3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_test2"
+            app:layout_constraintVertical_weight="4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_camera_next"
+                app:layout_constraintBottom_toTopOf="@+id/view_test3"
+                app:layout_constraintTop_toBottomOf="@+id/view_test2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="18.75dp"
+                android:layout_marginEnd="18.75dp"
+                android:background="@drawable/tv_camera_next_colorbtu"
+                android:gravity="center"
+                android:text="@string/camera_btu_selfie"
+                android:textColor="#FFFFFFFF"
+                android:textSize="16sp"
+                android:visibility="gone" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>
