@@ -2678,11 +2678,6 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.tiny.cash.loan.card.feature.account.ForgotPwdActivity"
-            android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.tiny.cash.loan.card.feature.repayment.PaymentActivity"
             android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"
             android:launchMode="singleTop"

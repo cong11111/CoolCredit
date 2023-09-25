@@ -9,9 +9,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.BarUtils
-import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.bean.bank.BankResponseBean
-import com.tiny.cash.loan.card.bean.bank.CardResponseBean
 import com.tiny.cash.loan.card.event.BankListEvent
 import com.tiny.cash.loan.card.global.ConfigMgr
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
@@ -26,8 +24,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
-import org.json.JSONException
-import org.json.JSONObject
 import java.util.*
 
 class BankListActivity : BaseActivity2() {
