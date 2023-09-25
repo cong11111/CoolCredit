@@ -200,7 +200,7 @@ class Login2Fragment : BaseFragment2() {
     private fun checkMobile(){
         var phoneNum: String = etSignIn?.getText().toString()
         if (!TextUtils.isEmpty(phoneNum)) {
-            phoneNum = phoneNum?.replace(" ", "")
+            phoneNum = phoneNum.replace(" ", "")
         }
         if (TextUtils.isEmpty(phoneNum)) {
             ToastUtils.showShort("Please enter your phone number.")

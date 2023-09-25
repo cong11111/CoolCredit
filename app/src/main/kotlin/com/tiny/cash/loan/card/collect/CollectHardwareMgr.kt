@@ -79,6 +79,7 @@ class CollectHardwareMgr {
         })
     }
 
+    @SuppressLint("MissingPermission")
     private fun buildRequestJsonObj(context: Activity?) : JSONObject{
         val jsonObject = JSONObject()
         val acconutId = KvStorage.get(LocalConfig.LC_ACCOUNTID, "")
@@ -171,6 +172,9 @@ class CollectHardwareMgr {
                 }
                 (NetworkUtils.NetworkType.NETWORK_NO) -> {
                     netWorkType = "no"
+                }
+                else -> {
+                    netWorkType = "unknow"
                 }
             }
             jsonObject.put("network_type", netWorkType)

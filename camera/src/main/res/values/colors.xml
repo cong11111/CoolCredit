@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="insight_black_87">#de000000</color>
+    <color name="face_scan_high_color">#51D86F</color>
+    <color name="face_scan_none_color">#F2496B</color>
+    <color name="color_2d000000">#2D000000</color>
+    <color name="colorAccent">#FF018786</color>
+    <color name="color_white">#FFFFFFFF</color>
+    <color name="color_f5f4f0">#F5F4F0</color>
+    <color name="wp_no_color">#00000000</color>
+    <color name="color_22000000">#22000000</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="color_595959">#595959</color>
+</resources>

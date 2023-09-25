@@ -1,2 +1,4 @@
 include ':app'
+include ':camera'
 rootProject.name = "CoolCredit"
+

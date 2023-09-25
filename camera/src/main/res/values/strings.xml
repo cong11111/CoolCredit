@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="face_scan_lighting">Lighting</string>
+    <string name="face_scan_face_position">Face position</string>
+    <string name="face_scan_look_straight">Look straight</string>
+    <string name="camera_access">Camera Access</string>
+    <string name="camera_access_des">To complete your skin analysis,we need to access your camera.Please go to Settings and allow camera access.</string>
+    <string name="go_setting">Go to Settings</string>
+    <string name="take">Take</string>
+    <string name="retake">Retake</string>
+    <string name="face_scan_tips">Please position your face in the frame</string>
+    <string name="skin_analysis">Skin Analysis</string>
+    <string name="edit">Edit</string>
+</resources>

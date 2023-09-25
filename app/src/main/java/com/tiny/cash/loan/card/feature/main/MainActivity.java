@@ -29,6 +29,7 @@ import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.chocolate.moudle.scan.my.GameActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
@@ -781,7 +782,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test1() {
-        BindNewCardActivity.Companion.launchAddBankAccount(this);
+        GameActivity.showMe(this);
+//        BindNewCardActivity.Companion.launchAddBankAccount(this);
 //        PayActivity2.Companion.launchPayActivity(this, "11111","111111");
         if (true) {
             return;
