@@ -11,9 +11,6 @@ public class LocalConfig {
     public static final String LC_TOKEN = "token";//TOKEN
     public static final String LC_MOBILE = "mobile";//Mobile
     public static final String LC_PASSWORD = "password";//password
-    public static final String LC_UUID = "uuid";//UUID
-    public static final String LC_ISLOGIN = "islogin";//是否登陆
-    public static final String LC_ISAGREEMENT = "isAgreement";//是否同意协议
 
     public static final String LC_PLATFORM = "platform"; //应用平台
     public static final String LC_DEVICE = "device";    //设备型号
@@ -29,6 +26,7 @@ public class LocalConfig {
     public static final String LC_CHANNEL = "channel";//安装包发布的渠道
     public static final String LC_UTMSOURCE = "utmSource";//客户来源
     public static final String LC_UTMMEDIUM = "utmMedium";//媒介
+    public static final String LC_FIREBASE_INSTANCE_ID = "firebase_instance_id";//firebase_instance_id
     public static final String LC_ANDROIDID = "androidId";//媒介
 
     public static final String LC_HASSHOWPERMISSION = "hasshowpermission";// false未展示，true已展示
@@ -45,9 +43,6 @@ public class LocalConfig {
     public static final String LC_AUDITMSG = "auditMsg";
     public static final String LC_FIVESTARTITLE = "fiveStarTitle";
     public static final String LC_FIVESTARCONTENT = "fiveStarContent ";
-
-    public static final String LC_ORDERSUCESS = "ordersucess";
-    public static final String LC_ORDERPROGRESS = "orderprogress";
 
     public static final String LC_SHOW_APP_RELOAN = "showappreloan";// 是否首贷
     public static final String LC_SHOW_APP_STARS2 = "showappstars2";

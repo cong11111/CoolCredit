@@ -13,8 +13,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import com.tiny.cash.loan.card.kudicredit.R;
-import com.tiny.cash.loan.card.feature.main.MainActivity;
-import com.tiny.cash.loan.card.feature.start.PermissionActivity;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityResetPwdBinding;
 import com.tiny.cash.loan.card.utils.CommonUtils;
@@ -234,7 +232,6 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
             public void onNext(Response<RegistrationBO> response) {
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
-                    KvStorage.put(LocalConfig.LC_ISLOGIN, true);
                     KvStorage.put(LocalConfig.LC_TOKEN,response.getBody().getToken());
                     KvStorage.put(LocalConfig.LC_ACCOUNTID,response.getBody().getAccountId());
                     KvStorage.put(LocalConfig.LC_MOBILE,phone);

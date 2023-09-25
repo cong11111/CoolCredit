@@ -202,7 +202,7 @@ public class ConfirmLoanDialogFragment extends BaseDialogFragment<ConfirmLoanDia
                         FirebaseData data = new FirebaseData();
                         data.setOrderId(orderId);
                         data.setStatus(1);
-                        SPUtils.getInstance().put(BaseFragment.KEY_FIREBASE_DATA, GsonUtils.toJson(data));
+                        SPUtils.getInstance().put(Constant.KEY_FIREBASE_DATA, GsonUtils.toJson(data));
 //                        if (LocalConfig.isNewUser())
 //                            FirebaseLogUtils.Log("af_new_apply_confirm");
 //                        else

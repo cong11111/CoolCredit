@@ -5,9 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,38 +14,39 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.JsonUtils;
+import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
-import com.tiny.cash.loan.card.SendFileUtils;
+import com.tiny.cash.loan.card.utils.SendFileUtils;
+import com.tiny.cash.loan.card.base.BaseActivity;
+import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
 import com.tiny.cash.loan.card.collect.CollectDataMgr;
 import com.tiny.cash.loan.card.collect.CollectHardwareMgr;
 import com.tiny.cash.loan.card.collect.LocationMgr;
-import com.tiny.cash.loan.card.collect.item.CollectAppInfoMgr;
 import com.tiny.cash.loan.card.collect.item.CollectSmsMgr;
-import com.tiny.cash.loan.card.feature.repayment.PaymentMethodActivity;
-import com.tiny.cash.loan.card.feature.users.ContactsActivity;
-import com.tiny.cash.loan.card.kudicredit.BuildConfig;
-import com.tiny.cash.loan.card.kudicredit.R;
-import com.tiny.cash.loan.card.net.response.data.bean.AuthResult;
-import com.tiny.cash.loan.card.ui.adapter.DrawerAdapter;
-import com.tiny.cash.loan.card.base.BaseActivity;
-import com.tiny.cash.loan.card.base.BaseFragment;
-import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
-import com.tiny.cash.loan.card.feature.bank.AddMoreBankCardActivity;
-import com.tiny.cash.loan.card.feature.loan.ActiveFragment;
-import com.tiny.cash.loan.card.feature.loan.DeclinedFragment;
+import com.tiny.cash.loan.card.dialog.RequestPermissionDialog;
+import com.tiny.cash.loan.card.ui.loan.LoanActiveFragment2;
+import com.tiny.cash.loan.card.feature.loan.LoanOrderHelp;
 import com.tiny.cash.loan.card.feature.loan.OverdueFragment;
 import com.tiny.cash.loan.card.feature.loan.PaymentProgressFragment;
 import com.tiny.cash.loan.card.feature.loan.ProcessingFragment;
 import com.tiny.cash.loan.card.feature.loan.ProductFragment;
-import com.tiny.cash.loan.card.feature.loan.LoanOrderHelp;
 import com.tiny.cash.loan.card.feature.menu.AboutFragment;
 import com.tiny.cash.loan.card.feature.menu.BankAccountFragment;
 import com.tiny.cash.loan.card.feature.menu.CallUsFragment;
@@ -57,47 +55,40 @@ import com.tiny.cash.loan.card.feature.menu.HelpFragment;
 import com.tiny.cash.loan.card.feature.menu.MessageFragment;
 import com.tiny.cash.loan.card.feature.menu.MyProfileFragment;
 import com.tiny.cash.loan.card.feature.menu.OfflinePaymentFragment;
-import com.tiny.cash.loan.card.utils.AppUtils;
-import com.tiny.cash.loan.card.utils.CommonUtils;
-import com.tiny.cash.loan.card.utils.DeviceInfo;
-import com.tiny.cash.loan.card.utils.FirebaseUtils;
-import com.tiny.cash.loan.card.utils.KvStorage;
-import com.tiny.cash.loan.card.utils.LocalConfig;
-import com.tiny.cash.loan.card.utils.PermissionUtil;
-import com.tiny.cash.loan.card.utils.Utils;
-
-import com.tiny.cash.loan.card.net.ResponseException;
+import com.tiny.cash.loan.card.kudicredit.BuildConfig;
+import com.tiny.cash.loan.card.kudicredit.R;
+import com.tiny.cash.loan.card.message.EventMessage;
 import com.tiny.cash.loan.card.net.NetManager;
 import com.tiny.cash.loan.card.net.NetObserver;
+import com.tiny.cash.loan.card.net.ResponseException;
+import com.tiny.cash.loan.card.net.response.BaseResponse;
+import com.tiny.cash.loan.card.net.response.Response;
 import com.tiny.cash.loan.card.net.response.data.bean.AppConfigFile;
+import com.tiny.cash.loan.card.net.response.data.bean.AuthResult;
 import com.tiny.cash.loan.card.net.response.data.bean.UpLoadAPPVersion;
 import com.tiny.cash.loan.card.net.response.data.order.LoanOrderDetail;
 import com.tiny.cash.loan.card.net.response.data.order.MessageBean;
 import com.tiny.cash.loan.card.net.response.data.order.OrderStatus;
-import com.tiny.cash.loan.card.net.response.BaseResponse;
-import com.tiny.cash.loan.card.net.response.Response;
 import com.tiny.cash.loan.card.net.server.ApiServerImpl;
+import com.tiny.cash.loan.card.ui.adapter.DrawerAdapter;
+import com.tiny.cash.loan.card.ui.card.BindNewCardActivity;
+import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
+import com.tiny.cash.loan.card.ui.loan.LoanDeclinedFragment;
+import com.tiny.cash.loan.card.ui.login2.Login2Activity;
+import com.tiny.cash.loan.card.ui.menu.VirtualAccountFragment;
+import com.tiny.cash.loan.card.ui.pay2.PayActivity2;
+import com.tiny.cash.loan.card.utils.AppUtils;
+import com.tiny.cash.loan.card.utils.CommonUtils;
+import com.tiny.cash.loan.card.utils.FirebaseUtils;
+import com.tiny.cash.loan.card.utils.KvStorage;
+import com.tiny.cash.loan.card.utils.LocalConfig;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import co.paystack.android.utils.StringUtils;
-import com.tiny.cash.loan.card.message.EventMessage;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -107,13 +98,6 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawer;
     private Fragment mCurrentFragment;
     private ImageView mImageView;//, android.Manifest.permission.CAMERA  , android.Manifest.permission.RECORD_AUDIO
-    private String[] permissions = new String[]{
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
-//            , android.Manifest.permission.READ_CONTACTS, android.Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            android.Manifest.permission.READ_SMS};
-
-    public static final int REQUEST_PERMISSIONS = 60;
     private NetObserver loutObserver, UpVersionObserver, orderObserver, flutterObserver;
     private TextView mRefresh;
     DrawerAdapter drawerAdapter;
@@ -136,6 +120,7 @@ public class MainActivity extends BaseActivity {
         }
         initData();
         init();
+        SPUtils.getInstance().put(Constant.KEY_LOGIN_TIME, System.currentTimeMillis());
     }
 
     public void init() {
@@ -153,15 +138,15 @@ public class MainActivity extends BaseActivity {
                 upLoadFcmtoken();
             });
         } catch (Exception e) {
-            if(BuildConfig.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 e.printStackTrace();
             }
         }
 
-        boolean b = NotificationManagerCompat.from(this).areNotificationsEnabled();
-        if (!b) {
-            goToSetting();
-        }
+//        boolean b = NotificationManagerCompat.from(this).areNotificationsEnabled();
+//        if (!b) {
+//            goToSetting();
+//        }
     }
 
     NetObserver configObserver;
@@ -197,7 +182,7 @@ public class MainActivity extends BaseActivity {
 
                 String str = body.getPaystackCardBind();
                 if (!StringUtils.isEmpty(str)) {
-                    boolean paystackCardBind = Constants.ONE.equals(str)? true : false;
+                    boolean paystackCardBind = Constants.ONE.equals(str) ? true : false;
 
                     if (paystackCardBind) {
                         showBankNotify();
@@ -279,37 +264,54 @@ public class MainActivity extends BaseActivity {
     }
 
     private void requestPermissions() {
-        if (PermissionUtil.hasPermission(this, permissions)) {
-            DeviceInfo.getInstance(this).init();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                PermissionUtils.permission(Manifest.permission.POST_NOTIFICATIONS).request();
-            }
+        boolean hasPermission = PermissionUtils.isGranted(
+//            PermissionConstants.LOCATION,
+//            PermissionConstants.CAMERA,
+                PermissionConstants.SMS
+//            PermissionConstants.CONTACTS,
+//            PermissionConstants.STORAGE,
+        );
+        boolean hasPermissionCoarseLocation = PermissionUtils.isGranted(Manifest.permission.ACCESS_COARSE_LOCATION);
+//        val hasPermissionCallLog = PermissionUtils.isGranted(Manifest.permission.READ_CALL_LOG)
+//        val hasPermissionReadPhoneState =
+//            PermissionUtils.isGranted(Manifest.permission.READ_PHONE_STATE)
+//                if (false && hasPermission) {
+        if (hasPermissionCoarseLocation && hasPermission) {
             executeCache();
         } else {
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-//                Utils.showToast(this, "Storage permissions are needed for Exploring.", 500);
-//            } else {
-            ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSIONS);
-//            }
+            requestPermissionInternal();
         }
+
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_PERMISSIONS: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    DeviceInfo.getInstance(this).init();
-                    executeCache();
+    private void requestPermissionInternal() {
+        RequestPermissionDialog dialog = new RequestPermissionDialog(this);
+        dialog.setOnItemClickListener(new RequestPermissionDialog.OnItemClickListener() {
+            @Override
+            public void onClickAgree() {
+                PermissionUtils utils;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    utils = PermissionUtils.permission(Manifest.permission.READ_SMS,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.POST_NOTIFICATIONS);
                 } else {
-                    Utils.showToast(MainActivity.this, "Permission grating failed", 500);
-                    requestPermissions();
+                    utils = PermissionUtils.permission(Manifest.permission.READ_SMS,
+                            Manifest.permission.ACCESS_COARSE_LOCATION);
                 }
-                return;
+                utils.callback(new PermissionUtils.SimpleCallback() {
+                    @Override
+                    public void onGranted() {
+                        executeCache();
+                    }
+
+                    @Override
+                    public void onDenied() {
+                        ToastUtils.showShort("please allow permission.");
+                    }
+                }).request();
             }
-        }
+        });
+        dialog.show();
     }
 
     private void RequestUpVersion() {
@@ -374,9 +376,10 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onNext(BaseResponse response) {
                 if (response.isSuccess()) {
-                    KvStorage.put(LocalConfig.LC_ISLOGIN, false);
+
+                    KvStorage.put(LocalConfig.LC_ACCOUNTID, "");
                     FirebaseMessaging.getInstance().deleteToken();
-                    startIntent(HomeActivity.class);
+                    startIntent(Login2Activity.class);
                     finish();
                 } else {
                     showToast(response.getStatus().getMsg());
@@ -536,38 +539,6 @@ public class MainActivity extends BaseActivity {
                 .show();
     }
 
-    private void goToSetting() {
-
-        Intent intent = new Intent();
-
-        if (Build.VERSION.SDK_INT >= 26) {// android 8.0引导
-
-            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-
-            intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
-
-        } else if (Build.VERSION.SDK_INT >= 21) { // android 5.0-7.0
-
-            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-
-            intent.putExtra("app_package", getPackageName());
-
-            intent.putExtra("app_uid", getApplicationInfo().uid);
-
-        } else {//其它
-
-            intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-
-            intent.setData(Uri.fromParts("package", getPackageName(), null));
-
-        }
-
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        startActivity(intent);
-
-    }
-
     public void showBankNotify() {
         LoanOrderHelp.getInstant().bindCardNotify(it -> {
             if (it == null)
@@ -578,9 +549,10 @@ public class MainActivity extends BaseActivity {
                         .setPositiveButtonTxt("Ignore")
                         .setNegativeButtonTxt("Go binding card")
                         .setNegativeListener(() -> {
-                            Intent intent = new Intent(this, AddMoreBankCardActivity.class);
-                            intent.putExtra("type", "main");
-                            startActivity(intent);
+                            BindNewCardActivity.Companion.launchAddBankCard(this);
+//                            Intent intent = new Intent(this, AddMoreBankCardActivity.class);
+//                            intent.putExtra("type", "main");
+//                            startActivity(intent);
                         }).show();
             }
         });
@@ -646,8 +618,9 @@ public class MainActivity extends BaseActivity {
                     fragment = ProcessingFragment.newInstance();
                     break;
                 case Constants.TWO:
-                    mLoanTitle = getString(R.string.str_active);
-                    fragment = ActiveFragment.newInstance();
+                    mLoanTitle = getString(R.string.str_repayment);
+//                    fragment = ActiveFragment.newInstance();
+                    fragment = LoanActiveFragment2.Companion.newInstance();
                     break;
                 case Constants.THREE:
                     mLoanTitle = getString(R.string.menu_My_loan);
@@ -658,8 +631,8 @@ public class MainActivity extends BaseActivity {
                     fragment = OverdueFragment.newInstance();
                     break;
                 case Constants.FIVE:
-                    mLoanTitle = getString(R.string.str_declined);
-                    fragment = DeclinedFragment.newInstance();
+                    mLoanTitle = getString(R.string.my_loan_title_declined);
+                    fragment = LoanDeclinedFragment.Companion.newInstance();
                     break;
                 case Constants.SIX:
                     mLoanTitle = getString(R.string.str_repayment);
@@ -730,6 +703,21 @@ public class MainActivity extends BaseActivity {
         ft.commitAllowingStateLoss();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PayActivity2.REQUEST_CODE_TO_PAY) {
+            if (resultCode == PayActivity2.RESULT_CODE_SELECT_BANK_TRANFER) {
+                VirtualAccountFragment homeFragment = new VirtualAccountFragment();
+                showFragment(homeFragment);
+                mTv_title.setText(getText(R.string.setting_virtual_account));
+                if (drawerAdapter != null) {
+                    drawerAdapter.selectPosition(-1);
+                }
+                requestTime = System.currentTimeMillis();
+            }
+        }
+    }
 
     /**
      * 第三种方法
@@ -793,10 +781,11 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test1() {
-//        startIntent(PaymentMethodActivity.class);
-//        if (true) {
-//            return;
-//        }
+        BindNewCardActivity.Companion.launchAddBankAccount(this);
+//        PayActivity2.Companion.launchPayActivity(this, "11111","111111");
+        if (true) {
+            return;
+        }
         CollectDataMgr.Companion.getSInstance().collectAuthData("11111111", new BaseCollectDataMgr.Observer() {
             @Override
             public void success(@Nullable AuthResult response) {
@@ -819,7 +808,6 @@ public class MainActivity extends BaseActivity {
                 try {
                     LocationMgr.getInstance().getLocation();
                     CollectSmsMgr.Companion.getSInstance().tryCacheSms();
-                    CollectAppInfoMgr.Companion.getSInstance().getAesAppInfoStr();
                 } catch (Exception e) {
                     if (BuildConfig.DEBUG) {
                         throw e;

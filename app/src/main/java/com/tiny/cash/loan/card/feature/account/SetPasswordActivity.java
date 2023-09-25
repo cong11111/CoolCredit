@@ -259,7 +259,6 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
                 if (response.isSuccess()) {
                     FirebaseUtils.logEvent("fireb_register");
 //                    FirebaseLogUtils.Log("af_registered_successful");
-                    KvStorage.put(LocalConfig.LC_ISLOGIN, true);
                     KvStorage.put(LocalConfig.LC_TOKEN, response.getBody().getToken());
                     KvStorage.put(LocalConfig.LC_ACCOUNTID, response.getBody().getAccountId());
                     KvStorage.put(LocalConfig.LC_MOBILE, response.getBody().getMobile());

@@ -8,7 +8,7 @@ import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityWorkDetailsBinding;
-import com.tiny.cash.loan.card.feature.bank.BankCardAccountActivity;
+import com.tiny.cash.loan.card.ui.card.BindNewCardActivity;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
@@ -198,7 +198,7 @@ public class WorkInfoActivity extends BaseActivity implements View.OnClickListen
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
                     FirebaseUtils.logEvent("fireb_data3");
-                    startIntent(BankCardAccountActivity.class);
+                    BindNewCardActivity.Companion.launchAddBankAccount(WorkInfoActivity.this);
                     finish();
                 } else {
                     showToast(response.getStatus().getMsg());

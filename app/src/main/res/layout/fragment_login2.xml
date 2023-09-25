@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<!--    375-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/view_login2_top"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/iv_login2_top_icon"
+            app:layout_constraintVertical_weight="35" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_login2_top_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_weight="84"
+            app:layout_constraintTop_toBottomOf="@id/view_login2_top"
+            app:layout_constraintBottom_toTopOf="@id/tv_login2_icon_desc"
+            android:src="@mipmap/ic_launcher_round" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_login2_icon_desc"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/dp_25"
+            android:layout_marginEnd="@dimen/dp_25"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:autoSizeMaxTextSize="25sp"
+            android:autoSizeMinTextSize="1sp"
+            android:autoSizeStepGranularity= "1sp"
+            android:layout_marginTop="@dimen/dp_8"
+            app:layout_constraintTop_toBottomOf="@id/iv_login2_top_icon"
+            app:layout_constraintBottom_toTopOf="@id/view_login2_margin2"
+            app:layout_constraintVertical_weight="28"
+            android:text="@string/app_name"
+            android:textColor="#1C1F3E"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/view_login2_margin2"
+            android:layout_width="match_parent"
+            app:layout_constraintVertical_weight="13"
+            app:layout_constraintTop_toBottomOf="@id/tv_login2_icon_desc"
+            app:layout_constraintBottom_toTopOf="@id/tv_login2_title1"
+            android:layout_height="0dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_login2_title1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintVertical_weight="46"
+            android:layout_marginStart="@dimen/dp_25"
+            app:layout_constraintTop_toBottomOf="@id/view_login2_margin2"
+            app:layout_constraintBottom_toTopOf="@id/tv_login2_desc1"
+            android:layout_marginEnd="@dimen/dp_25"
+            android:gravity="start|center_vertical"
+            android:maxLines="2"
+            android:includeFontPadding="false"
+            android:autoSizeMaxTextSize="21sp"
+            android:autoSizeMinTextSize="1sp"
+            android:autoSizeStepGranularity= "1sp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/please_enter_your_phone_number"
+            android:textColor="#1C1F3E"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_login2_desc1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintVertical_weight="32"
+            app:layout_constraintTop_toBottomOf="@id/tv_login2_title1"
+            app:layout_constraintBottom_toTopOf="@id/view_login2_margin3"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="@dimen/dp_25"
+            android:includeFontPadding="false"
+            android:autoSizeMaxTextSize="15sp"
+            android:autoSizeMinTextSize="1sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:layout_marginEnd="@dimen/dp_25"
+            android:maxLines="2"
+            android:gravity="start|center_vertical"
+            android:text="@string/use_the_phone_number_linked"
+            android:textColor="#991C1F3E"
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/view_login2_margin3"
+            android:layout_width="match_parent"
+            app:layout_constraintVertical_weight="18"
+            app:layout_constraintTop_toBottomOf="@id/tv_login2_desc1"
+            app:layout_constraintBottom_toTopOf="@id/fl_login2_et_container"
+            android:layout_height="0dp"/>
+
+        <FrameLayout
+            android:id="@+id/fl_login2_et_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintVertical_weight="56"
+            android:layout_marginStart="@dimen/dp_25"
+            app:layout_constraintTop_toBottomOf="@id/view_login2_margin3"
+            app:layout_constraintBottom_toTopOf="@id/view_login2_bottom"
+            android:layout_marginEnd="@dimen/dp_25">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:text="+"
+                        android:textSize="18sp"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_signin_input"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:theme="@style/login_spinner"
+                        android:background="@drawable/spinner_loan_logo_arrow"
+                        android:gravity="center_vertical" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="|"
+                        android:textColor="#401C1F3E"
+                        android:textSize="@dimen/sp_18" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/et_signin_phone_num"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:hint="@string/enter_you_phone_number"
+                            android:inputType="number"
+                            android:lines="1"
+                            android:maxLength="24"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textColor="#801C1F3E"
+                            android:textColorHint="#401C1F3E"
+                            android:textCursorDrawable="@drawable/et_cursor_color"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_signin_phonenum_clear"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical|end"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="5dp"
+                            android:src="@drawable/ic_edit_text_clear"
+                            android:visibility="gone" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:background="#301C1F3E" />
+
+        </FrameLayout>
+
+        <View
+            android:id="@+id/view_login2_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fl_login2_et_container"
+            app:layout_constraintVertical_weight="256"
+            tools:layout_editor_absoluteX="37dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="@dimen/dp_35"
+        android:layout_marginEnd="@dimen/dp_35">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_login2_agree_state"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_20"
+            android:src="@drawable/btn_disagree"
+            app:layout_constraintBottom_toBottomOf="@id/cl_login2_terms_privacy"
+            app:layout_constraintEnd_toStartOf="@id/cl_login2_terms_privacy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cl_login2_terms_privacy" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_login2_terms_privacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_20"
+            app:layout_constraintBottom_toTopOf="@id/tv_login2_commit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_login2_agree_state"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="0dp"
+                app:layout_constraintStart_toStartOf="@id/tv_login2_terms_privacy_2"
+                app:layout_constraintEnd_toEndOf="@id/tv_login2_terms_privacy_4"
+                app:layout_constraintBottom_toBottomOf="@id/tv_login2_terms_privacy_1"
+                android:background="#019FB8"
+                android:layout_marginBottom="1dp"
+                android:layout_height="0.5dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_login2_terms_privacy_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="@string/please_read_the_terms_1"
+                android:textColor="#FF000000"
+                android:textSize="13sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_login2_terms_privacy_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:layout_marginStart="2dp"
+                android:text="@string/please_read_the_terms_2"
+                android:textColor="#019FB8"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@id/tv_login2_terms_privacy_1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_login2_terms_privacy_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:includeFontPadding="false"
+                android:text="@string/please_read_the_terms_3"
+                android:textColor="#019FB8"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@id/tv_login2_terms_privacy_2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_login2_terms_privacy_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:includeFontPadding="false"
+                android:text="@string/please_read_the_terms_4"
+                android:textColor="#019FB8"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@id/tv_login2_terms_privacy_3" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_login2_terms_privacy_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="@string/please_read_the_terms_5"
+                android:textColor="#FF000000"
+                android:layout_marginTop="2dp"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/tv_login2_terms_privacy_1"
+                app:layout_constraintTop_toBottomOf="@id/tv_login2_terms_privacy_1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_login2_commit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/selector_commit_bg"
+            android:enabled="true"
+            android:gravity="center"
+            android:text="@string/register_login"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/sp_17"
+            app:layout_constraintBottom_toTopOf="@id/iv_login2_icon"
+            app:layout_constraintTop_toBottomOf="@id/cl_login2_terms_privacy" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_login2_icon"
+            android:layout_width="@dimen/dp_65"
+            android:layout_height="@dimen/dp_65"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_7"
+            android:src="@drawable/ic_fcc_pc"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintEnd_toStartOf="@id/iv_login2_icon_two_year"
+            app:layout_constraintTop_toBottomOf="@id/tv_login2_commit" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_login2_icon_two_year"
+            android:layout_width="@dimen/dp_65"
+            android:src="@drawable/ic_logo_two"
+            app:layout_constraintTop_toTopOf="@id/iv_login2_icon"
+            app:layout_constraintBottom_toBottomOf="@id/iv_login2_icon"
+            app:layout_constraintStart_toEndOf="@id/iv_login2_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_height="@dimen/dp_65"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_login2_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/theme_color" />
+
+    </FrameLayout>
+
+</FrameLayout>

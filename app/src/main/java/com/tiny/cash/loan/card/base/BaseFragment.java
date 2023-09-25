@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.data.FirebaseData;
 import com.tiny.cash.loan.card.kudicredit.R;
@@ -225,13 +226,13 @@ public class BaseFragment extends Fragment {
 
     }
 
-    public static String KEY_FIREBASE_DATA = "key_firebase_data";
+
 
     public boolean checkNeedShowLog(String orderId) {
         if (orderId == null) {
             return false;
         }
-        String dataStr = SPUtils.getInstance().getString(KEY_FIREBASE_DATA);
+        String dataStr = SPUtils.getInstance().getString(Constant.KEY_FIREBASE_DATA);
         if (!TextUtils.isEmpty(dataStr)) {
             FirebaseData firebaseData = GsonUtils.fromJson(dataStr, FirebaseData.class);
             if (firebaseData != null) {

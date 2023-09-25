@@ -228,8 +228,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             startActivity(intent); //页面跳转
         }
         if (v == binding.tvStrForgotPwd) {
-            Intent intent = new Intent(this, ForgotPwdActivity.class);
-            startActivity(intent); //页面跳转
+//            Intent intent = new Intent(this, ForgotPwdActivity.class);
+//            startActivity(intent); //页面跳转
         }
         if (v == binding.btnLogin) {
             login();
@@ -345,8 +345,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onNext(Response<UserInfo> response) {
                 dismissProgressDialogFragment();
                 if (response.isSuccess()) {
-//                    FirebaseLogUtils.Log("af_log_in");
-                    KvStorage.put(LocalConfig.LC_ISLOGIN, true);
                     KvStorage.put(LocalConfig.LC_PASSWORD,
                             pwd);
                     KvStorage.put(LocalConfig.LC_TOKEN,

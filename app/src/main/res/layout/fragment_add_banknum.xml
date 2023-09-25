@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:orientation="vertical">
+
+            <com.tiny.cash.loan.card.widget.EditTextContainer
+                android:id="@+id/edit_container_add_bank_card_banknum"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:layout_marginTop="10dp"
+                app:select_view_hint="@string/add_bank_num_desc1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:id="@+id/fl_add_bank_card_choose_date"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:paddingEnd="12dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bind_new_card2_expitydate"
+                        android:textColor="#999999"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_add_bank_card_choose_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="25dp"
+                        android:background="@null"
+                        android:hint="@string/bind_new_card2_choose_date"
+                        android:inputType="number"
+                        android:gravity="center_vertical"
+                        android:maxLength="5"
+                        android:textColor="#999999"
+                        android:textColorHint="#CCCCCC"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.6dp"
+                        android:layout_gravity="bottom"
+                        android:background="#EBEBEB" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bind_new_card2_cvv"
+                        android:textColor="#999999"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_add_bank_card_cvv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:background="@null"
+                        android:hint="@string/bind_new_card2_cvv"
+                        android:inputType="number"
+                        android:textColor="#999999"
+                        android:textColorHint="#CCCCCC"
+                        android:textCursorDrawable="@drawable/et_cursor_color" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.6dp"
+                        android:layout_gravity="bottom"
+                        android:background="#EBEBEB" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.text.alginlib.XQJustifyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_25"
+                android:text="Our app will withdraw ₦50 card binding fee from your bank account.Please make sure you have at least ₦ 50 in your bank account."
+                android:textColor="@color/color_FF0000"
+                android:textSize="@dimen/sp_16" />
+
+            <FrameLayout
+                android:id="@+id/fl_add_bank_num_commit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_25"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="@drawable/add_profile_bg">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/profile1_submit"
+                    android:textColor="#FFFFFF"
+                    android:textAllCaps="true"
+                    android:textSize="16sp" />
+            </FrameLayout>
+
+            <com.text.alginlib.XQJustifyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_25"
+                android:text="If you fail to receive OTP when binding your card, please try to skip that step via Return option on your phone, then continue the loan application process."
+                android:textColor="@color/color_FF0000"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_add_bank_num_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/theme_color" />
+
+    </FrameLayout>
+
+</FrameLayout>
+

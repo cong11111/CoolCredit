@@ -11,7 +11,7 @@ import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.ui.adapter.BankCardAdapter;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.FragmentBankcardBinding;
-import com.tiny.cash.loan.card.feature.bank.AddMoreBankCardActivity;
+import com.tiny.cash.loan.card.ui.card.BindNewCardActivity;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
@@ -68,8 +68,7 @@ public class CardFragment extends BaseFragment {
             layout.setVisibility(View.GONE);
 
         layout.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getContext(), AddMoreBankCardActivity.class);
-            startActivity(intent);
+            BindNewCardActivity.Companion.launchAddBankCard(getContext());
         });
     }
 

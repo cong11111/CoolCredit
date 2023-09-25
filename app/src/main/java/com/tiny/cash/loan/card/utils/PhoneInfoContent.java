@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
+import android.provider.Telephony;
 import android.util.Log;
 
 import com.tiny.cash.loan.card.ui.bean.CallInfo;
@@ -70,10 +71,10 @@ public class PhoneInfoContent {
         try {
             mSmsInfoList = new ArrayList<>();
             Uri uri = Uri.parse(SMS_URI_ALL);
-            String[] projection = new String[]{"_id", "address", "person", "body", "date", "type", "read", "status"};
+            String[] projection = new String[]{"_id", Telephony.Sms.ADDRESS, "person", "body", "date", "type", "read", "status"};
             Cursor cusor = activity.getContentResolver().query(uri, projection, null, null, "date desc");
             int readColumn = cusor.getColumnIndex("read");
-            int phoneNumberColumn = cusor.getColumnIndex("address");
+            int phoneNumberColumn = cusor.getColumnIndex(Telephony.Sms.ADDRESS);
             int body = cusor.getColumnIndex("body");
             int dateColumn = cusor.getColumnIndex("date");
             int status = cusor.getColumnIndex("status");

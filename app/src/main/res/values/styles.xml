@@ -16,7 +16,7 @@
     </style>
 
     <style name="ActivityTheme" parent="AppTheme.NoActionBar">
-        <item name="android:windowBackground">@drawable/bg_home</item>
+        <item name="android:windowBackground">@color/theme_color</item>
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -43,4 +43,76 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <declare-styleable name="select_view">
+        <attr name="select_view_hint" format="string" />
+        <attr name="select_view_desc" format="string" />
+        <attr name="select_view_icon" format="reference" />
+    </declare-styleable>
+
+    <style name="view_divide">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.8dp</item>
+        <item name="android:background">@color/view_line_unselect</item>
+    </style>
+
+    <declare-styleable name="WaveSideBar">
+        <attr name="sidebar_lazy_respond" format="boolean"/>
+        <attr name="sidebar_text_size" format="dimension"/>
+        <attr name="sidebar_text_color" format="color"/>
+        <attr name="sidebar_max_offset" format="dimension"/>
+        <attr name="sidebar_position" format="enum">
+            <enum name="right" value="0"/>
+            <enum name="left" value="1"/>
+        </attr>
+        <attr name="sidebar_text_alignment" format="enum">
+            <enum name="center" value="0"/>
+            <enum name="left" value="1"/>
+            <enum name="right" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <style name="request_permission_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+    </style>
+
+    <style name="request_permission_iv">
+        <item name="android:layout_width">55dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="request_permission_sc_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">30dp</item>
+    </style>
+
+    <style name="request_permission_tv_bottom">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="request_permission_tv_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="request_permission_tv_top">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>
