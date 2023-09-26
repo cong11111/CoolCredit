@@ -153,11 +153,11 @@ static def releaseTime() {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.6.0'
 
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'org.greenrobot:eventbus:3.3.1'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
@@ -166,15 +166,16 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
-    implementation 'com.blankj:utilcodex:1.30.6'
+    implementation 'com.blankj:utilcodex:1.31.1'
     // OkHttp
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
-    //状态栏
-    implementation 'com.githang:status-bar-compat:0.7'
     //文字左右对齐库
     implementation 'com.text:alginlib:1.0.1'
     //下拉框
-    implementation 'com.github.arcadefire:nice-spinner:1.4.4'
+    implementation ('com.github.arcadefire:nice-spinner:1.4.4') {
+        exclude module: 'kotlin-stdlib-jdk7'
+        exclude module: 'kotlin-stdlib-jdk8'
+    }
     //选择器库
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
     //银行卡支付
@@ -183,17 +184,17 @@ dependencies {
     //KeyValue框架
     implementation 'com.getkeepsafe.relinker:relinker:1.4.1'
 
-    implementation "com.android.installreferrer:installreferrer:2.2"
-
     implementation 'androidx.work:work-runtime:2.5.0'
-    implementation 'com.google.android.gms:play-services-analytics:16.0.8'
     implementation 'com.alibaba:fastjson:1.1.56.android'
 
-    implementation 'com.google.firebase:firebase-core:16.0.8'
-    implementation('com.github.flutterwave.rave-android:rave_android:2.1.38') {
+    implementation('com.github.flutterwave.rave-android:rave_android:2.1.39') {
         exclude module: 'logging-interceptor'
     }
-
+    implementation("com.android.installreferrer:installreferrer:2.2") {
+        exclude group: 'com.squareup.okio'
+        exclude group: 'com.squareup.okhttp'
+        exclude group: 'com.squareup.okhttp3'
+    }
     implementation platform('com.google.firebase:firebase-bom:29.3.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'

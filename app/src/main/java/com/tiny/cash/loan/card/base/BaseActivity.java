@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.githang.statusbar.StatusBarCompat;
+import com.blankj.utilcode.util.BarUtils;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.message.EventMessage;
@@ -47,7 +47,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Utils.hasLollipop()) {
-            StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.theme_color));
+            BarUtils.setStatusBarColor(this, getResources().getColor(R.color.theme_color));
         }
         ActivityCollector.addActivity(this);
     }
