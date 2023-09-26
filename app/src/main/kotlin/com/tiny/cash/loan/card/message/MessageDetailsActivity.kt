@@ -5,9 +5,7 @@ import android.view.View
 import com.tiny.cash.loan.card.base.BaseActivity
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityMessageDetailsBinding
 import com.tiny.cash.loan.card.net.response.data.bean.MessageResult.ItemsBean
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MessageDetailsActivity : BaseActivity() {
     private var binding: ActivityMessageDetailsBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {

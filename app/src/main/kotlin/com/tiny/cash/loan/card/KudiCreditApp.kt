@@ -11,10 +11,8 @@ import com.tiny.cash.loan.card.log.LogSaver
 import com.tiny.cash.loan.card.utils.GooglePlaySdk
 import com.tiny.cash.loan.card.utils.KvStorage
 import com.tiny.cash.loan.card.utils.LocalConfig
-import dagger.hilt.android.HiltAndroidApp
 import java.util.*
 
-@HiltAndroidApp
 class KudiCreditApp : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
