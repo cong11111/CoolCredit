@@ -90,10 +90,6 @@ public class ScanActivity extends AppCompatActivity {
         });
         loadFragment();
     }
-//
-//    var overlayTop: Int = 0
-//    var overlayHeight: Float = -1f
-
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -120,26 +116,9 @@ public class ScanActivity extends AppCompatActivity {
                 toScanResultFragment();
                 break;
             default:
-//                toCameraPrepareFragment()
                 break;
         }
     }
-
-//    private fun toCameraPrepareFragment() {
-//        ivBack.visibility = View.VISIBLE
-//        title_tv.visibility = View.VISIBLE
-//        right_tv.visibility = View.VISIBLE
-//        right_tv.text = getString(R.string.skip)
-//        var fragment = supportFragmentManager.findFragmentByTag(GuidePrepareFragment.TAG)
-//        if (fragment == null) {
-//            fragment = GuidePrepareFragment()
-//        }
-//        val bundle = Bundle()
-//        bundle.putBoolean("showNext", true)
-//        bundle.putInt("currentPosition", curFragmentIndex)
-//        fragment.arguments = bundle
-//        toFragment(fragment, GuidePrepareFragment.TAG)
-//    }
 
     private void toGuideScanningFragment() {
         ivBack.setVisibility(View.GONE);
@@ -155,21 +134,17 @@ public class ScanActivity extends AppCompatActivity {
         toFragment(fragment, CameraScanningFragment.TAG);
     }
 
-    private void toScanResultFragment() {
-//        back_iv.visibility = View.GONE
-//        title_tv.visibility = View.GONE
-//        right_tv.visibility = View.GONE
-//        var fragment = supportFragmentManager.findFragmentByTag(GuideScanResultFragment.TAG)
-//        if (fragment == null) {
-//            fragment = GuideScanResultFragment()
-//        } else if (fragment is GuideScanResultFragment) {
-//            fragment.resetData()
-//        }
-//        val bundle = Bundle()
-//        bundle.putInt("overlayTop", overlayTop)
-//        bundle.putFloat("overlayHeight", overlayHeight)
-//        fragment.arguments = bundle
-//        toFragment(fragment, GuideScanResultFragment.TAG)
+   public void toScanResultFragment() {
+        ivBack.setVisibility(View.GONE);
+        tvTitle.setVisibility(View.GONE);
+        tvRight.setVisibility(View.GONE);
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(GuideScanResultFragment.TAG);
+        if (fragment == null) {
+            fragment = new GuideScanResultFragment();
+        }
+        Bundle bundle = new Bundle();
+        fragment.setArguments(bundle);
+        toFragment(fragment, GuideScanResultFragment.TAG);
     }
 
     public void setBitmap(Bitmap bitmap, FaceSaveState face) {
@@ -206,7 +181,7 @@ public class ScanActivity extends AppCompatActivity {
         });
     }
 
-    private Pair<Bitmap, FaceSaveState> getBitmap()  {
+    public Pair<Bitmap, FaceSaveState> getBitmap()  {
         if (bitmap == null || bitmap.isRecycled()) {
             if (!TextUtils.isEmpty(bitmapPath) && FileUtils.isFileExists(bitmapPath)) {
                 if (BuildConfig.DEBUG) {

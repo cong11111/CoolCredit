@@ -160,6 +160,7 @@ public class CameraScanningFragment extends Fragment {
                 }
                 if (getActivity() instanceof ScanActivity) {
                     ((ScanActivity) getActivity()).setBitmap(bitmap, faceState);
+                    ((ScanActivity) getActivity()).toScanResultFragment();
                 }
             }
         });
