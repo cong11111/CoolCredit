@@ -158,8 +158,12 @@ class GooglePlaySdk {
             object : OnCompleteListener<String> {
                 override fun onComplete(p0: Task<String>) {
                     val analyticId = p0.result
-                    uploadInstall(analyticId, referrerUrl)
-                    LogSaver.logToFile("firebase analytic id =  " +  analyticId)
+                    if (!TextUtils.isEmpty(analyticId) && !TextUtils.isEmpty(referrerUrl)) {
+                        uploadInstall(analyticId, referrerUrl)
+                        if (BuildConfig.DEBUG) {
+                            LogSaver.logToFile("firebase analytic id =  " + analyticId)
+                        }
+                    }
                 }
 
             }
@@ -167,7 +171,7 @@ class GooglePlaySdk {
     }
 
     private var mUploadInstallObserver: NetObserver<Response<*>>? = null
-    private fun uploadInstall(instanceId : String, referrerUrl : String) {
+    private fun uploadInstall(instanceId : String?, referrerUrl : String?) {
         val mediumStr = tryGetUtmMedium(referrerUrl)
         var sourceStr = "other"
         val gclid = tryGetGCLID(referrerUrl)
