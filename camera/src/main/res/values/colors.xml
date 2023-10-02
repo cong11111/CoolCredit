@@ -11,4 +11,8 @@
     <color name="color_22000000">#22000000</color>
     <color name="transparent">#00ffffff</color>
     <color name="color_595959">#595959</color>
+
+    <color name="icActive">#FFFFFFFF</color>
+    <color name="icFocused">#DDFFFFFF</color>
+    <color name="icPressed">#AAFFFFFF</color>
 </resources>

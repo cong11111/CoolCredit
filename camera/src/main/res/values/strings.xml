@@ -11,4 +11,8 @@
     <string name="face_scan_tips">Please position your face in the frame</string>
     <string name="skin_analysis">Skin Analysis</string>
     <string name="edit">Edit</string>
+
+    <string name="switch_camera_button_alt">Switch camera</string>
+    <string name="gallery_button_alt">Gallery</string>
+    <string name="capture_button_alt">Capture</string>
 </resources>
