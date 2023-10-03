@@ -12,10 +12,11 @@ import com.chocolate.moudle.scan.my.UploadFileFragment
 class CameraActivity2 : AppCompatActivity() {
 
     companion object {
-
+        const val RESULT_CAMERA_CODE = 1112
+        const val KEY_RESULT_CAMERA_PATH = "key_result_camera_path"
         fun showMe(activity: Activity) {
             val intent = Intent(activity, CameraActivity2::class.java)
-            activity.startActivity(intent)
+            activity.startActivityForResult(intent, RESULT_CAMERA_CODE)
 //            activity.overridePendingTransition(R.anim.td_slide_in_right, R.anim.td_slide_out_left)
         }
 
@@ -28,14 +29,14 @@ class CameraActivity2 : AppCompatActivity() {
         toCameraFragment()
     }
 
-    private fun toCameraFragment() {
+    fun toCameraFragment(needAnim: Boolean = true) {
         var fragment = supportFragmentManager.findFragmentByTag(Camera2Fragment.TAG)
         if (fragment == null) {
             fragment = Camera2Fragment()
         }
         val bundle = Bundle()
         fragment.arguments = bundle
-        toFragment(fragment, Camera2Fragment.TAG)
+        toFragment(fragment, Camera2Fragment.TAG, needAnim)
     }
 
     private var mPath : String? = null
@@ -52,19 +53,38 @@ class CameraActivity2 : AppCompatActivity() {
         toFragment(fragment, UploadFileFragment.TAG)
     }
 
+    fun toCameraResultFragment(){
+        var fragment = supportFragmentManager.findFragmentByTag(CameraResultFragment.TAG)
+        if (fragment == null) {
+            fragment = CameraResultFragment()
+        }
+        val bundle = Bundle()
+        fragment.arguments = bundle
+        toFragment(fragment, CameraResultFragment.TAG)
+    }
+
     fun getPath() : String? {
         return mPath
     }
 
-    private fun toFragment(fragment: Fragment, tag: String) {
+    fun finishResult() {
+        val intent = Intent()
+        intent.putExtra(KEY_RESULT_CAMERA_PATH, mPath)
+        setResult(RESULT_CAMERA_CODE)
+        finish()
+    }
+
+    private fun toFragment(fragment: Fragment, tag: String, needAnim : Boolean = true) {
         val fragmentManager = supportFragmentManager
         val transaction = fragmentManager.beginTransaction() // 开启一个事务
-        transaction.setCustomAnimations(
-            R.anim.td_slide_in_right,
-            R.anim.td_slide_out_left,
-            R.anim.td_slide_in_left,
-            R.anim.td_slide_out_right
-        )
+        if (needAnim) {
+            transaction.setCustomAnimations(
+                R.anim.td_slide_in_right,
+                R.anim.td_slide_out_left,
+                R.anim.td_slide_in_left,
+                R.anim.td_slide_out_right
+            )
+        }
         transaction.replace(R.id.fl_camera_2, fragment, tag)
         transaction.commitAllowingStateLoss()
     }

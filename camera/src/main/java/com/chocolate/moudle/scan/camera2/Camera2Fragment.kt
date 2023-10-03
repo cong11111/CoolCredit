@@ -400,16 +400,6 @@ class Camera2Fragment : Fragment() {
             override fun onClick(v: View?) {
                 // Get a stable reference of the modifiable image capture use case
                 imageCapture?.let { imageCapture ->
-                    val appName = "CoolCredit"
-//                    val name = SimpleDateFormat(FILENAME, Locale.US)
-//                        .format(System.currentTimeMillis())
-//                    val contentValues = ContentValues().apply {
-//                        put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-//                        put(MediaStore.MediaColumns.MIME_TYPE, PHOTO_TYPE)
-//                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-//                            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/${appName}")
-//                        }
-//                    }
                     val parentFile = File(context?.cacheDir, "scan/temp")
                     if (!parentFile.exists()) {
                         parentFile.mkdirs()
@@ -432,7 +422,7 @@ class Camera2Fragment : Fragment() {
                                 Log.e(TAG, "Photo capture succeeded: $savedUri")
                                 if (activity is CameraActivity2) {
                                     (activity as CameraActivity2).restorePic(saveFile.absolutePath)
-                                    (activity as CameraActivity2).toUploadPicFragment()
+                                    (activity as CameraActivity2).toCameraResultFragment()
                                 }
                                 // Implicit broadcasts will be ignored for devices running API level >= 24
                                 // so if you only target API level 24+ you can remove this statement
@@ -584,8 +574,6 @@ class Camera2Fragment : Fragment() {
 
         const val KEY_EVENT_EXTRA = "key_event_extra"
 
-        private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
-        private const val PHOTO_TYPE = "image/jpeg"
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
     }
