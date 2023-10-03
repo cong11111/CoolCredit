@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import co.paystack.android.PaystackSdk
 import com.blankj.utilcode.util.LanguageUtils
+import com.chocolate.moudle.scan.CameraSdk
 import com.google.firebase.FirebaseApp
 import com.tiny.cash.loan.card.collect.LocationMgr
 import com.tiny.cash.loan.card.log.LogSaver
@@ -29,6 +30,8 @@ class KudiCreditApp : MultiDexApplication() {
         if (TextUtils.isEmpty(s) || TextUtils.isEmpty(s1) || TextUtils.isEmpty(instanceId)) {
             GooglePlaySdk.getInstance(this)?.start()
         }
+        CameraSdk.mAppContext = this
+        CameraSdk.mPresenter = UploadFilePresenter()
     }
 
     companion object {

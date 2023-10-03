@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.BarUtils
 import com.chocolate.moudle.scan.R
+import com.chocolate.moudle.scan.my.UploadFileFragment
 
 class CameraActivity2 : AppCompatActivity() {
 
@@ -35,6 +36,24 @@ class CameraActivity2 : AppCompatActivity() {
         val bundle = Bundle()
         fragment.arguments = bundle
         toFragment(fragment, Camera2Fragment.TAG)
+    }
+
+    private var mPath : String? = null
+    fun restorePic(path : String?) {
+        mPath = path
+    }
+    fun toUploadPicFragment() {
+        var fragment = supportFragmentManager.findFragmentByTag(UploadFileFragment.TAG)
+        if (fragment == null) {
+            fragment = UploadFileFragment()
+        }
+        val bundle = Bundle()
+        fragment.arguments = bundle
+        toFragment(fragment, UploadFileFragment.TAG)
+    }
+
+    fun getPath() : String? {
+        return mPath
     }
 
     private fun toFragment(fragment: Fragment, tag: String) {

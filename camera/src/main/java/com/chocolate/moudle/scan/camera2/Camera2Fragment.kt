@@ -41,8 +41,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.window.WindowManager
 import com.chocolate.moudle.scan.utils.MediaStoreUtils
 import kotlinx.coroutines.launch
+import java.io.File
 import java.nio.ByteBuffer
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -50,7 +50,6 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import com.chocolate.moudle.scan.R
-
 
 /** Helper type alias used for analysis use case callbacks */
 typealias LumaListener = (luma: Double) -> Unit
@@ -217,14 +216,8 @@ class Camera2Fragment : Fragment() {
             ?: throw IllegalStateException("Camera initialization failed.")
         // CameraSelector
         val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
-        // Preview
         preview = Preview.Builder()
-            // We request aspect ratio but no resolution
-            .setTargetAspectRatio(screenAspectRatio)
-            // Set initial target rotation
-            .setTargetRotation(rotation)
-            .build()
-        // ImageCapture
+            .setTargetAspectRatio(screenAspectRatio).setTargetRotation(rotation).build()
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
             // We request aspect ratio but no resolution to match preview config, but letting
@@ -407,26 +400,25 @@ class Camera2Fragment : Fragment() {
             override fun onClick(v: View?) {
                 // Get a stable reference of the modifiable image capture use case
                 imageCapture?.let { imageCapture ->
-                    // Create time stamped name and MediaStore entry.
-                    val name = SimpleDateFormat(FILENAME, Locale.US)
-                        .format(System.currentTimeMillis())
-                    val contentValues = ContentValues().apply {
-                        put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-                        put(MediaStore.MediaColumns.MIME_TYPE, PHOTO_TYPE)
-                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                            val appName = "CoolCredit"
-                            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/${appName}")
-                        }
+                    val appName = "CoolCredit"
+//                    val name = SimpleDateFormat(FILENAME, Locale.US)
+//                        .format(System.currentTimeMillis())
+//                    val contentValues = ContentValues().apply {
+//                        put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+//                        put(MediaStore.MediaColumns.MIME_TYPE, PHOTO_TYPE)
+//                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+//                            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/${appName}")
+//                        }
+//                    }
+                    val parentFile = File(context?.cacheDir, "scan/temp")
+                    if (!parentFile.exists()) {
+                        parentFile.mkdirs()
                     }
-                    // Create output options object which contains file + metadata
-                    val outputOptions = ImageCapture.OutputFileOptions
-                        .Builder(
-                            requireContext().contentResolver,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            contentValues
-                        )
-                        .build()
-
+                    val saveFile = File(
+                        parentFile,
+                        System.currentTimeMillis().toString() + ".png"
+                    )
+                    val outputOptions = ImageCapture.OutputFileOptions.Builder(saveFile).build();
                     // Setup image capture listener which is triggered after photo has been taken
                     imageCapture.takePicture(
                         outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
@@ -436,7 +428,12 @@ class Camera2Fragment : Fragment() {
 
                             override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                                 val savedUri = output.savedUri
-                                Log.d(TAG, "Photo capture succeeded: $savedUri")
+                                MediaStore.Files.getContentUri("internal")
+                                Log.e(TAG, "Photo capture succeeded: $savedUri")
+                                if (activity is CameraActivity2) {
+                                    (activity as CameraActivity2).restorePic(saveFile.absolutePath)
+                                    (activity as CameraActivity2).toUploadPicFragment()
+                                }
                                 // Implicit broadcasts will be ignored for devices running API level >= 24
                                 // so if you only target API level 24+ you can remove this statement
                                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -451,7 +448,6 @@ class Camera2Fragment : Fragment() {
 
                     // We can only change the foreground Drawable using API level 23+ API
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
                         // Display flash animation to indicate that photo was captured
 //                        fragmentCameraBinding.root.postDelayed({
 //                            fragmentCameraBinding.root.foreground = ColorDrawable(Color.WHITE)
@@ -463,12 +459,10 @@ class Camera2Fragment : Fragment() {
             }
 
         })
-
 //         Setup for button used to switch cameras
         switchButton?.let {
             // Disable the button until the camera is set up
             it.isEnabled = false
-
             // Listener for button used to switch cameras. Only called if the button is enabled
             it.setOnClickListener {
                 lensFacing = if (CameraSelector.LENS_FACING_FRONT == lensFacing) {

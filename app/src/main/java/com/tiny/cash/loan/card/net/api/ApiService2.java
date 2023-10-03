@@ -1,5 +1,6 @@
 package com.tiny.cash.loan.card.net.api;
 
+import com.chocolate.moudle.scan.bean.UploadFileSignResponse;
 import com.tiny.cash.loan.card.bean.TextInfoResponse;
 import com.tiny.cash.loan.card.bean.bank.AccessCodeResponseBean;
 import com.tiny.cash.loan.card.bean.bank.BankAccountResponseBean;
@@ -14,6 +15,7 @@ import com.tiny.cash.loan.card.net.response.data.order.PayStackResult;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -52,6 +54,9 @@ public interface ApiService2 {
     @POST("/v1/account/install")
     Observable<Response> recordInstall(@Body InstallRequest request);
 
+    @GET("/v1/account/file/sign")
+    Observable<Response<UploadFileSignResponse>> uploadFileGetSign
+            (@Query("token") String token, @Query("imageType") String imageType);
 
 }
 
