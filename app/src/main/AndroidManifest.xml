@@ -2685,6 +2685,9 @@
             android:screenOrientation="portrait"
             />
 
+        <activity android:name="com.tiny.cash.loan.card.ui.camera.IdentityPhotoActivity"
+            android:screenOrientation="portrait"/>
+
         <receiver
             android:name="com.appsflyer.SingleInstallBroadcastReceiver"
             android:exported="true">
