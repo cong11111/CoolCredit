@@ -38,6 +38,7 @@ class IdentityPhotoActivity : BaseActivity2() {
     private var tvVotorCard : AppCompatTextView? = null
     private var ivCenter : AppCompatImageView? = null
     private var flTap : FrameLayout? = null
+    private var tvNext : AppCompatTextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +49,7 @@ class IdentityPhotoActivity : BaseActivity2() {
         tvVotorCard = findViewById<AppCompatTextView>(R.id.tv_identity_photo_voter_card)
         ivCenter = findViewById<AppCompatImageView>(R.id.iv_center)
         flTap = findViewById<FrameLayout>(R.id.fl_identity_tap)
+        tvNext = findViewById<AppCompatTextView>(R.id.tv_next)
         tvNin?.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View?) {
                 isFront = true
@@ -72,6 +74,12 @@ class IdentityPhotoActivity : BaseActivity2() {
             }
 
         })
+        tvNext?.setOnClickListener(object : OnClickListener {
+            override fun onClick(v: View?) {
+
+            }
+
+        })
         updateNinAndVotorCard()
         updateMinAndVoterCardPreview()
     }
@@ -85,18 +93,26 @@ class IdentityPhotoActivity : BaseActivity2() {
     }
 
     private fun updateMinAndVoterCardPreview() {
+        var showNextFlag : Boolean = true
         if (mType ==  TYPE_MIN) {
             if (TextUtils.isEmpty(minPath)){
+                showNextFlag = false
                 ivCenter?.setImageResource(R.drawable.identity_1)
             } else {
                 Glide.with(this).load(minPath).into(ivCenter!!)
             }
         } else {
             if (TextUtils.isEmpty(votorCardPath)){
+                showNextFlag = false
                 ivCenter?.setImageResource(R.drawable.identity_bvn_2)
             } else {
                 Glide.with(this).load(votorCardPath).into(ivCenter!!)
             }
+        }
+        if (!showNextFlag) {
+            tvNext?.visibility = View.VISIBLE
+        } else {
+            tvNext?.visibility = View.GONE
         }
     }
 

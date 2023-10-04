@@ -13,8 +13,6 @@ object Constants {
     const val BASE_URL = BuildConfig.HOST
     const val FIRST_PHONE = "234"
     const val ICREDIT_AGREE_URL = "https://www.kudicredit.com/all.html"
-    const val TERMS_OF_SERVICE = "https://www.kudicredit.com/terms.html"
-    const val PRIVACY_POLICY = "https://www.kudicredit.com/privacy.html"
 
     /**
      * 字典类型
