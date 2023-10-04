@@ -69,5 +69,6 @@
     <string name="nin">NIN</string>
     <string name="voter_card">Voter,s Card</string>
     <string name="tap_to_shot">Tap to shot</string>
+    <string name="next_to_selfie">Next to selfie</string>
     <string name="identity_verify">The photo will only be used to verify your identity and will not be stored.</string>
 </resources>
