@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -25,16 +27,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.chocolate.moudle.scan.CameraSdk;
 import com.chocolate.moudle.scan.camera2.CameraActivity2;
 import com.chocolate.moudle.scan.my.GameActivity;
 import com.chocolate.moudle.scan.my.ScanActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.ui.camera.IdentityAuthActivity;
 import com.tiny.cash.loan.card.ui.camera.IdentityPhotoActivity;
 import com.tiny.cash.loan.card.utils.SendFileUtils;
 import com.tiny.cash.loan.card.base.BaseActivity;
@@ -109,6 +114,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BarUtils.setStatusBarColor(getWindow(), Color.TRANSPARENT);
         setContentView(R.layout.activity_main);
         String accountId = KvStorage.get(LocalConfig.LC_ACCOUNTID, "");
         if (!TextUtils.isEmpty(accountId)) {
@@ -146,11 +152,6 @@ public class MainActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
-
-//        boolean b = NotificationManagerCompat.from(this).areNotificationsEnabled();
-//        if (!b) {
-//            goToSetting();
-//        }
     }
 
     NetObserver configObserver;
@@ -246,6 +247,9 @@ public class MainActivity extends BaseActivity {
                     break;
                 case R.string.menu_test1:
                     test1();
+                    break;
+                case R.string.menu_test2:
+                    test2();
                     break;
                 case R.string.menu_share_file:
                     SendFileUtils.INSTANCE.startFeedBackEmail(MainActivity.this);
@@ -808,12 +812,22 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private void test2() {
+        ScanActivity.showMeToSelfie(this);
+        CameraSdk.INSTANCE.setObserver(new CameraSdk.Observer() {
+            @Override
+            public void onScanActivityFinish(@NonNull String bitmapPath) {
+                IdentityAuthActivity.Companion.launchActivity(MainActivity.this, bitmapPath);
+            }
+
+        });
+    }
+
     private void executeCache() {
         ThreadUtils.executeByCached(new ThreadUtils.SimpleTask<Object>() {
             @Override
             public Object doInBackground() throws Throwable {
                 try {
-                    LocationMgr.getInstance().getLocation();
                     CollectSmsMgr.Companion.getSInstance().tryCacheSms();
                 } catch (Exception e) {
                     if (BuildConfig.DEBUG) {
@@ -825,7 +839,13 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onSuccess(Object result) {
-
+                try {
+                    LocationMgr.getInstance().getLocation();
+                } catch (Exception e) {
+                    if (BuildConfig.DEBUG) {
+                        throw e;
+                    }
+                }
             }
         });
 

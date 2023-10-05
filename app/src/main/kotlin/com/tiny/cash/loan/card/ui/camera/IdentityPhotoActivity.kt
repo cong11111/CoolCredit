@@ -1,34 +1,51 @@
 package com.tiny.cash.loan.card.ui.camera
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.FrameLayout
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.blankj.utilcode.util.BarUtils
+import com.blankj.utilcode.util.PermissionUtils
+import com.blankj.utilcode.util.PermissionUtils.SimpleCallback
+import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
+import com.chocolate.moudle.scan.camera2.BaseUploadFilePresenter
 import com.chocolate.moudle.scan.camera2.CameraActivity2
 import com.tiny.cash.loan.card.kudicredit.R
-import com.tiny.cash.loan.card.ui.base.BaseActivity2
+import com.tiny.cash.loan.card.utils.JumpPermissionUtils
+import java.io.File
 
-class IdentityPhotoActivity : BaseActivity2() {
+class IdentityPhotoActivity : BaseIdentityActivity() {
 
     companion object {
         private const val TAG = "IdentityPhotoActivity"
 
         const val TYPE_MIN = 101
         const val TYPE_VOTER_CARD = 102
-
         fun launchActivity(context: Activity) {
             var intent = Intent(context, IdentityPhotoActivity::class.java)
             context.startActivity(intent)
         }
 
     }
+
+    private val mHandler = Handler(Looper.getMainLooper(), object : Handler.Callback {
+        override fun handleMessage(msg: Message): Boolean {
+            return false
+        }
+
+    })
 
     private var isFront : Boolean = true
     private var mType : Int = TYPE_MIN
@@ -39,6 +56,7 @@ class IdentityPhotoActivity : BaseActivity2() {
     private var ivCenter : AppCompatImageView? = null
     private var flTap : FrameLayout? = null
     private var tvNext : AppCompatTextView? = null
+    private var progressBar : ProgressBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +68,8 @@ class IdentityPhotoActivity : BaseActivity2() {
         ivCenter = findViewById<AppCompatImageView>(R.id.iv_center)
         flTap = findViewById<FrameLayout>(R.id.fl_identity_tap)
         tvNext = findViewById<AppCompatTextView>(R.id.tv_next)
+        progressBar = findViewById<ProgressBar>(R.id.loading_progress)
+        progressBar?.max = 100
         tvNin?.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View?) {
                 isFront = true
@@ -70,13 +90,31 @@ class IdentityPhotoActivity : BaseActivity2() {
         })
         flTap?.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View?) {
-                CameraActivity2.showMe(this@IdentityPhotoActivity, mType)
+                val isGranted = PermissionUtils.isGranted(Manifest.permission.CAMERA)
+                if (isGranted) {
+                    CameraActivity2.showMe(this@IdentityPhotoActivity, mType)
+                } else {
+                    PermissionUtils.permission(Manifest.permission.CAMERA).callback(object : SimpleCallback {
+                        override fun onGranted() {
+                            CameraActivity2.showMe(this@IdentityPhotoActivity, mType)
+                        }
+
+                        override fun onDenied() {
+                            ToastUtils.showShort("please allow permission.")
+                            JumpPermissionUtils.goToSetting(this@IdentityPhotoActivity)
+                        }
+
+                    }).request()
+                }
             }
 
         })
         tvNext?.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View?) {
-
+                tvNext?.visibility = View.GONE
+                progressBar?.visibility = View.VISIBLE
+                progressBar?.progress = 0
+                startUploadMtnFile()
             }
 
         })
@@ -94,22 +132,23 @@ class IdentityPhotoActivity : BaseActivity2() {
 
     private fun updateMinAndVoterCardPreview() {
         var showNextFlag : Boolean = true
+        if (TextUtils.isEmpty(minPath) || TextUtils.isEmpty(votorCardPath)){
+            showNextFlag = false
+        }
         if (mType ==  TYPE_MIN) {
             if (TextUtils.isEmpty(minPath)){
-                showNextFlag = false
                 ivCenter?.setImageResource(R.drawable.identity_1)
             } else {
                 Glide.with(this).load(minPath).into(ivCenter!!)
             }
         } else {
             if (TextUtils.isEmpty(votorCardPath)){
-                showNextFlag = false
                 ivCenter?.setImageResource(R.drawable.identity_bvn_2)
             } else {
                 Glide.with(this).load(votorCardPath).into(ivCenter!!)
             }
         }
-        if (!showNextFlag) {
+        if (showNextFlag) {
             tvNext?.visibility = View.VISIBLE
         } else {
             tvNext?.visibility = View.GONE
@@ -128,5 +167,65 @@ class IdentityPhotoActivity : BaseActivity2() {
             }
             updateMinAndVoterCardPreview()
         }
+    }
+
+    private var hasUploadMtn = false
+    private var hasUploadVotorCard = false
+    private fun startUploadMtnFile(){
+        mPresenter.startUpload("MTN", File(minPath), object : BaseUploadFilePresenter.UploadObserver {
+            override fun onSuccess() {
+                hasUploadMtn = true
+                Log.i("Okhttp", " on file success 1 = ")
+                Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                    startUploadVotorCardFile()
+                }, 1500)
+            }
+
+            override fun onProgress(progress: Int) {
+                val progress = (progress / 2f).toInt()
+                progressBar?.progress = progress
+                Log.i("Okhttp", " on progress 1 = " + progress)
+            }
+
+            override fun onFailure(errorDesc: String, errorMsg: String) {
+                Log.e("Okhttp", " on file failure 1 errorDesc = " + errorDesc
+                        + " errorMsg = " + errorMsg)
+            }
+
+        })
+    }
+
+    private fun startUploadVotorCardFile(){
+        mPresenter.onDestroy()
+        mPresenter.startUpload("Voter's Card", File(votorCardPath), object : BaseUploadFilePresenter.UploadObserver {
+            override fun onSuccess() {
+                hasUploadVotorCard = true
+                Log.i("Okhttp", " on file success 2 = ")
+                mHandler?.post {
+                    if (isFinishing || isDestroyed) {
+                        return@post
+                    }
+                    ToastUtils.showShort("identity photo success")
+                    finish()
+                }
+            }
+
+            override fun onProgress(progress: Int) {
+                val progress = (progress / 2f + 50f).toInt()
+                progressBar?.progress = progress
+                Log.i("Okhttp", " on progress 2 = " + progress)
+            }
+
+            override fun onFailure(errorDesc: String, errorMsg: String) {
+                Log.e("Okhttp", " on file failure 2 errorDesc = " + errorDesc
+                        + " errorMsg = " + errorMsg)
+            }
+
+        })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.onDestroy()
     }
 }

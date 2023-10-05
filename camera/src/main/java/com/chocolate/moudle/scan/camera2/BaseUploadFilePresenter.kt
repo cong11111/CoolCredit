@@ -12,9 +12,11 @@ import java.io.File
 import java.util.Locale
 
 
-abstract class BaseUploadFilePresenter {
+abstract class
 
-    fun startUpload(imageType : String, file1 : File) {
+BaseUploadFilePresenter {
+
+    fun startUpload(imageType : String, file1 : File, observer: UploadObserver) {
         val context = CameraSdk.mAppContext
         val parentFile = File(context?.cacheDir, "scan/upload")
         if (!parentFile.exists()) {
@@ -41,10 +43,11 @@ abstract class BaseUploadFilePresenter {
                     if (BuildConfig.DEBUG) {
                         Log.e("Okhttp", " unzip size = " + FileUtils.getSize(file) + " path .  " + file.absolutePath)
                     }
-                    requestUploadSign(imageType, file)
+                    requestUploadSign(imageType, file, observer)
                 }
 
                 override fun onError(e: Throwable) {
+                    observer.onFailure("compress picture error", e.message.toString())
                     if (BuildConfig.DEBUG) {
                         Log.e("Okhttp", " error = " + e.message)
                     }
@@ -52,30 +55,32 @@ abstract class BaseUploadFilePresenter {
             }).launch()
     }
 
-    abstract fun requestUploadSign(imageType : String, file : File)
+    abstract fun requestUploadSign(imageType : String, file : File , observer: UploadObserver)
 
 
-    fun onRequestSuccess(uploadFile: UploadFileSignResponse?, file : File) {
-        startUploadFile(uploadFile, file, object : UploadObserver {
-            override fun onSuccess() {
+    fun onRequestSuccess(uploadFile: UploadFileSignResponse?, file : File , observer: UploadObserver) {
+        startUploadFile(uploadFile, file, observer)
+    }
 
-            }
+    fun onUploadProgressChange(progress: Int, observer: UploadObserver){
+        observer?.onProgress(progress)
+    }
 
-            override fun onFailure(errorMsg: String) {
-
-            }
-
-        })
-
+    fun onUploadFileSuccess(result: File?, observer: UploadObserver){
+        observer?.onSuccess()
     }
 
     abstract fun startUploadFile(uploadFile: UploadFileSignResponse?, file : File, observer: UploadObserver)
 
-
-
     interface UploadObserver {
         fun onSuccess()
 
-        fun onFailure(errorMsg: String)
+        fun onProgress(progress : Int)
+
+        fun onFailure(errorDesc : String, errorMsg: String)
+    }
+
+    open fun onDestroy(){
+
     }
 }

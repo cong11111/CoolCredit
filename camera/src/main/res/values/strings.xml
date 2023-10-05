@@ -15,4 +15,6 @@
     <string name="switch_camera_button_alt">Switch camera</string>
     <string name="gallery_button_alt">Gallery</string>
     <string name="capture_button_alt">Capture</string>
+    <string name="scan_essential_information">Essential Information</string>
+    <string name="put_you_face_in_frame">Please put you face in the frame</string>
 </resources>

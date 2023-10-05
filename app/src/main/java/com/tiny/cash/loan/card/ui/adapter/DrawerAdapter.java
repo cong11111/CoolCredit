@@ -40,6 +40,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         dataList.addAll(list);
         if (!BuildConfig.IS_AAB_BUILD) {
             dataList.add(new DrawerItemNormal(R.mipmap.ic_out, R.string.menu_test1));
+            dataList.add(new DrawerItemNormal(R.mipmap.ic_out, R.string.menu_test2));
             dataList.add(new DrawerItemNormal(R.mipmap.ic_out, R.string.menu_share_file));
         }
     }

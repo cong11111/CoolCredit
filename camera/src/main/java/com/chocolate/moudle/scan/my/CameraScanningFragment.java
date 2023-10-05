@@ -90,14 +90,14 @@ public class CameraScanningFragment extends Fragment {
     private boolean hasPermission = false;
 
     private PreviewView pvView;
-    private AppCompatTextView tvLighting;
     private AppCompatTextView tvTips;
     private AppCompatTextView tvFacePos;
     private AppCompatTextView tvLookStraight;
-    private AppCompatTextView tvTake;
+    private AppCompatImageView ivTake;
     private GraphicOverlay overlay;
     private AppCompatImageView ivChangeCamera;
     private AppCompatImageView ivBack;
+    private View viewTop;
 
     @Nullable
     @Override
@@ -110,20 +110,19 @@ public class CameraScanningFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         pvView = view.findViewById(R.id.scanning_preview_view);
-        tvLighting = view.findViewById(R.id.tv_scanning_lighting);
         tvTips = view.findViewById(R.id.tv_face_scan_tips);
         tvFacePos = view.findViewById(R.id.tv_scanning_face_position);
         tvLookStraight = view.findViewById(R.id.tv_scanning_look_straight);
         overlay = view.findViewById(R.id.scanning_graphic_overlay);
-        tvTake = view.findViewById(R.id.retake_tv);
+        ivTake = view.findViewById(R.id.retake_iv);
         ivChangeCamera = view.findViewById(R.id.change_camera);
         ivBack = view.findViewById(R.id.iv_scanning_back);
+        viewTop = view.findViewById(R.id.view_scanning_top);
 
         int statusBarH = BarUtils.getStatusBarHeight();
-        ConstraintLayout.LayoutParams topParam = (ConstraintLayout.LayoutParams) tvLighting.getLayoutParams();
-        topParam.topMargin = statusBarH == 0 ? ConvertUtils.dp2px(63) :
-                statusBarH + ConvertUtils.dp2px(19);
-        tvLighting.setLayoutParams(topParam);
+        ViewGroup.MarginLayoutParams topParam = (ViewGroup.MarginLayoutParams) viewTop.getLayoutParams();
+        topParam.topMargin = statusBarH == 0 ? ConvertUtils.dp2px(25) : statusBarH ;
+        viewTop.setLayoutParams(topParam);
         lensFacing = CameraSelector.LENS_FACING_FRONT;
 
         overlay.setTopSpace(0, overlayRealHeight);
@@ -134,16 +133,16 @@ public class CameraScanningFragment extends Fragment {
                 if (isDetached() || isRemoving() || getContext() == null) {
                     return;
                 }
-                ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) tvTips.getLayoutParams();
-                float bottom = overlay.getFaceOvalRect().bottom;
-                float tipTopMargin = ConvertUtils.dp2px(15);
-                layoutParams.topMargin = (int) (bottom + tipTopMargin);
-                tvTips.setLayoutParams(layoutParams);
-                tvTips.setVisibility(View.VISIBLE);
+//                ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) tvTips.getLayoutParams();
+//                float bottom = overlay.getFaceOvalRect().bottom;
+//                float tipTopMargin = ConvertUtils.dp2px(15);
+//                layoutParams.topMargin = (int) (bottom + tipTopMargin);
+//                tvTips.setLayoutParams(layoutParams);
+//                tvTips.setVisibility(View.VISIBLE);
             }
         });
 
-        tvTake.setOnClickListener(new View.OnClickListener() {
+        ivTake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (imageProcessor == null || pvView == null) {
@@ -159,8 +158,13 @@ public class CameraScanningFragment extends Fragment {
                     return;
                 }
                 if (getActivity() instanceof ScanActivity) {
-                    ((ScanActivity) getActivity()).setBitmap(bitmap, faceState);
-                    ((ScanActivity) getActivity()).toScanResultFragment();
+                    ((ScanActivity) getActivity()).setBitmap(bitmap, faceState, new ScanActivity.CallBack() {
+                        @Override
+                        public void onSuccess() {
+                            ((ScanActivity) getActivity()).onFinish();
+                        }
+                    });
+
                 }
             }
         });
@@ -177,7 +181,10 @@ public class CameraScanningFragment extends Fragment {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                if (getActivity() instanceof ScanActivity) {
+                    ScanActivity scanActivity = (ScanActivity) getActivity();
+                    scanActivity.finish();
+                }
             }
         });
 
@@ -389,23 +396,15 @@ public class CameraScanningFragment extends Fragment {
         if (overlay.isEnabled() != isEnable) {
             overlay.setEnabled(isEnable);
         }
-        if (tvTake.isEnabled() != isEnable) {
-            tvTake.setEnabled(isEnable);
-        }
-        if (isEnable) {
-            tvTake.setBackgroundResource(R.drawable.bg_highlight_50);
-            tvTake.setTextColor(ContextCompat.getColor(
-                    requireContext(), android.R.color.black));
-        } else {
-            tvTake.setBackgroundResource(R.drawable.bg_disable_50);
-            tvTake.setTextColor(Color.parseColor("#b3b3b3"));
+        if (ivTake.isEnabled() != isEnable) {
+            ivTake.setEnabled(isEnable);
         }
     }
 
     private void updateDetectLightResult() {
-        tvLighting.setCompoundDrawables(mResourceMgr.getLeftIconRes(lightingStrengthResult)
-                    ,null,null,null);
-        tvLighting.setBackgroundResource(getBgRes(lightingStrengthResult));
+//        tvLighting.setCompoundDrawables(mResourceMgr.getLeftIconRes(lightingStrengthResult)
+//                    ,null,null,null);
+//        tvLighting.setBackgroundResource(getBgRes(lightingStrengthResult));
     }
 
     private int getBgRes(@DetectResult int result) {

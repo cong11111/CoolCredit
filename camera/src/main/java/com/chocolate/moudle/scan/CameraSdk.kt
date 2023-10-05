@@ -11,4 +11,21 @@ object CameraSdk {
 
     var mAppContext : Application? = null
 
+//    // 前往自拍界面
+//    const val TYPE_SELF_IE = 1112
+//    //
+//    const val TYPE_SCAN = 1114
+
+    fun executeScanActivityNext(bitmapPath : String) {
+        mObserver?.onScanActivityFinish( bitmapPath)
+    }
+
+    interface Observer {
+        fun onScanActivityFinish( bitmapPath : String)
+    }
+
+    private var mObserver : Observer? = null
+    fun setObserver(observer : Observer?) {
+        mObserver = observer
+    }
 }

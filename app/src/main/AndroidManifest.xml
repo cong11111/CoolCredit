@@ -2686,6 +2686,11 @@
             />
 
         <activity android:name="com.tiny.cash.loan.card.ui.camera.IdentityPhotoActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="com.tiny.cash.loan.card.ui.camera.IdentityAuthActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
         <receiver

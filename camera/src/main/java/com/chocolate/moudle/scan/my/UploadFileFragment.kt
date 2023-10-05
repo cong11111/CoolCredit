@@ -62,6 +62,17 @@ class UploadFileFragment : Fragment() {
 
     //1. MTN  2. Voter's Card  3. selfie
     private fun startUploadFile(file : File) {
-        CameraSdk.mPresenter?.startUpload("MTN", file)
+        CameraSdk.mPresenter?.startUpload("MTN", file, object : BaseUploadFilePresenter.UploadObserver {
+            override fun onSuccess() {
+            }
+
+            override fun onProgress(progress: Int) {
+            }
+
+            override fun onFailure(errorDesc: String, errorMsg: String) {
+
+            }
+
+        })
     }
 }

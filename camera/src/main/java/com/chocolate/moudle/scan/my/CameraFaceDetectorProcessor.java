@@ -278,7 +278,8 @@ public class CameraFaceDetectorProcessor extends FaceDetectorProcessor {
     private @DetectResult
     int checkEyeDetectResult(float value) {
         if (value >= 0.6) return DetectResult.HIGH;
-        if (value >= 0.3) return DetectResult.MEDIUM;
+//        if (value >= 0.3) return DetectResult.MEDIUM;
+        if (true) return DetectResult.MEDIUM;
         return DetectResult.NONE;
     }
 

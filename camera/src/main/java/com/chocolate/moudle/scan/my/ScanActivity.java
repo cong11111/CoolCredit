@@ -27,6 +27,7 @@ import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.chocolate.moudle.scan.BuildConfig;
+import com.chocolate.moudle.scan.CameraSdk;
 import com.chocolate.moudle.scan.R;
 import com.chocolate.moudle.scan.base.FaceSaveState;
 
@@ -37,6 +38,10 @@ public class ScanActivity extends AppCompatActivity {
     private static final String KEY_SAVE_PATH = "key_save_bitmap_path";
     private static final String KEY_SAVE_FACE = "key_save_face";
 
+    public static final int RESULT_SCAN_CODE = 1134;
+
+    public static final String KEY_RESULT_CAMERA_PATH = "key_result_camera_path";
+
     private int curFragmentIndex = 0;
     private Bitmap bitmap;
     private FaceSaveState mFaceState;
@@ -46,11 +51,19 @@ public class ScanActivity extends AppCompatActivity {
     private TextView tvRight;
     private TextView tvTitle;
 
+
     public static void showMe(Activity activity) {
         Intent intent = new Intent(activity, ScanActivity.class);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.td_slide_in_right, R.anim.td_slide_out_left);
     }
+
+    public static void showMeToSelfie(Activity activity) {
+        Intent intent = new Intent(activity, ScanActivity.class);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.td_slide_in_right, R.anim.td_slide_out_left);
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +73,7 @@ public class ScanActivity extends AppCompatActivity {
             bitmapPath = savedInstanceState.getString(KEY_SAVE_PATH);
             mFaceState = savedInstanceState.getParcelable(KEY_SAVE_FACE);
         }
+//        mType = getIntent().getIntExtra(TYPE_TO_ACTIVITY, CameraSdk.TYPE_SCAN);
         BarUtils.setStatusBarColor(this, Color.TRANSPARENT);
         setContentView(R.layout.activity_scan);
         ivBack = findViewById(R.id.back_iv);
@@ -147,7 +161,7 @@ public class ScanActivity extends AppCompatActivity {
         toFragment(fragment, GuideScanResultFragment.TAG);
     }
 
-    public void setBitmap(Bitmap bitmap, FaceSaveState face) {
+    public void setBitmap(Bitmap bitmap, FaceSaveState face, CallBack callBack) {
         this.bitmap = bitmap;
         this.mFaceState = face;
         ThreadUtils.executeByCached(new ThreadUtils.SimpleTask<File>() {
@@ -176,6 +190,9 @@ public class ScanActivity extends AppCompatActivity {
             public void onSuccess(File result) {
                 if (result != null && result.exists()){
                     bitmapPath = result.getAbsolutePath();
+                }
+                if (callBack != null) {
+                    callBack.onSuccess();
                 }
             }
         });
@@ -210,10 +227,6 @@ public class ScanActivity extends AppCompatActivity {
 //        }
     }
 
-    private void backToFirst() {
-        finish();
-    }
-
     private void toFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction(); // 开启一个事务
@@ -229,12 +242,13 @@ public class ScanActivity extends AppCompatActivity {
         transaction.commitAllowingStateLoss();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
+   public void onFinish(){
+       Intent intent = new Intent();
+       intent.putExtra(KEY_RESULT_CAMERA_PATH, bitmapPath);
+       setResult(RESULT_SCAN_CODE, intent);
+        CameraSdk.INSTANCE.executeScanActivityNext(bitmapPath);
+        finish();
+   }
     @Override
     public void onBackPressed() {
         finish();
@@ -252,18 +266,6 @@ public class ScanActivity extends AppCompatActivity {
 //                    }
 //                }
 //            }
-//            return
-//        }
-//        if (curFragmentIndex == 2) {
-//            val fragment = supportFragmentManager.findFragmentByTag(GuideScanResultFragment.TAG)
-//            if (fragment is GuideScanResultFragment) {
-//                fragment.cancelAnalysis()
-//                //跟产品确认，除新用户流程，结果页面可以物理返回，且返回拍照页面
-//            }
-//        }
-//        if (curFragmentIndex == 1) {
-//            backToFirst()
-//            //拍照页面返回同点击"x"
 //            return
 //        }
 //        curFragmentIndex--
@@ -289,5 +291,9 @@ public class ScanActivity extends AppCompatActivity {
         if (bitmap != null && !bitmap.isRecycled()){
             bitmap.recycle();
         }
+    }
+
+    public interface CallBack {
+        void onSuccess();
     }
 }

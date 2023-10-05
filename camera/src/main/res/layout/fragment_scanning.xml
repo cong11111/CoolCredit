@@ -18,31 +18,68 @@
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+<!--    android:background="@drawable/bg_black_radius_20"-->
+        <LinearLayout
+            android:id="@+id/view_scanning_top"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_scanning_lighting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="19dp"
-        android:background="@drawable/bg_face_scan_high"
-        android:drawableStart="@drawable/ic_scanning_comfire"
-        android:drawablePadding="8dp"
-        android:paddingStart="8dp"
-        android:paddingTop="9dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="9dp"
-        android:text="@string/face_scan_lighting"
-        android:textColor="#FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="33dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_scanning_back"
+                    android:layout_width="30dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_camera_back"
+                    android:layout_height="30dp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_camera_title"
+                    android:layout_width="wrap_content"
+                    android:text="@string/scan_essential_information"
+                    android:textColor="#FFFFFF"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="15dp"
+                    android:layout_height="wrap_content"/>
+
+            </FrameLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_face_scan_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/put_you_face_in_frame"
+                android:textColor="#88FFFFFF"
+                android:textSize="13sp"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintStart_toEndOf="@id/tv_scanning_face_position"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"/>
+
+        </LinearLayout>
+
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_scanning_face_position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/bg_face_scan_high"
         android:drawableStart="@drawable/ic_scanning_comfire"
         android:drawablePadding="8dp"
@@ -53,7 +90,7 @@
         android:text="@string/face_scan_face_position"
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_scanning_lighting" />
+        app:layout_constraintTop_toBottomOf="@id/view_scanning_top" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_scanning_look_straight"
@@ -73,26 +110,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_scanning_face_position" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_scanning_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/ic_face_scan_back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_scanning_lighting" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/retake_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="64dp"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/retake_iv"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_marginBottom="50dp"
-        android:background="@drawable/bg_highlight_50"
+        android:background="@drawable/select_camera_capture"
         android:gravity="center"
-        android:paddingStart="64dp"
-        android:paddingEnd="64dp"
-        android:text="@string/take"
         android:textColor="@color/insight_black_87"
         android:textSize="23sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -101,26 +126,12 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/change_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="20dp"
         android:src="@drawable/ic_face_scan_capture"
-        app:layout_constraintBottom_toBottomOf="@+id/retake_tv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/retake_tv"
-        app:layout_constraintTop_toTopOf="@+id/retake_tv" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_face_scan_tips"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="18dp"
-        android:gravity="center"
-        android:text="@string/face_scan_tips"
-        android:textColor="@color/color_white"
-        android:textSize="18sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/retake_iv"
+        app:layout_constraintStart_toEndOf="@+id/retake_iv"
+        app:layout_constraintTop_toTopOf="@+id/retake_iv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

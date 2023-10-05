@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.BarUtils
-import com.blankj.utilcode.util.LogUtils.TYPE
 import com.chocolate.moudle.scan.R
 import com.chocolate.moudle.scan.my.UploadFileFragment
 

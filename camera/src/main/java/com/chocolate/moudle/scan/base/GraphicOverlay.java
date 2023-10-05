@@ -35,9 +35,7 @@ import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
-import com.blankj.utilcode.util.ImageUtils;
 import com.chocolate.moudle.scan.R;
-import com.chocolate.moudle.scan.my.BitmapUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
 
