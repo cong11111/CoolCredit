@@ -69,6 +69,8 @@ public class CameraOverlay extends View {
         super.onDraw(canvas);
         canvas.drawRoundRect(mDrawRectF, radius, radius, mMaskPaint);
         canvas.drawRect(0, 0, getWidth(), getHeight(), mMaskPaint);
+
+        canvas.drawRoundRect(mDrawRectF, radius, radius, mBoardPaint);
     }
 
     private RectF createRectBg() {

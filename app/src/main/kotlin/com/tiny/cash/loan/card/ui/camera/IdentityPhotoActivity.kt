@@ -172,7 +172,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
     private var hasUploadMtn = false
     private var hasUploadVotorCard = false
     private fun startUploadMtnFile(){
-        mPresenter.startUpload("MTN", File(minPath), object : BaseUploadFilePresenter.UploadObserver {
+        mPresenter.startUpload("1", File(minPath), object : BaseUploadFilePresenter.UploadObserver {
             override fun onSuccess() {
                 hasUploadMtn = true
                 Log.i("Okhttp", " on file success 1 = ")
@@ -197,7 +197,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
 
     private fun startUploadVotorCardFile(){
         mPresenter.onDestroy()
-        mPresenter.startUpload("Voter's Card", File(votorCardPath), object : BaseUploadFilePresenter.UploadObserver {
+        mPresenter.startUpload("2", File(votorCardPath), object : BaseUploadFilePresenter.UploadObserver {
             override fun onSuccess() {
                 hasUploadVotorCard = true
                 Log.i("Okhttp", " on file success 2 = ")

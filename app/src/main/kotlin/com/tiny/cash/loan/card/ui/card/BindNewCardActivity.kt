@@ -57,8 +57,8 @@ class BindNewCardActivity : BaseActivity2() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        BarUtils.setStatusBarColor(this, resources.getColor(R.color.white))
-        BarUtils.setStatusBarLightMode(this, true)
+        BarUtils.setStatusBarColor(this, resources.getColor(R.color.theme_color))
+        BarUtils.setStatusBarLightMode(this, false)
         mType = intent.getIntExtra(EXTRA_ADD_BANK_CARD, ADD_BANK_CARD_NUM)
         mHasResult = intent.getBooleanExtra(EXTRA_HAS_RESULT, false)
 

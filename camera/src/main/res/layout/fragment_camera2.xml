@@ -40,20 +40,36 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="30dp"
         android:src="@drawable/ic_home_back"
-        app:layout_constraintEnd_toStartOf="@id/iv_camera2_title"
+        app:layout_constraintEnd_toStartOf="@id/tv_camera2_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/iv_camera2_title"
+        android:id="@+id/tv_camera2_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:text="Upload Min"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/iv_camera2_back"
         app:layout_constraintStart_toEndOf="@id/iv_camera2_back"
         app:layout_constraintTop_toTopOf="@id/iv_camera2_back" />
+
+    <FrameLayout
+        android:id="@+id/fl_camera_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/theme_color_2" />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

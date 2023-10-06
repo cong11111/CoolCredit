@@ -33,6 +33,7 @@
         android:background="@drawable/identity_select_bg"
         android:gravity="center"
         android:text="@string/nin"
+        android:layout_marginBottom="@dimen/dp_18"
         android:textSize="@dimen/sp_14" />
 
     <androidx.appcompat.widget.AppCompatTextView

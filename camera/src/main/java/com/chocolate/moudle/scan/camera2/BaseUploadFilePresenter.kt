@@ -68,6 +68,10 @@ abstract class BaseUploadFilePresenter {
         observer?.onSuccess()
     }
 
+    fun onUploadFileFailure(errorMsg: String, observer: UploadObserver){
+        observer?.onFailure(errorMsg, "error")
+    }
+
     abstract fun startUploadFile(uploadFile: UploadFileSignResponse?, file : File, observer: UploadObserver)
 
     interface UploadObserver {

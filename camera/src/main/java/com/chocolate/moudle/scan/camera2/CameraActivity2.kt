@@ -99,4 +99,7 @@ class CameraActivity2 : AppCompatActivity() {
         transaction.commitAllowingStateLoss()
     }
 
+    fun getType() : Int{
+        return mType
+    }
 }

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.chocolate.moudle.scan.my.ScanActivity;
 import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.KudiCreditApp;
 import com.tiny.cash.loan.card.Constants;
@@ -22,6 +23,7 @@ import com.tiny.cash.loan.card.ui.adapter.AmountAdapter;
 import com.tiny.cash.loan.card.ui.adapter.TermAdapter;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.LayoutLoanProductBinding;
+import com.tiny.cash.loan.card.ui.camera.IdentityPhotoActivity;
 import com.tiny.cash.loan.card.ui.card.BindNewCardActivity;
 import com.tiny.cash.loan.card.ui.dialog.fragment.ConfirmLoanDialogFragment;
 import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
@@ -380,7 +382,14 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                             startIntent(WorkInfoActivity.class);
                             return;
                         }
-
+                        if (!response.getBody().isHasInfoReviewCard()) {
+                            IdentityPhotoActivity.Companion.launchActivity(getActivity());
+                            return;
+                        }
+                        if (!response.getBody().isHasInfoReviewSelfie()) {
+                            ScanActivity.showMeToSelfie(getActivity());
+                            return;
+                        }
                         if (!response.getBody().isAccountChecked()) {
                             BindNewCardActivity.Companion.launchAddBankAccount(getContext());
                             return;

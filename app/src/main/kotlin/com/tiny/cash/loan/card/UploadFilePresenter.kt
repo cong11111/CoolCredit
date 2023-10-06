@@ -1,5 +1,6 @@
 package com.tiny.cash.loan.card
 
+import android.text.TextUtils
 import android.util.Log
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.ThreadUtils
@@ -18,23 +19,25 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.*
+import org.json.JSONObject
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class UploadFilePresenter : BaseUploadFilePresenter() {
 
-    private var requestUploadSignObserver : NetObserver<Response<UploadFileSignResponse>>? = null
+    private var requestUploadSignObserver: NetObserver<Response<UploadFileSignResponse>>? = null
 
-    override fun requestUploadSign(imageType : String, file: File, observer: UploadObserver) {
+    override fun requestUploadSign(imageType: String, file: File, observer: UploadObserver) {
         val request = UploadFileSignRequest()
         request.token = Constant.mToken
         request.imageType = imageType
-        if (BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             Log.e("Okhttp", " request upload sign = " + imageType)
         }
-        val observable: Observable<Response<UploadFileSignResponse>> =NetManager.getApiService2().uploadFileGetSign(request.token, request.imageType).
-        subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        val observable: Observable<Response<UploadFileSignResponse>> =
+            NetManager.getApiService2().uploadFileGetSign(request.token, request.imageType)
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         requestUploadSignObserver = object : NetObserver<Response<UploadFileSignResponse>>() {
             override fun onNext(response: Response<UploadFileSignResponse>) {
                 if (response == null) {
@@ -43,7 +46,10 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
                 val signRequest = response.body
                 if (response.isSuccess) {
                     if (BuildConfig.DEBUG) {
-                        Log.e("Okhttp", "request upload sign observer success = ${signRequest.accessKeyId}")
+                        Log.e(
+                            "Okhttp",
+                            "request upload sign observer success = ${signRequest.accessKeyId}"
+                        )
                     }
                     if (signRequest != null) {
                         onRequestSuccess(signRequest, file, observer)
@@ -60,19 +66,30 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
         observable.subscribeWith(requestUploadSignObserver)
     }
 
-    override fun startUploadFile(uploadFile: UploadFileSignResponse?, file : File, observer: UploadObserver) {
-        ThreadUtils.executeByCached(object : ThreadUtils.SimpleTask<File>() {
-            override fun doInBackground(): File {
+    override fun startUploadFile(
+        uploadFile: UploadFileSignResponse?,
+        file: File,
+        observer: UploadObserver
+    ) {
+        ThreadUtils.executeByCached(object : ThreadUtils.SimpleTask<File?>() {
+            override fun doInBackground(): File? {
                 return startUploadInternal(uploadFile, file, observer)
             }
 
             override fun onSuccess(result: File?) {
+                if (file != null) {
+                    onUploadFileSuccess(file, observer)
+                }
             }
 
         })
     }
 
-    private fun startUploadInternal(uploadFile: UploadFileSignResponse?, file: File, observer: UploadObserver) : File {
+    private fun startUploadInternal(
+        uploadFile: UploadFileSignResponse?,
+        file: File,
+        observer: UploadObserver
+    ): File? {
         val url = uploadFile?.host
         if (BuildConfig.DEBUG) {
             Log.e("OkHttp", "start upload file to oss internal ... ")
@@ -112,20 +129,24 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
             Log.i("Okhttp", " url = $url")
             Log.i("Okhttp", " keyStr = $keyStr")
         }
-        val progressBody = ProgressRequestBody(requestBody, object : ProgressRequestBody.ProgressListener {
-            override fun onProgress(currentBytes: Long, totalBytes: Long) {
-                try {
-                    onUploadProgressChange(((currentBytes / totalBytes) * 100).toInt(), observer)
-                } catch (e : java.lang.Exception) {
-                    onUploadProgressChange(60, observer)
+        val progressBody =
+            ProgressRequestBody(requestBody, object : ProgressRequestBody.ProgressListener {
+                override fun onProgress(currentBytes: Long, totalBytes: Long) {
+                    try {
+                        onUploadProgressChange(
+                            ((currentBytes / totalBytes) * 100).toInt(),
+                            observer
+                        )
+                    } catch (e: java.lang.Exception) {
+                        onUploadProgressChange(60, observer)
+                    }
                 }
-            }
 
-        })
+            })
         // 构建request请求体，有需要传请求头自己加
         val request = Request.Builder().url(url).post(progressBody).build()
-        var response : okhttp3.Response? = null;
-        var result : String? = "";
+        var response: okhttp3.Response? = null;
+        var result: String? = "";
         try {
             // 发送请求
             response = okHttpClient.newCall(request).execute()
@@ -133,15 +154,27 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
             if (!response.isSuccessful) {
                 Log.e("Test", "请求失败")
             }
-            response.body()!!.close();
+            response.body()!!.close()
+//            {"":"ok","Key":"Status"}
             if (BuildConfig.DEBUG) {
-                Log.e("Okhttp", " result = " + result)
+                Log.e("Okhttp", " result = $result")
             }
-            onUploadFileSuccess(file, observer)
-        } catch (e : IOException) {
-            Log.e("Test", " exceprion = " + e.toString())
+            val jsonObj = JSONObject(result)
+            val valueStr = jsonObj.optString("String value")
+            val keyStr = jsonObj.optString("Key")
+            if (TextUtils.equals(valueStr, "ok") && TextUtils.equals(keyStr, "Status")) {
+                return file
+            } else {
+                onUploadFileFailure("AliClound Return failure, $result", observer)
+                return null
+            }
+        } catch (e: IOException) {
+            if (BuildConfig.DEBUG) {
+                Log.e("Test", " exceprion = $e")
+            }
+            onUploadFileFailure("AliClound upload failure, " + e.message, observer)
         }
-        return file
+        return null
     }
 
     override fun onDestroy() {

@@ -29,8 +29,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -83,8 +86,11 @@ class Camera2Fragment : Fragment() {
 
     private var mPreviewView: PreviewView? = null
     private var switchButton: ImageButton? = null
-    private var captureButton: ImageButton? = null
+    private var captureButton: AppCompatImageView? = null
     private var cameraOverlay: CameraOverlay? = null
+    private var flLoaing: FrameLayout? = null
+    private var tvTitle: AppCompatTextView? = null
+    private var ivBack: AppCompatImageView? = null
 
     private val displayManager by lazy {
         requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -146,6 +152,9 @@ class Camera2Fragment : Fragment() {
         switchButton = view.findViewById(R.id.camera_switch_button)
         cameraOverlay = view.findViewById(R.id.camera_overlay)
         captureButton = view.findViewById(R.id.camera_capture_button)
+        flLoaing = view.findViewById(R.id.fl_camera_loading)
+        tvTitle = view.findViewById(R.id.tv_camera2_title)
+        ivBack = view.findViewById(R.id.iv_camera2_back)
         return view
     }
 
@@ -176,7 +185,18 @@ class Camera2Fragment : Fragment() {
             lifecycleScope.launch {
                 setUpCamera()
             }
+            if (activity is CameraActivity2) {
+                val type = (activity as CameraActivity2).getType()
+                if (type == CameraActivity2.TYPE_MIN) {
+                    tvTitle?.text = "Upload NIN"
+                } else if (type == CameraActivity2.TYPE_VOTER_CARD) {
+                    tvTitle?.text = "Upload Voter's Card"
+                }
+            }
         })
+        ivBack?.setOnClickListener{
+            activity?.finish()
+        }
     }
 
     /**
@@ -405,6 +425,8 @@ class Camera2Fragment : Fragment() {
         // Listener for button used to capture photo
         captureButton?.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View?) {
+                captureButton?.isEnabled = false
+                flLoaing?.visibility = View.VISIBLE
                 // Get a stable reference of the modifiable image capture use case
                 imageCapture?.let { imageCapture ->
                     val parentFile = File(context?.cacheDir, "scan/temp")
@@ -421,6 +443,12 @@ class Camera2Fragment : Fragment() {
                         outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
                             override fun onError(exc: ImageCaptureException) {
                                 Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                                if (isRemoving || isDetached) {
+                                    return
+                                }
+                                captureButton?.isEnabled = true
+                                flLoaing?.visibility = View.GONE
+                                Toast.makeText(context, "Photo capture failed: ${exc.message}", Toast.LENGTH_SHORT).show()
                             }
 
                             override fun onImageSaved(output: ImageCapture.OutputFileResults) {
@@ -446,6 +474,8 @@ class Camera2Fragment : Fragment() {
                                             (activity as CameraActivity2).restorePic(result.absolutePath)
                                             (activity as CameraActivity2).toCameraResultFragment()
                                         }
+                                        flLoaing?.visibility = View.GONE
+                                        captureButton?.isEnabled = true
                                     }
 
                                 })

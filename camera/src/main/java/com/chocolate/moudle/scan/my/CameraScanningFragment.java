@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -97,6 +98,7 @@ public class CameraScanningFragment extends Fragment {
     private GraphicOverlay overlay;
     private AppCompatImageView ivChangeCamera;
     private AppCompatImageView ivBack;
+    private FrameLayout flLoading;
     private View viewTop;
 
     @Nullable
@@ -118,6 +120,7 @@ public class CameraScanningFragment extends Fragment {
         ivChangeCamera = view.findViewById(R.id.change_camera);
         ivBack = view.findViewById(R.id.iv_scanning_back);
         viewTop = view.findViewById(R.id.view_scanning_top);
+        flLoading = view.findViewById(R.id.fl_scanning_loading);
 
         int statusBarH = BarUtils.getStatusBarHeight();
         ViewGroup.MarginLayoutParams topParam = (ViewGroup.MarginLayoutParams) viewTop.getLayoutParams();
@@ -127,26 +130,15 @@ public class CameraScanningFragment extends Fragment {
 
         overlay.setTopSpace(0, overlayRealHeight);
         overlay.setNeedDrawFaceOval(true);
-        overlay.post(new Runnable() {
-            @Override
-            public void run() {
-                if (isDetached() || isRemoving() || getContext() == null) {
-                    return;
-                }
-//                ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) tvTips.getLayoutParams();
-//                float bottom = overlay.getFaceOvalRect().bottom;
-//                float tipTopMargin = ConvertUtils.dp2px(15);
-//                layoutParams.topMargin = (int) (bottom + tipTopMargin);
-//                tvTips.setLayoutParams(layoutParams);
-//                tvTips.setVisibility(View.VISIBLE);
-            }
-        });
 
         ivTake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (imageProcessor == null || pvView == null) {
                     return;
+                }
+                if (flLoading != null) {
+                    flLoading.setVisibility(View.VISIBLE);
                 }
                 mHandler.removeCallbacksAndMessages(null);
                 bitmap = pvView.getBitmap();
@@ -162,6 +154,9 @@ public class CameraScanningFragment extends Fragment {
                         @Override
                         public void onSuccess() {
                             ((ScanActivity) getActivity()).onFinish();
+                            if (flLoading != null) {
+                                flLoading.setVisibility(View.GONE);
+                            }
                         }
                     });
 
@@ -317,7 +312,7 @@ public class CameraScanningFragment extends Fragment {
             imageProcessor.setObserver(new CameraFaceDetectorProcessor.Observer() {
                 @Override
                 public void onFaceDetectChange(int lightingStrengthResult, int facePosResult, int lookStraightResult) {
-                    CameraScanningFragment.this.lightingStrengthResult = lightingStrengthResult;
+//                    CameraScanningFragment.this.lightingStrengthResult = lightingStrengthResult;
                     CameraScanningFragment.this.facePosResult = facePosResult;
                     CameraScanningFragment.this.lookStraightResult = lookStraightResult;
                     mHandler.removeMessages(UPDATE_FACT_DETECT_RESULT);
@@ -327,9 +322,9 @@ public class CameraScanningFragment extends Fragment {
 
                 @Override
                 public void onLightStrengthChange(int lightingStrengthResult) {
-                    CameraScanningFragment.this.lightingStrengthResult = lightingStrengthResult;
-                    mHandler.removeMessages(UPDATE_LIGHT_DETECT_RESULT);
-                    mHandler.sendEmptyMessage(UPDATE_LIGHT_DETECT_RESULT);
+//                    CameraScanningFragment.this.lightingStrengthResult = lightingStrengthResult;
+//                    mHandler.removeMessages(UPDATE_LIGHT_DETECT_RESULT);
+//                    mHandler.sendEmptyMessage(UPDATE_LIGHT_DETECT_RESULT);
                 }
 
                 @Override

@@ -22,6 +22,10 @@ public class QueryOrderId implements Serializable {
     private boolean accountChecked;
     private boolean cardChecked;
 
+    private boolean hasInfoReviewCard;
+    private boolean hasInfoReviewSelfie;
+    private boolean infoReviewSwitch;
+
     public String getOrderId() {
         return orderId;
     }
@@ -72,6 +76,30 @@ public class QueryOrderId implements Serializable {
 
     public boolean isCardChecked() {
         return cardChecked;
+    }
+
+    public boolean isHasInfoReviewCard() {
+        return hasInfoReviewCard;
+    }
+
+    public void setHasInfoReviewCard(boolean hasInfoReviewCard) {
+        this.hasInfoReviewCard = hasInfoReviewCard;
+    }
+
+    public boolean isHasInfoReviewSelfie() {
+        return hasInfoReviewSelfie;
+    }
+
+    public void setHasInfoReviewSelfie(boolean hasInfoReviewSelfie) {
+        this.hasInfoReviewSelfie = hasInfoReviewSelfie;
+    }
+
+    public boolean isInfoReviewSwitch() {
+        return infoReviewSwitch;
+    }
+
+    public void setInfoReviewSwitch(boolean infoReviewSwitch) {
+        this.infoReviewSwitch = infoReviewSwitch;
     }
 
     public void setCardChecked(boolean cardChecked) {

@@ -499,7 +499,13 @@ public class MainActivity extends BaseActivity {
         if (TextUtils.isEmpty(push)) {
             getListMessage();
         }
+        CameraSdk.INSTANCE.setObserver(new CameraSdk.Observer() {
+            @Override
+            public void onScanActivityFinish(@NonNull String bitmapPath) {
+                IdentityAuthActivity.Companion.launchActivity(MainActivity.this, bitmapPath);
+            }
 
+        });
     }
 
 
@@ -814,13 +820,7 @@ public class MainActivity extends BaseActivity {
 
     private void test2() {
         ScanActivity.showMeToSelfie(this);
-        CameraSdk.INSTANCE.setObserver(new CameraSdk.Observer() {
-            @Override
-            public void onScanActivityFinish(@NonNull String bitmapPath) {
-                IdentityAuthActivity.Companion.launchActivity(MainActivity.this, bitmapPath);
-            }
 
-        });
     }
 
     private void executeCache() {
