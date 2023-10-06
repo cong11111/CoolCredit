@@ -19,10 +19,10 @@ package com.chocolate.moudle.scan.camera2
 import android.annotation.SuppressLint
 import android.content.*
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.hardware.display.DisplayManager
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -39,6 +39,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.window.WindowManager
+import com.blankj.utilcode.util.ImageUtils
+import com.blankj.utilcode.util.ThreadUtils
+import com.chocolate.moudle.scan.BuildConfig
+import com.chocolate.moudle.scan.base.CameraOverlay
+import com.chocolate.moudle.scan.my.CameraScanningFragment
 import com.chocolate.moudle.scan.utils.MediaStoreUtils
 import kotlinx.coroutines.launch
 import java.io.File
@@ -79,6 +84,7 @@ class Camera2Fragment : Fragment() {
     private var mPreviewView: PreviewView? = null
     private var switchButton: ImageButton? = null
     private var captureButton: ImageButton? = null
+    private var cameraOverlay: CameraOverlay? = null
 
     private val displayManager by lazy {
         requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -138,6 +144,7 @@ class Camera2Fragment : Fragment() {
         mCameraUiContainer = view.findViewById(R.id.camera_container)
         mPreviewView = view.findViewById(R.id.view_finder)
         switchButton = view.findViewById(R.id.camera_switch_button)
+        cameraOverlay = view.findViewById(R.id.camera_overlay)
         captureButton = view.findViewById(R.id.camera_capture_button)
         return view
     }
@@ -418,33 +425,34 @@ class Camera2Fragment : Fragment() {
 
                             override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                                 val savedUri = output.savedUri
-                                MediaStore.Files.getContentUri("internal")
                                 Log.e(TAG, "Photo capture succeeded: $savedUri")
-                                if (activity is CameraActivity2) {
-                                    (activity as CameraActivity2).restorePic(saveFile.absolutePath)
-                                    (activity as CameraActivity2).toCameraResultFragment()
-                                }
-                                // Implicit broadcasts will be ignored for devices running API level >= 24
-                                // so if you only target API level 24+ you can remove this statement
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                                    // Suppress deprecated Camera usage needed for API level 23 and below
-                                    @Suppress("DEPRECATION")
-                                    requireActivity().sendBroadcast(
-                                        Intent(android.hardware.Camera.ACTION_NEW_PICTURE, savedUri)
-                                    )
-                                }
+                                ThreadUtils.executeByCached(object : ThreadUtils.SimpleTask<File>() {
+                                    @Throws(Throwable::class)
+                                    override fun doInBackground(): File {
+                                        try {
+                                            val file = cropBitmap(saveFile)
+                                            if (file.exists()) {
+                                                return file
+                                            }
+                                        } catch (e : Exception) {
+                                            Log.e(TAG, " exception = " + e.message)
+                                        }
+                                        return saveFile
+                                    }
+
+
+                                    override fun onSuccess(result: File) {
+                                        if (activity is CameraActivity2) {
+                                            (activity as CameraActivity2).restorePic(result.absolutePath)
+                                            (activity as CameraActivity2).toCameraResultFragment()
+                                        }
+                                    }
+
+                                })
+
+
                             }
                         })
-
-                    // We can only change the foreground Drawable using API level 23+ API
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        // Display flash animation to indicate that photo was captured
-//                        fragmentCameraBinding.root.postDelayed({
-//                            fragmentCameraBinding.root.foreground = ColorDrawable(Color.WHITE)
-//                            fragmentCameraBinding.root.postDelayed(
-//                                { fragmentCameraBinding.root.foreground = null }, ANIMATION_FAST_MILLIS)
-//                        }, ANIMATION_SLOW_MILLIS)
-                    }
                 }
             }
 
@@ -463,6 +471,50 @@ class Camera2Fragment : Fragment() {
                 // Re-bind use cases to update selected camera
                 bindCameraUseCases()
             }
+        }
+    }
+
+    private fun cropBitmap(file : File) : File{
+        if (cameraOverlay == null) {
+            return file
+        }
+        val src = BitmapFactory.decodeFile(file.absolutePath)
+        val containerW = cameraOverlay!!.width
+        val containerH = cameraOverlay!!.height
+        val pair = CameraOverlay.getWidthAndHeight(cameraOverlay!!.width)
+        val innerW = pair.first
+        val innerH = pair.second
+        val leftRatio = ((containerW - innerW) * 1f ) / containerW / 2f
+        val topRatio = ((containerH - innerH) * 1f )  / containerH / 2f
+        val widthRatio = innerW * 1f / containerW
+        val heightRatio = innerH * 1f / containerH
+        val bitmapW = src.width
+        val bitmapH = src.height
+        val out = ImageUtils.clip(src, (bitmapW * leftRatio).toInt(), (bitmapH * topRatio).toInt(),
+            (bitmapW * widthRatio).toInt(), (bitmapH * heightRatio).toInt(), true)
+        val parentFile = File(context?.cacheDir, "scan/temp")
+        if (!parentFile.exists()) {
+            parentFile.mkdirs()
+        }
+        val saveFile = File(
+            parentFile,
+            System.currentTimeMillis().toString() + ".png"
+        )
+        val isSuccess = ImageUtils.save(
+            out,
+            saveFile,
+            Bitmap.CompressFormat.PNG,
+            100,
+            false
+        )
+        if (isSuccess) {
+            if (BuildConfig.DEBUG) {
+                Log.e(CameraScanningFragment.TAG, "Camera2Fragment save bitmap success = $isSuccess")
+            }
+            file.delete()
+            return saveFile
+        } else {
+            return file
         }
     }
 

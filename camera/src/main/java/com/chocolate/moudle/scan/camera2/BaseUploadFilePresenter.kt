@@ -12,9 +12,7 @@ import java.io.File
 import java.util.Locale
 
 
-abstract class
-
-BaseUploadFilePresenter {
+abstract class BaseUploadFilePresenter {
 
     fun startUpload(imageType : String, file1 : File, observer: UploadObserver) {
         val context = CameraSdk.mAppContext

@@ -12,6 +12,7 @@
         android:layout_height="match_parent" />
 
     <com.chocolate.moudle.scan.base.CameraOverlay
+        android:id="@+id/camera_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -73,12 +74,19 @@ public class CameraOverlay extends View {
     private RectF createRectBg() {
          // 332, 237
         //667 , 375
-        int innerW = (int) (getWidth() / 667f * 332);
-        int innerH = (int) (innerW / 332f * 237);
+        Pair<Integer, Integer> pair = getWidthAndHeight(getWidth());
+        int innerW = pair.first;
+        int innerH = pair.second;
         RectF rectF = new RectF(0, 0, getWidth(), getHeight());
         int paddingHor = (int) ((getWidth() - innerW) / 2f);
         int paddingVer = (int) ((getHeight() - innerH) / 2f);
         rectF.inset(paddingHor, paddingVer);
         return rectF;
+    }
+
+    public static Pair<Integer, Integer> getWidthAndHeight(int width){
+        int innerW = (int) (width / 667f * 332);
+        int innerH = (int) (innerW / 332f * 237);
+        return new Pair<Integer, Integer>(innerW, innerH);
     }
 }
