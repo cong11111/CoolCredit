@@ -121,6 +121,12 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
             }
 
         })
+        ivBack?.setOnClickListener(object : OnClickListener {
+            override fun onClick(v: View?) {
+                finish()
+            }
+
+        })
         updateNinAndVotorCard()
         updateMinAndVoterCardPreview()
     }

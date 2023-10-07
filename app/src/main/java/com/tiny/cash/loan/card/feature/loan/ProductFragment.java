@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chocolate.moudle.scan.my.ScanActivity;
 import com.tiny.cash.loan.card.Constant;
@@ -33,6 +34,7 @@ import com.tiny.cash.loan.card.feature.users.WorkInfoActivity;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.GPSUtils;
+import com.tiny.cash.loan.card.utils.JumpPermissionUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.PermissionUtil;
@@ -387,7 +389,24 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                             return;
                         }
                         if (!response.getBody().isHasInfoReviewSelfie()) {
-                            ScanActivity.showMeToSelfie(getActivity());
+                            boolean isGranted = PermissionUtils.isGranted(Manifest.permission.CAMERA);
+                            if (isGranted) {
+                                ScanActivity.showMeToSelfie(getActivity());
+                            } else {
+                                PermissionUtils.permission(Manifest.permission.CAMERA).callback(new PermissionUtils.SimpleCallback() {
+                                    @Override
+                                    public void onGranted() {
+                                        ScanActivity.showMeToSelfie(getActivity());
+                                    }
+
+                                    @Override
+                                    public void onDenied() {
+                                        ToastUtils.showShort("please allow permission.");
+                                        JumpPermissionUtils.goToSetting(getActivity());
+                                    }
+                                }).request();
+                            }
+
                             return;
                         }
                         if (!response.getBody().isAccountChecked()) {

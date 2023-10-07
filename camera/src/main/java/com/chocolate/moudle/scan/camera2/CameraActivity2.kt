@@ -35,7 +35,7 @@ class CameraActivity2 : AppCompatActivity() {
         BarUtils.setStatusBarColor(this@CameraActivity2, android.graphics.Color.TRANSPARENT)
         setContentView(R.layout.activity_camera2)
         mType = intent.getIntExtra(KEY_RESULT_CAMERA_TYPE, TYPE_MIN)
-        toCameraFragment()
+        toCameraFragment(false)
     }
 
     fun toCameraFragment(needAnim: Boolean = true) {
@@ -82,6 +82,7 @@ class CameraActivity2 : AppCompatActivity() {
         intent.putExtra(KEY_RESULT_CAMERA_TYPE, mType)
         setResult(RESULT_CAMERA_CODE, intent)
         finish()
+        overridePendingTransition(0,0)
     }
 
     private fun toFragment(fragment: Fragment, tag: String, needAnim : Boolean = true) {
@@ -101,5 +102,11 @@ class CameraActivity2 : AppCompatActivity() {
 
     fun getType() : Int{
         return mType
+    }
+
+    override fun onBackPressed() {
+//        super.onBackPressed()
+        finish()
+        overridePendingTransition(0,0)
     }
 }

@@ -58,6 +58,12 @@ class IdentityAuthActivity : BaseIdentityActivity() {
         tvNext = findViewById<AppCompatTextView>(R.id.tv_next)
         progressBar = findViewById<ProgressBar>(R.id.loading_progress)
         progressBar?.max = 100
+        ivBack?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                finish()
+            }
+
+        })
         flTap?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 ScanActivity.showMe(this@IdentityAuthActivity)

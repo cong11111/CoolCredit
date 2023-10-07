@@ -196,6 +196,7 @@ class Camera2Fragment : Fragment() {
         })
         ivBack?.setOnClickListener{
             activity?.finish()
+            activity?.overridePendingTransition(0, 0)
         }
     }
 

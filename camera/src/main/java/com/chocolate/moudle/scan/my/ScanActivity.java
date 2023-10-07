@@ -247,12 +247,14 @@ public class ScanActivity extends AppCompatActivity {
        Intent intent = new Intent();
        intent.putExtra(KEY_RESULT_CAMERA_PATH, bitmapPath);
        setResult(RESULT_SCAN_CODE, intent);
-        CameraSdk.INSTANCE.executeScanActivityNext(bitmapPath);
-        finish();
+       CameraSdk.INSTANCE.executeScanActivityNext(bitmapPath);
+       finish();
+       overridePendingTransition(0,0);
    }
     @Override
     public void onBackPressed() {
         finish();
+        overridePendingTransition(0,0);
 //        if (curFragmentIndex == 0) {
 //            val fragment = supportFragmentManager.findFragmentByTag(GuidePrepareFragment.TAG)
 //            if (fragment is GuidePrepareFragment) {
