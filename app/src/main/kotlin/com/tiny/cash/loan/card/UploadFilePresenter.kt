@@ -13,7 +13,6 @@ import com.tiny.cash.loan.card.net.NetManager
 import com.tiny.cash.loan.card.net.NetObserver
 import com.tiny.cash.loan.card.net.ResponseException
 import com.tiny.cash.loan.card.net.response.Response
-import com.tiny.cash.loan.card.net.server.LoggingInterceptor
 import com.tiny.cash.loan.card.utils.CommonUtils
 import com.tiny.cash.loan.card.utils.ProgressRequestBody
 import io.reactivex.Observable
@@ -23,6 +22,7 @@ import okhttp3.*
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 class UploadFilePresenter : BaseUploadFilePresenter() {
@@ -121,7 +121,6 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
             .connectTimeout(60L, TimeUnit.SECONDS)
             .writeTimeout(60L, TimeUnit.SECONDS)
             .readTimeout(60L, TimeUnit.SECONDS)
-            .addInterceptor(LoggingInterceptor())
             .build();
 //        接口返回的 dir 字段， 自己要拼接上文件名
 //        val keyStr = uploadFile?.dir + File.separator + file.name
@@ -139,6 +138,9 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
         if (BuildConfig.DEBUG) {
             Log.i("Okhttp", " url = $url")
             Log.i("Okhttp", " keyStr = $keyStr")
+        }
+        if (!Constant.isAabBuild()) {
+            LogSaver.logToFile(" url = $url keyStr = $keyStr" + " uploadFile = " + GsonUtils.toJson(uploadFile))
         }
         val progressBody =
             ProgressRequestBody(requestBody, object : ProgressRequestBody.ProgressListener {
@@ -170,6 +172,9 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
             if (BuildConfig.DEBUG) {
                 Log.e("Okhttp", " result = $result")
             }
+            if (!Constant.isAabBuild()) {
+                LogSaver.logToFile(" start upload result = $result")
+            }
             val jsonObj = JSONObject(result)
             val valueStr = jsonObj.optString("String value")
             val keyStr = jsonObj.optString("Key")
@@ -179,7 +184,7 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
                 onUploadFileFailure("AliClound Return failure, $result", observer)
                 return null
             }
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             if (BuildConfig.DEBUG) {
                 Log.e("Test", " exceprion = $e")
             }
