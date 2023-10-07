@@ -145,7 +145,7 @@ public class ScanActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
 //        bundle.putBoolean("showInfo", true);
         fragment.setArguments(bundle);
-        toFragment(fragment, CameraScanningFragment.TAG);
+        toFragment(fragment, CameraScanningFragment.TAG, false);
     }
 
    public void toScanResultFragment() {
@@ -158,7 +158,7 @@ public class ScanActivity extends AppCompatActivity {
         }
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
-        toFragment(fragment, GuideScanResultFragment.TAG);
+        toFragment(fragment, GuideScanResultFragment.TAG, false);
     }
 
     public void setBitmap(Bitmap bitmap, FaceSaveState face, CallBack callBack) {
@@ -227,16 +227,17 @@ public class ScanActivity extends AppCompatActivity {
 //        }
     }
 
-    private void toFragment(Fragment fragment, String tag) {
+    private void toFragment(Fragment fragment, String tag, boolean needAnim) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction(); // 开启一个事务
-        transaction.setCustomAnimations(
-                R.anim.td_slide_in_right,
-                R.anim.td_slide_out_left,
-                R.anim.td_slide_in_left,
-                R.anim.td_slide_out_right
-        );
-
+        if (needAnim) {
+            transaction.setCustomAnimations(
+                    R.anim.td_slide_in_right,
+                    R.anim.td_slide_out_left,
+                    R.anim.td_slide_in_left,
+                    R.anim.td_slide_out_right
+            );
+        }
         transaction.addToBackStack(null);
         transaction.replace(R.id.fl_container, fragment, tag);
         transaction.commitAllowingStateLoss();

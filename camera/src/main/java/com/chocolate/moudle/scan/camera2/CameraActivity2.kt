@@ -69,7 +69,7 @@ class CameraActivity2 : AppCompatActivity() {
         }
         val bundle = Bundle()
         fragment.arguments = bundle
-        toFragment(fragment, CameraResultFragment.TAG)
+        toFragment(fragment, CameraResultFragment.TAG, false)
     }
 
     fun getPath() : String? {

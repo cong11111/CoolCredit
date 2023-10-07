@@ -16,8 +16,10 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chocolate.moudle.scan.camera2.BaseUploadFilePresenter
 import com.chocolate.moudle.scan.my.ScanActivity
+import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
 import com.tiny.cash.loan.card.kudicredit.R
+import com.tiny.cash.loan.card.log.LogSaver
 import java.io.File
 
 class IdentityAuthActivity : BaseIdentityActivity() {
@@ -101,7 +103,7 @@ class IdentityAuthActivity : BaseIdentityActivity() {
                     if (BuildConfig.DEBUG) {
                         Log.i("Okhttp", " on file success 3 = ")
                     }
-                    ToastUtils.showShort("identity auth success")
+                    ToastUtils.showShort("Identity auth upload success")
                     finish()
                 }
 
@@ -122,14 +124,18 @@ class IdentityAuthActivity : BaseIdentityActivity() {
                     }
                     if (BuildConfig.DEBUG) {
                         Log.e(
-                            "Okhttp", " on file failure 2 errorDesc = " + errorDesc
+                            "Okhttp", " on file failure errorDesc = " + errorDesc
                                     + " errorMsg = " + errorMsg
                         )
                     }
-                    Toast.makeText(
-                        this@IdentityAuthActivity,
-                        "errorDesc = $errorDesc errorMsg = $errorMsg", Toast.LENGTH_SHORT
-                    ).show()
+                    if (!Constant.isAabBuild()) {
+                        LogSaver.logToFile(" on file failure errorDesc = " + errorDesc
+                                + " errorMsg = " + errorMsg)
+                        Toast.makeText(
+                            this@IdentityAuthActivity,
+                            "errorDesc = $errorDesc errorMsg = $errorMsg", Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             })
     }

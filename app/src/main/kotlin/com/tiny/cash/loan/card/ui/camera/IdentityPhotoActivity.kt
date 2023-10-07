@@ -13,6 +13,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.FrameLayout
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.blankj.utilcode.util.BarUtils
@@ -22,7 +23,9 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chocolate.moudle.scan.camera2.BaseUploadFilePresenter
 import com.chocolate.moudle.scan.camera2.CameraActivity2
+import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.kudicredit.R
+import com.tiny.cash.loan.card.log.LogSaver
 import com.tiny.cash.loan.card.utils.JumpPermissionUtils
 import java.io.File
 
@@ -174,22 +177,39 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
     private fun startUploadMtnFile(){
         mPresenter.startUpload("1", File(minPath), object : BaseUploadFilePresenter.UploadObserver {
             override fun onSuccess() {
+                if (isFinishing || isDestroyed) {
+                    return
+                }
                 hasUploadMtn = true
                 Log.i("Okhttp", " on file success 1 = ")
-                Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                mHandler.postDelayed(Runnable {
                     startUploadVotorCardFile()
-                }, 1500)
+                }, 1000)
             }
 
             override fun onProgress(progress: Int) {
+                if (isFinishing || isDestroyed) {
+                    return
+                }
                 val progress = (progress / 2f).toInt()
                 progressBar?.progress = progress
                 Log.i("Okhttp", " on progress 1 = " + progress)
             }
 
             override fun onFailure(errorDesc: String, errorMsg: String) {
+                if (isFinishing || isDestroyed) {
+                    return
+                }
                 Log.e("Okhttp", " on file failure 1 errorDesc = " + errorDesc
                         + " errorMsg = " + errorMsg)
+                if (!Constant.isAabBuild()) {
+                    LogSaver.logToFile(" on file failure 1 errorDesc = " + errorDesc
+                            + " errorMsg = " + errorMsg)
+                    Toast.makeText(
+                        this@IdentityPhotoActivity, " on file failure 1 errorDesc = " + errorDesc
+                                + " errorMsg = " + errorMsg, Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
         })
@@ -205,20 +225,34 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
                     if (isFinishing || isDestroyed) {
                         return@post
                     }
-                    ToastUtils.showShort("identity photo success")
+                    ToastUtils.showShort("Identity photo upload success")
                     finish()
                 }
             }
 
             override fun onProgress(progress: Int) {
+                if (isFinishing || isDestroyed) {
+                    return
+                }
                 val progress = (progress / 2f + 50f).toInt()
                 progressBar?.progress = progress
                 Log.i("Okhttp", " on progress 2 = " + progress)
             }
 
             override fun onFailure(errorDesc: String, errorMsg: String) {
-                Log.e("Okhttp", " on file failure 2 errorDesc = " + errorDesc
+                if (isFinishing || isDestroyed) {
+                    return
+                }
+                Log.v("Okhttp", " on file failure 2 errorDesc = " + errorDesc
                         + " errorMsg = " + errorMsg)
+                if (!Constant.isAabBuild()) {
+                    LogSaver.logToFile(" on file failure 2 errorDesc = " + errorDesc
+                            + " errorMsg = " + errorMsg)
+                    Toast.makeText(
+                        this@IdentityPhotoActivity, " on file failure 2 errorDesc = " + errorDesc
+                                + " errorMsg = " + errorMsg, Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
         })
@@ -226,6 +260,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        mHandler?.removeCallbacksAndMessages(null)
         mPresenter.onDestroy()
     }
 }
