@@ -3,6 +3,9 @@ package com.tiny.cash.loan.card.ui.camera
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -37,6 +40,13 @@ class IdentityAuthActivity : BaseIdentityActivity() {
         }
 
     }
+
+    private val mHandler = Handler(Looper.getMainLooper(), object : Handler.Callback {
+        override fun handleMessage(msg: Message): Boolean {
+            return false
+        }
+
+    })
 
     private var mType: Int = TYPE_AUTH
     private var progressBar: ProgressBar? = null
@@ -109,8 +119,13 @@ class IdentityAuthActivity : BaseIdentityActivity() {
                     if (BuildConfig.DEBUG) {
                         Log.i("Okhttp", " on file success 3 = ")
                     }
-                    ToastUtils.showShort("Identity auth upload success")
-                    finish()
+                    mHandler.post(Runnable {
+                        if (isFinishing || isDestroyed) {
+                            return@Runnable
+                        }
+                        ToastUtils.showShort("Identity auth upload success")
+                        finish()
+                    })
                 }
 
                 override fun onProgress(progress: Int) {
@@ -118,7 +133,12 @@ class IdentityAuthActivity : BaseIdentityActivity() {
                         return
                     }
                     val progress = (progress / 2f + 50f).toInt()
-                    progressBar?.progress = progress
+                    mHandler.post(Runnable {
+                        if (isFinishing || isDestroyed) {
+                            return@Runnable
+                        }
+                        progressBar?.progress = progress
+                    })
                     if (BuildConfig.DEBUG) {
                         Log.i("Okhttp", " on progress 2 = " + progress)
                     }
@@ -137,12 +157,19 @@ class IdentityAuthActivity : BaseIdentityActivity() {
                     if (!Constant.isAabBuild()) {
                         LogSaver.logToFile(" on file failure errorDesc = " + errorDesc
                                 + " errorMsg = " + errorMsg)
-                        Toast.makeText(
-                            this@IdentityAuthActivity,
-                            "errorDesc = $errorDesc errorMsg = $errorMsg", Toast.LENGTH_SHORT
-                        ).show()
+                        mHandler.post(Runnable {
+                            Toast.makeText(
+                                this@IdentityAuthActivity,
+                                "errorDesc = $errorDesc errorMsg = $errorMsg", Toast.LENGTH_SHORT
+                            ).show()
+                        })
                     }
                 }
             })
+    }
+
+    override fun onDestroy() {
+        mHandler.removeCallbacksAndMessages(null)
+        super.onDestroy()
     }
 }

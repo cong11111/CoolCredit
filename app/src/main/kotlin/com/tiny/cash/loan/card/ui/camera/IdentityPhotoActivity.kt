@@ -198,29 +198,12 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
                 if (isFinishing || isDestroyed) {
                     return
                 }
-                val progress = (progress / 2f).toInt()
-                progressBar?.progress = progress
-                Log.i("Okhttp", " on progress 1 = " + progress)
+                val temp = (progress / 2f).toInt()
+                onProgressChange(temp)
             }
 
             override fun onFailure(errorDesc: String, errorMsg: String) {
-                if (isFinishing || isDestroyed) {
-                    return
-                }
-                Log.e(
-                    "Okhttp", " on file failure 1 errorDesc = " + errorDesc
-                            + " errorMsg = " + errorMsg
-                )
-                if (!Constant.isAabBuild()) {
-                    LogSaver.logToFile(
-                        " on file failure 1 errorDesc = " + errorDesc
-                                + " errorMsg = " + errorMsg
-                    )
-                    Toast.makeText(
-                        this@IdentityPhotoActivity, " on file failure 1 errorDesc = " + errorDesc
-                                + " errorMsg = " + errorMsg, Toast.LENGTH_SHORT
-                    ).show()
-                }
+                onStartUploadError(errorDesc, errorMsg)
             }
 
         })
@@ -248,37 +231,49 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
                     if (isFinishing || isDestroyed) {
                         return
                     }
-
-                    val progress = (progress / 2f + 50f).toInt()
-                    mHandler?.post(Runnable {
-                        progressBar?.progress = progress
-                    })
-                    Log.i("Okhttp", " on progress 2 = " + progress)
+                    val temp = (progress / 2f + 50f).toInt()
+                    onProgressChange(temp)
                 }
 
                 override fun onFailure(errorDesc: String, errorMsg: String) {
-                    if (isFinishing || isDestroyed) {
-                        return
-                    }
-                    Log.v(
-                        "Okhttp", " on file failure 2 errorDesc = " + errorDesc
-                                + " errorMsg = " + errorMsg
-                    )
-                    if (!Constant.isAabBuild()) {
-                        LogSaver.logToFile(
-                            " on file failure 2 errorDesc = " + errorDesc
-                                    + " errorMsg = " + errorMsg
-                        )
-                        Toast.makeText(
-                            this@IdentityPhotoActivity,
-                            " on file failure 2 errorDesc = " + errorDesc
-                                    + " errorMsg = " + errorMsg,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    onStartUploadError(errorDesc, errorMsg)
                 }
 
             })
+    }
+
+    private fun onProgressChange(progress: Int) {
+        mHandler?.post(Runnable {
+            if (isFinishing || isDestroyed) {
+                return@Runnable
+            }
+            progressBar?.progress = progress
+        })
+        Log.i("Okhttp", " on progress 2 = " + progress)
+    }
+
+    private fun onStartUploadError(errorDesc: String, errorMsg: String) {
+        if (isFinishing || isDestroyed) {
+            return
+        }
+        Log.v(
+            "Okhttp", " on file failure 1 errorDesc = " + errorDesc
+                    + " errorMsg = " + errorMsg
+        )
+        if (!Constant.isAabBuild()) {
+            LogSaver.logToFile(
+                " on file failure 1 errorDesc = " + errorDesc
+                        + " errorMsg = " + errorMsg
+            )
+            mHandler.post(Runnable {
+                Toast.makeText(
+                    this@IdentityPhotoActivity,
+                    " on file failure 1 errorDesc = " + errorDesc
+                            + " errorMsg = " + errorMsg,
+                    Toast.LENGTH_SHORT
+                ).show()
+            })
+        }
     }
 
     override fun onDestroy() {
