@@ -50,16 +50,16 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
 
     })
 
-    private var isFront : Boolean = true
-    private var mType : Int = TYPE_MIN
+    private var isFront: Boolean = true
+    private var mType: Int = TYPE_MIN
 
-    private var ivBack : AppCompatImageView? = null
-    private var tvNin : AppCompatTextView? = null
-    private var tvVotorCard : AppCompatTextView? = null
-    private var ivCenter : AppCompatImageView? = null
-    private var flTap : FrameLayout? = null
-    private var tvNext : AppCompatTextView? = null
-    private var progressBar : ProgressBar? = null
+    private var ivBack: AppCompatImageView? = null
+    private var tvNin: AppCompatTextView? = null
+    private var tvVotorCard: AppCompatTextView? = null
+    private var ivCenter: AppCompatImageView? = null
+    private var flTap: FrameLayout? = null
+    private var tvNext: AppCompatTextView? = null
+    private var progressBar: ProgressBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,17 +97,18 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
                 if (isGranted) {
                     CameraActivity2.showMe(this@IdentityPhotoActivity, mType)
                 } else {
-                    PermissionUtils.permission(Manifest.permission.CAMERA).callback(object : SimpleCallback {
-                        override fun onGranted() {
-                            CameraActivity2.showMe(this@IdentityPhotoActivity, mType)
-                        }
+                    PermissionUtils.permission(Manifest.permission.CAMERA)
+                        .callback(object : SimpleCallback {
+                            override fun onGranted() {
+                                CameraActivity2.showMe(this@IdentityPhotoActivity, mType)
+                            }
 
-                        override fun onDenied() {
-                            ToastUtils.showShort("please allow permission.")
-                            JumpPermissionUtils.goToSetting(this@IdentityPhotoActivity)
-                        }
+                            override fun onDenied() {
+                                ToastUtils.showShort("please allow permission.")
+                                JumpPermissionUtils.goToSetting(this@IdentityPhotoActivity)
+                            }
 
-                    }).request()
+                        }).request()
                 }
             }
 
@@ -131,8 +132,8 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
         updateMinAndVoterCardPreview()
     }
 
-    private var minPath : String? = null
-    private var votorCardPath : String? = null
+    private var minPath: String? = null
+    private var votorCardPath: String? = null
 
     private fun updateNinAndVotorCard() {
         tvNin?.isSelected = isFront
@@ -140,18 +141,18 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
     }
 
     private fun updateMinAndVoterCardPreview() {
-        var showNextFlag : Boolean = true
-        if (TextUtils.isEmpty(minPath) || TextUtils.isEmpty(votorCardPath)){
+        var showNextFlag: Boolean = true
+        if (TextUtils.isEmpty(minPath) || TextUtils.isEmpty(votorCardPath)) {
             showNextFlag = false
         }
-        if (mType ==  TYPE_MIN) {
-            if (TextUtils.isEmpty(minPath)){
+        if (mType == TYPE_MIN) {
+            if (TextUtils.isEmpty(minPath)) {
                 ivCenter?.setImageResource(R.drawable.identity_1)
             } else {
                 Glide.with(this).load(minPath).into(ivCenter!!)
             }
         } else {
-            if (TextUtils.isEmpty(votorCardPath)){
+            if (TextUtils.isEmpty(votorCardPath)) {
                 ivCenter?.setImageResource(R.drawable.identity_bvn_2)
             } else {
                 Glide.with(this).load(votorCardPath).into(ivCenter!!)
@@ -180,7 +181,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
 
     private var hasUploadMtn = false
     private var hasUploadVotorCard = false
-    private fun startUploadMtnFile(){
+    private fun startUploadMtnFile() {
         mPresenter.startUpload("1", File(minPath), object : BaseUploadFilePresenter.UploadObserver {
             override fun onSuccess() {
                 if (isFinishing || isDestroyed) {
@@ -206,11 +207,15 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
                 if (isFinishing || isDestroyed) {
                     return
                 }
-                Log.e("Okhttp", " on file failure 1 errorDesc = " + errorDesc
-                        + " errorMsg = " + errorMsg)
+                Log.e(
+                    "Okhttp", " on file failure 1 errorDesc = " + errorDesc
+                            + " errorMsg = " + errorMsg
+                )
                 if (!Constant.isAabBuild()) {
-                    LogSaver.logToFile(" on file failure 1 errorDesc = " + errorDesc
-                            + " errorMsg = " + errorMsg)
+                    LogSaver.logToFile(
+                        " on file failure 1 errorDesc = " + errorDesc
+                                + " errorMsg = " + errorMsg
+                    )
                     Toast.makeText(
                         this@IdentityPhotoActivity, " on file failure 1 errorDesc = " + errorDesc
                                 + " errorMsg = " + errorMsg, Toast.LENGTH_SHORT
@@ -221,47 +226,59 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
         })
     }
 
-    private fun startUploadVotorCardFile(){
+    private fun startUploadVotorCardFile() {
         mPresenter.onDestroy()
-        mPresenter.startUpload("2", File(votorCardPath), object : BaseUploadFilePresenter.UploadObserver {
-            override fun onSuccess() {
-                hasUploadVotorCard = true
-                Log.i("Okhttp", " on file success 2 = ")
-                mHandler?.post {
-                    if (isFinishing || isDestroyed) {
-                        return@post
+        mPresenter.startUpload(
+            "2",
+            File(votorCardPath),
+            object : BaseUploadFilePresenter.UploadObserver {
+                override fun onSuccess() {
+                    hasUploadVotorCard = true
+                    Log.i("Okhttp", " on file success 2 = ")
+                    mHandler?.post {
+                        if (isFinishing || isDestroyed) {
+                            return@post
+                        }
+                        ToastUtils.showShort("Identity photo upload success")
+                        finish()
                     }
-                    ToastUtils.showShort("Identity photo upload success")
-                    finish()
                 }
-            }
 
-            override fun onProgress(progress: Int) {
-                if (isFinishing || isDestroyed) {
-                    return
-                }
-                val progress = (progress / 2f + 50f).toInt()
-                progressBar?.progress = progress
-                Log.i("Okhttp", " on progress 2 = " + progress)
-            }
+                override fun onProgress(progress: Int) {
+                    if (isFinishing || isDestroyed) {
+                        return
+                    }
 
-            override fun onFailure(errorDesc: String, errorMsg: String) {
-                if (isFinishing || isDestroyed) {
-                    return
+                    val progress = (progress / 2f + 50f).toInt()
+                    mHandler?.post(Runnable {
+                        progressBar?.progress = progress
+                    })
+                    Log.i("Okhttp", " on progress 2 = " + progress)
                 }
-                Log.v("Okhttp", " on file failure 2 errorDesc = " + errorDesc
-                        + " errorMsg = " + errorMsg)
-                if (!Constant.isAabBuild()) {
-                    LogSaver.logToFile(" on file failure 2 errorDesc = " + errorDesc
-                            + " errorMsg = " + errorMsg)
-                    Toast.makeText(
-                        this@IdentityPhotoActivity, " on file failure 2 errorDesc = " + errorDesc
-                                + " errorMsg = " + errorMsg, Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
 
-        })
+                override fun onFailure(errorDesc: String, errorMsg: String) {
+                    if (isFinishing || isDestroyed) {
+                        return
+                    }
+                    Log.v(
+                        "Okhttp", " on file failure 2 errorDesc = " + errorDesc
+                                + " errorMsg = " + errorMsg
+                    )
+                    if (!Constant.isAabBuild()) {
+                        LogSaver.logToFile(
+                            " on file failure 2 errorDesc = " + errorDesc
+                                    + " errorMsg = " + errorMsg
+                        )
+                        Toast.makeText(
+                            this@IdentityPhotoActivity,
+                            " on file failure 2 errorDesc = " + errorDesc
+                                    + " errorMsg = " + errorMsg,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+            })
     }
 
     override fun onDestroy() {

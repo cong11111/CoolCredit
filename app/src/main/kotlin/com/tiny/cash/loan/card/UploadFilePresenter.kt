@@ -8,6 +8,7 @@ import com.chocolate.moudle.scan.bean.UploadFileSignRequest
 import com.chocolate.moudle.scan.bean.UploadFileSignResponse
 import com.chocolate.moudle.scan.camera2.BaseUploadFilePresenter
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
+import com.tiny.cash.loan.card.log.LogSaver
 import com.tiny.cash.loan.card.net.NetManager
 import com.tiny.cash.loan.card.net.NetObserver
 import com.tiny.cash.loan.card.net.ResponseException
@@ -33,7 +34,10 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
         request.token = Constant.mToken
         request.imageType = imageType
         if (BuildConfig.DEBUG) {
-            Log.e("Okhttp", " request upload sign = " + imageType)
+            Log.i("Okhttp", " request upload sign = $imageType")
+        }
+        if (!Constant.isAabBuild()) {
+            LogSaver.logToFile("request upload sign = $imageType")
         }
         val observable: Observable<Response<UploadFileSignResponse>> =
             NetManager.getApiService2().uploadFileGetSign(request.token, request.imageType)
@@ -41,6 +45,7 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
         requestUploadSignObserver = object : NetObserver<Response<UploadFileSignResponse>>() {
             override fun onNext(response: Response<UploadFileSignResponse>) {
                 if (response == null) {
+                    observer.onFailure("request upload sign response = null", "response = null")
                     return
                 }
                 val signRequest = response.body
@@ -71,12 +76,18 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
         file: File,
         observer: UploadObserver
     ) {
+        if (!Constant.isAabBuild()) {
+            LogSaver.logToFile("start upload file ... ")
+        }
         ThreadUtils.executeByCached(object : ThreadUtils.SimpleTask<File?>() {
             override fun doInBackground(): File? {
                 return startUploadInternal(uploadFile, file, observer)
             }
 
             override fun onSuccess(result: File?) {
+                if (!Constant.isAabBuild()) {
+                    LogSaver.logToFile("start upload file success ... ")
+                }
                 if (file != null) {
                     onUploadFileSuccess(file, observer)
                 }
