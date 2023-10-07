@@ -796,7 +796,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test1() {
-        IdentityPhotoActivity.Companion.launchActivity(this);
+        IdentityPhotoActivity.Companion.launchActivity(this, true);
 //        ScanActivity.showMe(this);
 //        CameraActivity2.Companion.showMe(this);
 //        BindNewCardActivity.Companion.launchAddBankAccount(this);

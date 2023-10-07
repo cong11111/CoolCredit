@@ -23,6 +23,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chocolate.moudle.scan.camera2.BaseUploadFilePresenter
 import com.chocolate.moudle.scan.camera2.CameraActivity2
+import com.chocolate.moudle.scan.my.ScanActivity
 import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.kudicredit.R
 import com.tiny.cash.loan.card.log.LogSaver
@@ -33,11 +34,15 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
 
     companion object {
         private const val TAG = "IdentityPhotoActivity"
+        private  const val KEY_NEED_SHOW_AUTH = "key_need_show_auth"
 
         const val TYPE_MIN = 101
         const val TYPE_VOTER_CARD = 102
-        fun launchActivity(context: Activity) {
+
+
+        fun launchActivity(context: Activity, needShowAuth : Boolean) {
             var intent = Intent(context, IdentityPhotoActivity::class.java)
+            intent.putExtra(KEY_NEED_SHOW_AUTH, needShowAuth)
             context.startActivity(intent)
         }
 
@@ -51,6 +56,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
     })
 
     private var isFront: Boolean = true
+    private var mNeedShowAuth: Boolean = false
     private var mType: Int = TYPE_MIN
 
     private var ivBack: AppCompatImageView? = null
@@ -60,11 +66,13 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
     private var flTap: FrameLayout? = null
     private var tvNext: AppCompatTextView? = null
     private var progressBar: ProgressBar? = null
+    private var tvTap: AppCompatTextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         BarUtils.setStatusBarLightMode(this, true)
         setContentView(R.layout.activity_identity_photo)
+        mNeedShowAuth = intent.getBooleanExtra(KEY_NEED_SHOW_AUTH, false)
         ivBack = findViewById<AppCompatImageView>(R.id.iv_identity_photo_back)
         tvNin = findViewById<AppCompatTextView>(R.id.tv_identity_photo_nin)
         tvVotorCard = findViewById<AppCompatTextView>(R.id.tv_identity_photo_voter_card)
@@ -72,6 +80,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
         flTap = findViewById<FrameLayout>(R.id.fl_identity_tap)
         tvNext = findViewById<AppCompatTextView>(R.id.tv_next)
         progressBar = findViewById<ProgressBar>(R.id.loading_progress)
+        tvTap = findViewById<AppCompatTextView>(R.id.tv_identity_photo_tap)
         progressBar?.max = 100
         tvNin?.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View?) {
@@ -91,34 +100,41 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
             }
 
         })
+        ivCenter?.setOnClickListener(object : OnClickListener {
+            override fun onClick(v: View?) {
+               if (isFront) {
+                   if (TextUtils.isEmpty(minPath)) {
+                       executeCamera()
+                   }
+               } else {
+                   if (TextUtils.isEmpty(votorCardPath)) {
+                       executeCamera()
+                   }
+               }
+            }
+
+        })
         flTap?.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View?) {
-                val isGranted = PermissionUtils.isGranted(Manifest.permission.CAMERA)
-                if (isGranted) {
-                    CameraActivity2.showMe(this@IdentityPhotoActivity, mType)
-                } else {
-                    PermissionUtils.permission(Manifest.permission.CAMERA)
-                        .callback(object : SimpleCallback {
-                            override fun onGranted() {
-                                CameraActivity2.showMe(this@IdentityPhotoActivity, mType)
-                            }
-
-                            override fun onDenied() {
-                                ToastUtils.showShort("please allow permission.")
-                                JumpPermissionUtils.goToSetting(this@IdentityPhotoActivity)
-                            }
-
-                        }).request()
-                }
+                executeCamera()
             }
 
         })
         tvNext?.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View?) {
+                if (TextUtils.isEmpty(minPath) && TextUtils.isEmpty(votorCardPath)) {
+                    return
+                }
                 tvNext?.visibility = View.GONE
                 progressBar?.visibility = View.VISIBLE
                 progressBar?.progress = 0
-                startUploadMtnFile()
+                if (!TextUtils.isEmpty(minPath) && TextUtils.isEmpty(votorCardPath)) {
+                    startUploadMtnFileOnly()
+                } else if (TextUtils.isEmpty(minPath) && !TextUtils.isEmpty(votorCardPath)) {
+                    startUploadVotorCardFileOnly()
+                } else if (!TextUtils.isEmpty(minPath) && !TextUtils.isEmpty(votorCardPath)) {
+                    startUploadMtnFile()
+                }
             }
 
         })
@@ -135,27 +151,51 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
     private var minPath: String? = null
     private var votorCardPath: String? = null
 
+    private fun executeCamera() {
+        val isGranted = PermissionUtils.isGranted(Manifest.permission.CAMERA)
+        if (isGranted) {
+            CameraActivity2.showMe(this@IdentityPhotoActivity, mType)
+        } else {
+            PermissionUtils.permission(Manifest.permission.CAMERA)
+                .callback(object : SimpleCallback {
+                    override fun onGranted() {
+                        CameraActivity2.showMe(this@IdentityPhotoActivity, mType)
+                    }
+
+                    override fun onDenied() {
+                        ToastUtils.showShort("please allow permission.")
+                        JumpPermissionUtils.goToSetting(this@IdentityPhotoActivity)
+                    }
+
+                }).request()
+        }
+    }
+
     private fun updateNinAndVotorCard() {
         tvNin?.isSelected = isFront
         tvVotorCard?.isSelected = !isFront
     }
 
     private fun updateMinAndVoterCardPreview() {
-        var showNextFlag: Boolean = true
-        if (TextUtils.isEmpty(minPath) || TextUtils.isEmpty(votorCardPath)) {
-            showNextFlag = false
+        var showNextFlag: Boolean = false
+        if (!TextUtils.isEmpty(minPath) || !TextUtils.isEmpty(votorCardPath)) {
+            showNextFlag = true
         }
         if (mType == TYPE_MIN) {
             if (TextUtils.isEmpty(minPath)) {
                 ivCenter?.setImageResource(R.drawable.identity_1)
+                tvTap?.text = getString(R.string.tap_to_shot)
             } else {
                 Glide.with(this).load(minPath).into(ivCenter!!)
+                tvTap?.text = getString(R.string.tap_retake)
             }
         } else {
             if (TextUtils.isEmpty(votorCardPath)) {
                 ivCenter?.setImageResource(R.drawable.identity_bvn_2)
+                tvTap?.text = getString(R.string.tap_to_shot)
             } else {
                 Glide.with(this).load(votorCardPath).into(ivCenter!!)
+                tvTap?.text = getString(R.string.tap_retake)
             }
         }
         if (showNextFlag) {
@@ -181,6 +221,58 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
 
     private var hasUploadMtn = false
     private var hasUploadVotorCard = false
+
+    private fun startUploadMtnFileOnly() {
+        mPresenter.startUpload("1", File(minPath), object : BaseUploadFilePresenter.UploadObserver {
+            override fun onSuccess() {
+                if (isFinishing || isDestroyed) {
+                    return
+                }
+                hasUploadMtn = true
+                Log.i("Okhttp", " on file mtn success 1 = ")
+                onUploadSuccess()
+            }
+
+            override fun onProgress(progress: Int) {
+                if (isFinishing || isDestroyed) {
+                    return
+                }
+                onProgressChange(progress)
+            }
+
+            override fun onFailure(errorDesc: String, errorMsg: String) {
+                onStartUploadError(errorDesc, errorMsg)
+            }
+
+        })
+    }
+
+    private fun startUploadVotorCardFileOnly() {
+        mPresenter.onDestroy()
+        mPresenter.startUpload(
+            "2",
+            File(votorCardPath),
+            object : BaseUploadFilePresenter.UploadObserver {
+                override fun onSuccess() {
+                    hasUploadVotorCard = true
+                    Log.i("Okhttp", " on file votor card success ")
+                    onUploadSuccess()
+                }
+
+                override fun onProgress(progress: Int) {
+                    if (isFinishing || isDestroyed) {
+                        return
+                    }
+                    onProgressChange(progress)
+                }
+
+                override fun onFailure(errorDesc: String, errorMsg: String) {
+                    onStartUploadError(errorDesc, errorMsg)
+                }
+
+            })
+    }
+
     private fun startUploadMtnFile() {
         mPresenter.startUpload("1", File(minPath), object : BaseUploadFilePresenter.UploadObserver {
             override fun onSuccess() {
@@ -218,13 +310,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
                 override fun onSuccess() {
                     hasUploadVotorCard = true
                     Log.i("Okhttp", " on file success 2 = ")
-                    mHandler?.post {
-                        if (isFinishing || isDestroyed) {
-                            return@post
-                        }
-                        ToastUtils.showShort("Identity photo upload success")
-                        finish()
-                    }
+                    onUploadSuccess()
                 }
 
                 override fun onProgress(progress: Int) {
@@ -240,6 +326,19 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
                 }
 
             })
+    }
+
+    private fun onUploadSuccess() {
+        mHandler?.post {
+            if (isFinishing || isDestroyed) {
+                return@post
+            }
+            ToastUtils.showShort("Identity photo upload success")
+            if (mNeedShowAuth) {
+                ScanActivity.showMeToSelfie(this)
+            }
+            finish()
+        }
     }
 
     private fun onProgressChange(progress: Int) {

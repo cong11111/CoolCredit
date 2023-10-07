@@ -384,30 +384,32 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                             startIntent(WorkInfoActivity.class);
                             return;
                         }
-                        if (!response.getBody().isHasInfoReviewCard()) {
-                            IdentityPhotoActivity.Companion.launchActivity(getActivity());
-                            return;
-                        }
-                        if (!response.getBody().isHasInfoReviewSelfie()) {
-                            boolean isGranted = PermissionUtils.isGranted(Manifest.permission.CAMERA);
-                            if (isGranted) {
-                                ScanActivity.showMeToSelfie(getActivity());
-                            } else {
-                                PermissionUtils.permission(Manifest.permission.CAMERA).callback(new PermissionUtils.SimpleCallback() {
-                                    @Override
-                                    public void onGranted() {
-                                        ScanActivity.showMeToSelfie(getActivity());
-                                    }
-
-                                    @Override
-                                    public void onDenied() {
-                                        ToastUtils.showShort("please allow permission.");
-                                        JumpPermissionUtils.goToSetting(getActivity());
-                                    }
-                                }).request();
+                        if (response.getBody().isInfoReviewSwitch()) {
+                            if (!response.getBody().isHasInfoReviewCard()) {
+                                IdentityPhotoActivity.Companion.launchActivity(getActivity(), !response.getBody().isHasInfoReviewSelfie());
+                                return;
                             }
+                            if (!response.getBody().isHasInfoReviewSelfie()) {
+                                boolean isGranted = PermissionUtils.isGranted(Manifest.permission.CAMERA);
+                                if (isGranted) {
+                                    ScanActivity.showMeToSelfie(getActivity());
+                                } else {
+                                    PermissionUtils.permission(Manifest.permission.CAMERA).callback(new PermissionUtils.SimpleCallback() {
+                                        @Override
+                                        public void onGranted() {
+                                            ScanActivity.showMeToSelfie(getActivity());
+                                        }
 
-                            return;
+                                        @Override
+                                        public void onDenied() {
+                                            ToastUtils.showShort("please allow permission.");
+                                            JumpPermissionUtils.goToSetting(getActivity());
+                                        }
+                                    }).request();
+                                }
+
+                                return;
+                            }
                         }
                         if (!response.getBody().isAccountChecked()) {
                             BindNewCardActivity.Companion.launchAddBankAccount(getContext());
