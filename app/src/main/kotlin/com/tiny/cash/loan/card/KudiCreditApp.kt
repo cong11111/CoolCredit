@@ -37,7 +37,7 @@ class KudiCreditApp : MultiDexApplication() {
     companion object {
         @JvmStatic
         var instance: KudiCreditApp? = null
-        private const val AF_DEV_KEY = "Reyr9DiAhRaKenX5omk7wj"
-        private const val APP_GUID_KEY = "koicredit-nk4lczjxw"
+//        private const val AF_DEV_KEY = "Reyr9DiAhRaKenX5omk7wj"
+//        private const val APP_GUID_KEY = "koicredit-nk4lczjxw"
     }
 }

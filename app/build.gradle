@@ -197,7 +197,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-messaging'
-
+    implementation 'com.google.android.play:integrity:1.1.0'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.21'
     implementation project(path: ':camera')
 

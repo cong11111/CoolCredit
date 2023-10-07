@@ -1,5 +1,6 @@
 package com.tiny.cash.loan.card.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.RemoteException
 import android.text.TextUtils
@@ -60,7 +61,11 @@ class GooglePlaySdk {
                                         KvStorage.put(LocalConfig.LC_UTMMEDIUM, utmMedium)
                                     }
                                 }
-                                initInstanceId(referrerUrl)
+                                try {
+                                    initInstanceId(referrerUrl)
+                                } catch (e : Exception) {
+
+                                }
                             }
                         } catch (e: RemoteException) {
                             e.printStackTrace()
@@ -150,24 +155,20 @@ class GooglePlaySdk {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun initInstanceId(referrerUrl : String) {
         if (mContext == null) {
             return
         }
-        FirebaseAnalytics.getInstance(mContext!!).appInstanceId.addOnCompleteListener(
-            object : OnCompleteListener<String> {
-                override fun onComplete(p0: Task<String>) {
-                    val analyticId = p0.result
-                    if (!TextUtils.isEmpty(analyticId) && !TextUtils.isEmpty(referrerUrl)) {
-                        uploadInstall(analyticId, referrerUrl)
-                        if (BuildConfig.DEBUG) {
-                            LogSaver.logToFile("firebase analytic id =  " + analyticId)
-                        }
-                    }
+        FirebaseAnalytics.getInstance(mContext!!).appInstanceId.addOnCompleteListener { p0 ->
+            val analyticId = p0.result
+            if (!TextUtils.isEmpty(analyticId) && !TextUtils.isEmpty(referrerUrl)) {
+                uploadInstall(analyticId, referrerUrl)
+                if (BuildConfig.DEBUG) {
+                    LogSaver.logToFile("firebase analytic id =  $analyticId")
                 }
-
             }
-        )
+        }
     }
 
     private var mUploadInstallObserver: NetObserver<Response<*>>? = null
