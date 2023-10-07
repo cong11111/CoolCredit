@@ -41,6 +41,7 @@ import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.ui.camera.IdentityAuthActivity;
 import com.tiny.cash.loan.card.ui.camera.IdentityPhotoActivity;
+import com.tiny.cash.loan.card.utils.JumpPermissionUtils;
 import com.tiny.cash.loan.card.utils.SendFileUtils;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.base.BaseFragment;
@@ -819,8 +820,23 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test2() {
-        ScanActivity.showMeToSelfie(this);
+        boolean isGranted = PermissionUtils.isGranted(Manifest.permission.CAMERA);
+        if (isGranted) {
+            ScanActivity.showMeToSelfie(this);
+        } else {
+            PermissionUtils.permission(Manifest.permission.CAMERA).callback(new PermissionUtils.SimpleCallback() {
+                @Override
+                public void onGranted() {
+                    ScanActivity.showMeToSelfie(MainActivity.this);
+                }
 
+                @Override
+                public void onDenied() {
+                    ToastUtils.showShort("please allow permission.");
+                    JumpPermissionUtils.goToSetting(MainActivity.this);
+                }
+            }).request();
+        }
     }
 
     private void executeCache() {
