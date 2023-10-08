@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.blankj.utilcode.util.BarUtils
+import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chocolate.moudle.scan.camera2.BaseUploadFilePresenter
@@ -30,13 +31,22 @@ class IdentityAuthActivity : BaseIdentityActivity() {
     companion object {
         private const val TAG = "IdentityAuthActivity"
         private const val KEY_IDENTITY_AUTH_PATH = "key_identity_auth_path"
-
+        const val PATH_AUTH_PATH = "path_auth_path"
         const val TYPE_AUTH = 101
 
         fun launchActivity(context: Activity, bitmapPath: String) {
             var intent = Intent(context, IdentityAuthActivity::class.java)
             intent.putExtra(KEY_IDENTITY_AUTH_PATH, bitmapPath)
             context.startActivity(intent)
+        }
+
+        fun checkExistAndToSelfie(context: Activity) {
+            val authPath = SPUtils.getInstance().getString(PATH_AUTH_PATH)
+            if (!TextUtils.isEmpty(authPath) && File(authPath).exists()) {
+                launchActivity(context, authPath)
+            } else {
+                ScanActivity.showMe(context)
+            }
         }
 
     }
@@ -48,7 +58,6 @@ class IdentityAuthActivity : BaseIdentityActivity() {
 
     })
 
-    private var mType: Int = TYPE_AUTH
     private var progressBar: ProgressBar? = null
 
     private var ivBack: AppCompatImageView? = null
@@ -61,6 +70,10 @@ class IdentityAuthActivity : BaseIdentityActivity() {
         BarUtils.setStatusBarLightMode(this, true)
         setContentView(R.layout.activity_identity_auth)
         selfiePath = intent.getStringExtra(KEY_IDENTITY_AUTH_PATH)
+        val authPath = SPUtils.getInstance().getString(PATH_AUTH_PATH)
+        if (!TextUtils.isEmpty(authPath)) {
+            selfiePath = authPath
+        }
         ivBack = findViewById<AppCompatImageView>(R.id.iv_identity_photo_back)
 
         ivCenter = findViewById<AppCompatImageView>(R.id.iv_center)
@@ -74,9 +87,17 @@ class IdentityAuthActivity : BaseIdentityActivity() {
             }
 
         })
+        ivCenter?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                if (TextUtils.isEmpty(selfiePath)) {
+                    ScanActivity.showMeToSelfie(this@IdentityAuthActivity)
+                }
+            }
+
+        })
         flTap?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                ScanActivity.showMe(this@IdentityAuthActivity)
+                ScanActivity.showMeToSelfie(this@IdentityAuthActivity)
                 finish()
             }
 
@@ -102,6 +123,7 @@ class IdentityAuthActivity : BaseIdentityActivity() {
         if (requestCode == ScanActivity.RESULT_SCAN_CODE) {
             val path = data?.getStringExtra(ScanActivity.KEY_RESULT_CAMERA_PATH)
             selfiePath = path
+            SPUtils.getInstance().put(PATH_AUTH_PATH, selfiePath)
         }
     }
 
@@ -123,6 +145,7 @@ class IdentityAuthActivity : BaseIdentityActivity() {
                         if (isFinishing || isDestroyed) {
                             return@Runnable
                         }
+                        SPUtils.getInstance().put(PATH_AUTH_PATH, "")
                         ToastUtils.showShort("Identity auth upload success")
                         finish()
                     })

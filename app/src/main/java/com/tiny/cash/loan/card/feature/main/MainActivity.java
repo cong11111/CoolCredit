@@ -503,6 +503,7 @@ public class MainActivity extends BaseActivity {
         CameraSdk.INSTANCE.setObserver(new CameraSdk.Observer() {
             @Override
             public void onScanActivityFinish(@NonNull String bitmapPath) {
+                SPUtils.getInstance().put(IdentityAuthActivity.PATH_AUTH_PATH, bitmapPath);
                 IdentityAuthActivity.Companion.launchActivity(MainActivity.this, bitmapPath);
             }
 
@@ -822,12 +823,12 @@ public class MainActivity extends BaseActivity {
     private void test2() {
         boolean isGranted = PermissionUtils.isGranted(Manifest.permission.CAMERA);
         if (isGranted) {
-            ScanActivity.showMeToSelfie(this);
+            IdentityAuthActivity.Companion.checkExistAndToSelfie(this);
         } else {
             PermissionUtils.permission(Manifest.permission.CAMERA).callback(new PermissionUtils.SimpleCallback() {
                 @Override
                 public void onGranted() {
-                    ScanActivity.showMeToSelfie(MainActivity.this);
+                    IdentityAuthActivity.Companion.checkExistAndToSelfie(MainActivity.this);
                 }
 
                 @Override

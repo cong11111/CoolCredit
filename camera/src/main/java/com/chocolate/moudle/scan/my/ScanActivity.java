@@ -25,6 +25,7 @@ import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ImageUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.chocolate.moudle.scan.BuildConfig;
 import com.chocolate.moudle.scan.CameraSdk;
@@ -73,7 +74,6 @@ public class ScanActivity extends AppCompatActivity {
             bitmapPath = savedInstanceState.getString(KEY_SAVE_PATH);
             mFaceState = savedInstanceState.getParcelable(KEY_SAVE_FACE);
         }
-//        mType = getIntent().getIntExtra(TYPE_TO_ACTIVITY, CameraSdk.TYPE_SCAN);
         BarUtils.setStatusBarColor(this, Color.TRANSPARENT);
         setContentView(R.layout.activity_scan);
         ivBack = findViewById(R.id.back_iv);
@@ -92,6 +92,7 @@ public class ScanActivity extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
 //                back();
             }
         });

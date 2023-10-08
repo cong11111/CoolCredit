@@ -19,6 +19,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.PermissionUtils.SimpleCallback
+import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.chocolate.moudle.scan.camera2.BaseUploadFilePresenter
@@ -35,6 +36,8 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
     companion object {
         private const val TAG = "IdentityPhotoActivity"
         private  const val KEY_NEED_SHOW_AUTH = "key_need_show_auth"
+        private  const val KEY_NIN_PATH = "key_nin_path"
+        private  const val KEY_VOTOR_CARD_PATH = "key_votor_card_path"
 
         const val TYPE_MIN = 101
         const val TYPE_VOTER_CARD = 102
@@ -144,6 +147,8 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
             }
 
         })
+        minPath = SPUtils.getInstance().getString(KEY_NIN_PATH)
+        votorCardPath = SPUtils.getInstance().getString(KEY_VOTOR_CARD_PATH)
         updateNinAndVotorCard()
         updateMinAndVoterCardPreview()
     }
@@ -212,8 +217,10 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
             val type = data?.getIntExtra(CameraActivity2.KEY_RESULT_CAMERA_TYPE, TYPE_MIN)
             if (type == TYPE_MIN) {
                 minPath = path
+                SPUtils.getInstance().put(KEY_NIN_PATH, minPath)
             } else if (type == TYPE_VOTER_CARD) {
                 votorCardPath = path
+                SPUtils.getInstance().put(KEY_VOTOR_CARD_PATH, votorCardPath)
             }
             updateMinAndVoterCardPreview()
         }
@@ -335,8 +342,10 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
             }
             ToastUtils.showShort("Identity photo upload success")
             if (mNeedShowAuth) {
-                ScanActivity.showMeToSelfie(this)
+                ScanActivity.showMe(this)
             }
+            SPUtils.getInstance().put(KEY_NIN_PATH, "")
+            SPUtils.getInstance().put(KEY_VOTOR_CARD_PATH, "")
             finish()
         }
     }

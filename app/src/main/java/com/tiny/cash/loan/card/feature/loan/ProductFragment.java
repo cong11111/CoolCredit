@@ -24,6 +24,7 @@ import com.tiny.cash.loan.card.ui.adapter.AmountAdapter;
 import com.tiny.cash.loan.card.ui.adapter.TermAdapter;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.LayoutLoanProductBinding;
+import com.tiny.cash.loan.card.ui.camera.IdentityAuthActivity;
 import com.tiny.cash.loan.card.ui.camera.IdentityPhotoActivity;
 import com.tiny.cash.loan.card.ui.card.BindNewCardActivity;
 import com.tiny.cash.loan.card.ui.dialog.fragment.ConfirmLoanDialogFragment;
@@ -392,12 +393,12 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                             if (!response.getBody().isHasInfoReviewSelfie()) {
                                 boolean isGranted = PermissionUtils.isGranted(Manifest.permission.CAMERA);
                                 if (isGranted) {
-                                    ScanActivity.showMeToSelfie(getActivity());
+                                    IdentityAuthActivity.Companion.checkExistAndToSelfie(getActivity());
                                 } else {
                                     PermissionUtils.permission(Manifest.permission.CAMERA).callback(new PermissionUtils.SimpleCallback() {
                                         @Override
                                         public void onGranted() {
-                                            ScanActivity.showMeToSelfie(getActivity());
+                                            IdentityAuthActivity.Companion.checkExistAndToSelfie(getActivity());
                                         }
 
                                         @Override
