@@ -10,6 +10,7 @@ import com.blankj.utilcode.util.BarUtils
 import com.tiny.cash.loan.card.base.BaseActivity
 import com.tiny.cash.loan.card.feature.main.MainActivity
 import com.tiny.cash.loan.card.kudicredit.R
+import com.tiny.cash.loan.card.mgr.IntegrityApiMgr
 import com.tiny.cash.loan.card.ui.base.WebViewFragment
 
 
@@ -34,6 +35,7 @@ class Login2Activity : BaseActivity() {
         }
 
         toLoginFragment()
+        IntegrityApiMgr.getId(this@Login2Activity)
     }
 
     fun toOtpFragment(prex : String ,phoneNum : String){

@@ -153,7 +153,6 @@ static def releaseTime() {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "com.google.android.material:material:$material_version"
 
     implementation 'com.google.code.gson:gson:2.8.9'
@@ -202,6 +201,7 @@ dependencies {
     implementation project(path: ':camera')
 
     implementation 'com.github.bumptech.glide:glide:4.10.0'
+    implementation group: 'org.bitbucket.b_c', name: 'jose4j', version: '0.5.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
 }
 
