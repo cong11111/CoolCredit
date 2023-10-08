@@ -131,6 +131,17 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
                 tvNext?.visibility = View.GONE
                 progressBar?.visibility = View.VISIBLE
                 progressBar?.progress = 0
+                if (isFront) {
+                    if (!TextUtils.isEmpty(minPath)) {
+                        startUploadMtnFileOnly()
+                        return
+                    }
+                } else {
+                    if (!TextUtils.isEmpty(votorCardPath)) {
+                        startUploadVotorCardFileOnly()
+                        return
+                    }
+                }
                 if (!TextUtils.isEmpty(minPath) && TextUtils.isEmpty(votorCardPath)) {
                     startUploadMtnFileOnly()
                 } else if (TextUtils.isEmpty(minPath) && !TextUtils.isEmpty(votorCardPath)) {
