@@ -44,6 +44,10 @@ class Constant {
 
         var imei : String? = null
 
+        var appRecognitionVerdict : String? = null
+        var deviceRecognitionVerdict : String? = null
+        var appLicensingVerdict : String? = null
+
         const val CUR_VERSION_CODE = 30005
         const val CUR_VERSION_NAME = "3.0.5"
 

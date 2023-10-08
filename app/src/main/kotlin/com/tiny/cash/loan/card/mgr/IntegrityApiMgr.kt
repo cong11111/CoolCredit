@@ -3,11 +3,14 @@ package com.tiny.cash.loan.card.mgr
 import android.app.Activity
 import android.util.Base64
 import android.util.Log
+import com.blankj.utilcode.util.GsonUtils
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.android.play.core.integrity.IntegrityManagerFactory
 import com.google.android.play.core.integrity.IntegrityTokenRequest
 import com.google.android.play.core.integrity.IntegrityTokenResponse
+import com.tiny.cash.loan.card.Constant
+import com.tiny.cash.loan.card.bean.integrity.IntergrityResponse
 import org.jose4j.jwe.JsonWebEncryption
 import org.jose4j.jws.JsonWebSignature
 import org.jose4j.jwx.JsonWebStructure
@@ -51,39 +54,39 @@ object IntegrityApiMgr {
     }
 
     private fun parseJson(integrityToken: String) {
-//        OfflineVerify.process(integrityToken)
         val verificationKeyStr =
             "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEWyZRDumYDWZ8PWfIK+4TxDQ+Ge0yNIea+QS3eSCoLx+DNlywy0I+fUR7lC8WD2/oD21KhIl+h4PXxKhZHEImgA=="
         val base64OfEncodedVerificationKey = verificationKeyStr.toByteArray()
         val decryptionKeyStr = "mXdGyKnQnwL0y3z0G2hDNiP+luhUqlCTo1Bytp+Fgp4="
         val base64OfEncodedDecryptionKey = decryptionKeyStr.toByteArray()
-        // base64OfEncodedDecryptionKey is provided through Play Console.
         var decryptionKeyBytes: ByteArray =
             Base64.decode(base64OfEncodedDecryptionKey, Base64.DEFAULT)
-// Deserialized encryption (symmetric) key.
         var decryptionKey: SecretKey = SecretKeySpec(
             decryptionKeyBytes,
             0, decryptionKeyBytes.size, "AES"
         )
-//        decryptionKeyBytes.length,
-        // base64OfEncodedVerificationKey is provided through Play Console.
         val encodedVerificationKey: ByteArray =
             Base64.decode(base64OfEncodedVerificationKey, Base64.DEFAULT)
-        // Deserialized verification (public) key.
         val verificationKey = KeyFactory.getInstance("EC")
             .generatePublic(X509EncodedKeySpec(encodedVerificationKey))
-
         val jwe: JsonWebEncryption =
             JsonWebStructure.fromCompactSerialization(integrityToken) as JsonWebEncryption
         jwe.key = decryptionKey
-// This also decrypts the JWE token.
         val compactJws: String = jwe.payload
         val jws: JsonWebSignature =
             JsonWebStructure.fromCompactSerialization(compactJws) as JsonWebSignature
         jws.key = verificationKey
-// This also verifies the signature.
         val payload: String = jws.payload
-        Log.e("SafetyNetMgr", "token 33333333333 = $payload")
+        val response = GsonUtils.fromJson(payload, IntergrityResponse::class.java)
+
+        Constant.appRecognitionVerdict = response?.appIntegrity?.appRecognitionVerdict
+        Constant.deviceRecognitionVerdict = response?.deviceIntegrity?.deviceRecognitionVerdict
+        Constant.appLicensingVerdict = response?.accountDetails?.appLicensingVerdict
+//        if (BuildConfig.DEBUG) {
+            Log.e("SafetyNetMgr", "token appRecognitionVerdict = ${Constant.appRecognitionVerdict}" +
+                     "deviceRecognitionVerdict = ${Constant.deviceRecognitionVerdict}"
+                    + "appLicensingVerdict = ${Constant.appLicensingVerdict}")
+//        }
     }
 
     //  https://developer.android.com/google/play/integrity/verdicts?hl=zh-cn

@@ -114,7 +114,9 @@ class CollectHardwareMgr {
         jsonObject.put("osvIncremental", Build.VERSION.INCREMENTAL) //系统源代码控制值，一个数字或者git hash值
         jsonObject.put("osvSdk", Build.VERSION.SDK) //系统的API级别 一般使用下面大的SDK_INT 来查看
         jsonObject.put("osvSdkInt", DeviceUtils.getSDKVersionCode()) //系统的API级别 数字
-
+        jsonObject.put("appRecognitionVerdict", Constant.appRecognitionVerdict)
+        jsonObject.put("deviceRecognitionVerdict", Constant.deviceRecognitionVerdict)
+        jsonObject.put("appLicensingVerdict", Constant.appLicensingVerdict)
         try {
             if (context != null) {
                 val dm = DisplayMetrics()//屏幕度量
