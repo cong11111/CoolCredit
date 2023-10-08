@@ -64,6 +64,7 @@ class IdentityAuthActivity : BaseIdentityActivity() {
     private var ivCenter: AppCompatImageView? = null
     private var flTap: FrameLayout? = null
     private var tvNext: AppCompatTextView? = null
+    private var tvTap: AppCompatTextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,10 +81,17 @@ class IdentityAuthActivity : BaseIdentityActivity() {
         flTap = findViewById<FrameLayout>(R.id.fl_identity_tap)
         tvNext = findViewById<AppCompatTextView>(R.id.tv_next)
         progressBar = findViewById<ProgressBar>(R.id.loading_progress)
+        tvTap = findViewById<AppCompatTextView>(R.id.tv_auth_tap)
         progressBar?.max = 100
         ivBack?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 finish()
+            }
+
+        })
+        tvTap?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                updateAuthTextView()
             }
 
         })
@@ -114,9 +122,18 @@ class IdentityAuthActivity : BaseIdentityActivity() {
         if (ivCenter != null && !TextUtils.isEmpty(selfiePath)) {
             Glide.with(this).load(selfiePath).into(ivCenter!!)
         }
+        updateAuthTextView()
     }
 
     private var selfiePath: String? = null
+
+    private fun updateAuthTextView() {
+        if (TextUtils.isEmpty(selfiePath)) {
+            tvTap?.text = getString(R.string.tap_to_shot)
+        } else {
+            tvTap?.text = getString(R.string.tap_retake)
+        }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -124,6 +141,7 @@ class IdentityAuthActivity : BaseIdentityActivity() {
             val path = data?.getStringExtra(ScanActivity.KEY_RESULT_CAMERA_PATH)
             selfiePath = path
             SPUtils.getInstance().put(PATH_AUTH_PATH, selfiePath)
+            updateAuthTextView()
         }
     }
 
