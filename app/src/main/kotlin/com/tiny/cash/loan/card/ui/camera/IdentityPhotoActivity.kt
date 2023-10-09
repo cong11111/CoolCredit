@@ -70,6 +70,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
     private var tvNext: AppCompatTextView? = null
     private var progressBar: ProgressBar? = null
     private var tvTap: AppCompatTextView? = null
+    private var viewLoading: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +85,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
         tvNext = findViewById<AppCompatTextView>(R.id.tv_next)
         progressBar = findViewById<ProgressBar>(R.id.loading_progress)
         tvTap = findViewById<AppCompatTextView>(R.id.tv_identity_photo_tap)
+        viewLoading = findViewById<AppCompatTextView>(R.id.view_loading)
         progressBar?.max = 100
         tvNin?.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View?) {
@@ -132,23 +134,23 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
                 progressBar?.visibility = View.VISIBLE
                 progressBar?.progress = 0
                 if (isFront) {
-                    if (!TextUtils.isEmpty(minPath)) {
-                        startUploadMtnFileOnly()
+                    if (TextUtils.isEmpty(minPath)) {
                         return
                     }
-                } else {
-                    if (!TextUtils.isEmpty(votorCardPath)) {
-                        startUploadVotorCardFileOnly()
-                        return
-                    }
-                }
-                if (!TextUtils.isEmpty(minPath) && TextUtils.isEmpty(votorCardPath)) {
                     startUploadMtnFileOnly()
-                } else if (TextUtils.isEmpty(minPath) && !TextUtils.isEmpty(votorCardPath)) {
+                } else {
+                    if (TextUtils.isEmpty(votorCardPath)) {
+                        return
+                    }
                     startUploadVotorCardFileOnly()
-                } else if (!TextUtils.isEmpty(minPath) && !TextUtils.isEmpty(votorCardPath)) {
-                    startUploadMtnFile()
                 }
+//                if (!TextUtils.isEmpty(minPath) && TextUtils.isEmpty(votorCardPath)) {
+//                    startUploadMtnFileOnly()
+//                } else if (TextUtils.isEmpty(minPath) && !TextUtils.isEmpty(votorCardPath)) {
+//                    startUploadVotorCardFileOnly()
+//                } else if (!TextUtils.isEmpty(minPath) && !TextUtils.isEmpty(votorCardPath)) {
+//                    startUploadMtnFile()
+//                }
             }
 
         })
@@ -194,8 +196,14 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
 
     private fun updateMinAndVoterCardPreview() {
         var showNextFlag: Boolean = false
-        if (!TextUtils.isEmpty(minPath) || !TextUtils.isEmpty(votorCardPath)) {
-            showNextFlag = true
+        if (isFront) {
+            if (!TextUtils.isEmpty(minPath)) {
+                showNextFlag = true
+            }
+        } else {
+            if (!TextUtils.isEmpty(votorCardPath)) {
+                showNextFlag = true
+            }
         }
         if (mType == TYPE_MIN) {
             if (TextUtils.isEmpty(minPath)) {
@@ -214,11 +222,8 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
                 tvTap?.text = getString(R.string.tap_retake)
             }
         }
-        if (showNextFlag) {
-            tvNext?.visibility = View.VISIBLE
-        } else {
-            tvNext?.visibility = View.GONE
-        }
+        tvNext?.isSelected = showNextFlag
+        tvNext?.isEnabled = showNextFlag
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -241,6 +246,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
     private var hasUploadVotorCard = false
 
     private fun startUploadMtnFileOnly() {
+        viewLoading?.visibility = View.VISIBLE
         mPresenter.startUpload("1", File(minPath), object : BaseUploadFilePresenter.UploadObserver {
             override fun onSuccess() {
                 if (isFinishing || isDestroyed) {
@@ -266,6 +272,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
     }
 
     private fun startUploadVotorCardFileOnly() {
+        viewLoading?.visibility = View.VISIBLE
         mPresenter.onDestroy()
         mPresenter.startUpload(
             "2",
@@ -351,6 +358,7 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
             if (isFinishing || isDestroyed) {
                 return@post
             }
+            viewLoading?.visibility = View.GONE
             ToastUtils.showShort("Identity photo upload success")
             if (mNeedShowAuth) {
                 ScanActivity.showMe(this)
@@ -379,20 +387,27 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
             "Okhttp", " on file failure 1 errorDesc = " + errorDesc
                     + " errorMsg = " + errorMsg
         )
-        if (!Constant.isAabBuild()) {
-            LogSaver.logToFile(
-                " on file failure 1 errorDesc = " + errorDesc
-                        + " errorMsg = " + errorMsg
-            )
-            mHandler.post(Runnable {
+        mHandler.post(Runnable {
+            if (isFinishing || isDestroyed) {
+                return@Runnable
+            }
+            tvNext?.visibility = View.VISIBLE
+            progressBar?.visibility = View.GONE
+            viewLoading?.visibility = View.GONE
+            if (!Constant.isAabBuild()) {
+                LogSaver.logToFile(
+                    " on file failure 1 errorDesc = " + errorDesc
+                            + " errorMsg = " + errorMsg
+                )
                 Toast.makeText(
                     this@IdentityPhotoActivity,
-                    " on file failure 1 errorDesc = " + errorDesc
+                    " on file failure  errorDesc = " + errorDesc
                             + " errorMsg = " + errorMsg,
                     Toast.LENGTH_SHORT
                 ).show()
-            })
-        }
+            }
+        })
+
     }
 
     override fun onDestroy() {
@@ -400,4 +415,5 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
         mHandler?.removeCallbacksAndMessages(null)
         mPresenter.onDestroy()
     }
+
 }

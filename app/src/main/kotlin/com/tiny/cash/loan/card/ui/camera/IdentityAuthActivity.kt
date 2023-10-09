@@ -65,6 +65,7 @@ class IdentityAuthActivity : BaseIdentityActivity() {
     private var flTap: FrameLayout? = null
     private var tvNext: AppCompatTextView? = null
     private var tvTap: AppCompatTextView? = null
+    private var viewLoading: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +83,7 @@ class IdentityAuthActivity : BaseIdentityActivity() {
         tvNext = findViewById<AppCompatTextView>(R.id.tv_next)
         progressBar = findViewById<ProgressBar>(R.id.loading_progress)
         tvTap = findViewById<AppCompatTextView>(R.id.tv_auth_tap)
+        viewLoading = findViewById<AppCompatTextView>(R.id.view_loading)
         progressBar?.max = 100
         ivBack?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -147,6 +149,7 @@ class IdentityAuthActivity : BaseIdentityActivity() {
 
     private var hasUploadSelfie = false
     private fun startUploadSelfieFile() {
+        viewLoading?.visibility = View.VISIBLE
         mPresenter?.startUpload(
             "3",
             File(selfiePath),
@@ -163,6 +166,7 @@ class IdentityAuthActivity : BaseIdentityActivity() {
                         if (isFinishing || isDestroyed) {
                             return@Runnable
                         }
+                        viewLoading?.visibility = View.GONE
                         SPUtils.getInstance().put(PATH_AUTH_PATH, "")
                         ToastUtils.showShort("Identity auth upload success")
                         finish()
@@ -195,16 +199,23 @@ class IdentityAuthActivity : BaseIdentityActivity() {
                                     + " errorMsg = " + errorMsg
                         )
                     }
-                    if (!Constant.isAabBuild()) {
-                        LogSaver.logToFile(" on file failure errorDesc = " + errorDesc
-                                + " errorMsg = " + errorMsg)
-                        mHandler.post(Runnable {
-                            Toast.makeText(
-                                this@IdentityAuthActivity,
-                                "errorDesc = $errorDesc errorMsg = $errorMsg", Toast.LENGTH_SHORT
-                            ).show()
-                        })
-                    }
+                    mHandler.post(Runnable {
+                        if (isFinishing || isDestroyed) {
+                            return@Runnable
+                        }
+                        viewLoading?.visibility = View.GONE
+                        tvNext?.visibility = View.VISIBLE
+                        progressBar?.visibility = View.GONE
+                        if (!Constant.isAabBuild()) {
+                            LogSaver.logToFile(" on file failure errorDesc = " + errorDesc
+                                    + " errorMsg = " + errorMsg)
+                        Toast.makeText(
+                            this@IdentityAuthActivity,
+                            "errorDesc = $errorDesc errorMsg = $errorMsg", Toast.LENGTH_SHORT
+                        ).show()
+                        }
+                    })
+
                 }
             })
     }

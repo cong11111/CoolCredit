@@ -41,6 +41,13 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <View
+        android:id="@+id/view_loading"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_height="match_parent"/>
+
     <FrameLayout
         android:id="@+id/container_next"
         android:layout_width="match_parent"

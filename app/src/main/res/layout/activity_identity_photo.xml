@@ -43,6 +43,13 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <View
+        android:id="@+id/view_loading"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_height="match_parent"/>
+
     <FrameLayout
         android:id="@+id/container_next"
         android:layout_width="match_parent"
@@ -60,9 +67,8 @@
             android:textColor="#FFFFFF"
             android:textSize="@dimen/sp_14"
             android:gravity="center"
-            android:visibility="gone"
             android:textAllCaps="true"
-            android:background="@drawable/bg_identity_green_28"
+            android:background="@drawable/select_bg_identity"
             android:layout_height="@dimen/dp_40"/>
 
         <ProgressBar
