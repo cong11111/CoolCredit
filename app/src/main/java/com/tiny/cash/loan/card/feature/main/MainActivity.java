@@ -39,6 +39,7 @@ import com.chocolate.moudle.scan.my.ScanActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.mgr.IntegrityApiMgr;
 import com.tiny.cash.loan.card.ui.camera.IdentityAuthActivity;
 import com.tiny.cash.loan.card.ui.camera.IdentityPhotoActivity;
 import com.tiny.cash.loan.card.utils.JumpPermissionUtils;
@@ -131,6 +132,7 @@ public class MainActivity extends BaseActivity {
         }
         initData();
         init();
+        IntegrityApiMgr.INSTANCE.tryGetId(MainActivity.this);
         SPUtils.getInstance().put(Constant.KEY_LOGIN_TIME, System.currentTimeMillis());
     }
 

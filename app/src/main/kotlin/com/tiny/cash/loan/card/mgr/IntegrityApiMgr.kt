@@ -1,6 +1,7 @@
 package com.tiny.cash.loan.card.mgr
 
 import android.app.Activity
+import android.text.TextUtils
 import android.util.Base64
 import android.util.Log
 import com.blankj.utilcode.util.GsonUtils
@@ -11,19 +12,26 @@ import com.google.android.play.core.integrity.IntegrityTokenRequest
 import com.google.android.play.core.integrity.IntegrityTokenResponse
 import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.bean.integrity.IntergrityResponse
+import com.tiny.cash.loan.card.kudicredit.BuildConfig
+import com.tiny.cash.loan.card.log.LogSaver
 import org.jose4j.jwe.JsonWebEncryption
 import org.jose4j.jws.JsonWebSignature
 import org.jose4j.jwx.JsonWebStructure
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
-import java.util.UUID
+import java.util.*
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
 
 object IntegrityApiMgr {
+
     //
-    fun getId(context: Activity) {
+    fun tryGetId(context: Activity) {
+        if (!TextUtils.isEmpty(Constant.appRecognitionVerdict) && !TextUtils.isEmpty(Constant.deviceRecognitionVerdict)
+            && !TextUtils.isEmpty(Constant.appLicensingVerdict)) {
+            return
+        }
         val nonce: String = "" + UUID.randomUUID() + "_" + System.currentTimeMillis()
 // Create an instance of a manager.
         val integrityManager =
@@ -39,13 +47,19 @@ object IntegrityApiMgr {
         integrityTokenResponse.addOnSuccessListener(context) {
             // Indicates communication with the service was successful.
             val token = it.token()
-            Log.e("SafetyNetMgr", "token 111111111 = $token")
-            parseJson(token)
+            try {
+                parseJson(token)
+            } catch (e : java.lang.Exception) {
+                if (BuildConfig.DEBUG) {
+                    throw e
+                }
+            }
         }
             .addOnFailureListener(context) { e ->
                 // An error occurred while communicating with the service.
                 if (e is ApiException) {
                     val apiException = e as ApiException
+                    Log.d("SafetyNetMgr", "apiException : " + e.message)
                 } else {
                     // A different, unknown type of error occurred.
                     Log.d("SafetyNetMgr", "Error: " + e.message)
@@ -77,16 +91,36 @@ object IntegrityApiMgr {
             JsonWebStructure.fromCompactSerialization(compactJws) as JsonWebSignature
         jws.key = verificationKey
         val payload: String = jws.payload
-        val response = GsonUtils.fromJson(payload, IntergrityResponse::class.java)
+        try {
+            Log.i("SafetyNetMgr", "payload = $payload")
+            val response = GsonUtils.fromJson(payload, IntergrityResponse::class.java)
 
-        Constant.appRecognitionVerdict = response?.appIntegrity?.appRecognitionVerdict
-        Constant.deviceRecognitionVerdict = response?.deviceIntegrity?.deviceRecognitionVerdict
-        Constant.appLicensingVerdict = response?.accountDetails?.appLicensingVerdict
-//        if (BuildConfig.DEBUG) {
-            Log.e("SafetyNetMgr", "token appRecognitionVerdict = ${Constant.appRecognitionVerdict}" +
-                     "deviceRecognitionVerdict = ${Constant.deviceRecognitionVerdict}"
-                    + "appLicensingVerdict = ${Constant.appLicensingVerdict}")
-//        }
+            Constant.appRecognitionVerdict = response?.appIntegrity?.appRecognitionVerdict
+            if (response?.deviceIntegrity != null) {
+                val versict = response.deviceIntegrity!!.deviceRecognitionVerdict
+                Constant.deviceRecognitionVerdict = buildStr(versict)
+            }
+            Constant.appLicensingVerdict = response?.accountDetails?.appLicensingVerdict
+            if (BuildConfig.DEBUG) {
+                Log.e("SafetyNetMgr", "token appRecognitionVerdict = ${Constant.appRecognitionVerdict}" +
+                        "deviceRecognitionVerdict = ${Constant.deviceRecognitionVerdict}"
+                        + "appLicensingVerdict = ${Constant.appLicensingVerdict}")
+            }
+        } catch (e : Exception) {
+            LogSaver.logToFile(" parse safety net error = "  + payload)
+        }
+
+    }
+
+    private fun buildStr(list : List<String>?) : String {
+        if (list == null) {
+            return ""
+        }
+        var sb = StringBuffer()
+        for (str in list) {
+            sb.append(str)
+        }
+        return sb.toString()
     }
 
     //  https://developer.android.com/google/play/integrity/verdicts?hl=zh-cn

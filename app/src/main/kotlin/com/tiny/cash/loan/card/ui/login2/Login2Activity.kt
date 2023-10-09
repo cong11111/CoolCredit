@@ -35,7 +35,6 @@ class Login2Activity : BaseActivity() {
         }
 
         toLoginFragment()
-        IntegrityApiMgr.getId(this@Login2Activity)
     }
 
     fun toOtpFragment(prex : String ,phoneNum : String){

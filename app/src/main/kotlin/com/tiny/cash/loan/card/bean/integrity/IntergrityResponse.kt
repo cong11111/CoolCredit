@@ -33,12 +33,12 @@ class IntergrityResponse {
     class AppIntegrity {
         var appRecognitionVerdict : String? = null
         var packageName : String? = null
-        var certificateSha256Digest : String? = null
+        var certificateSha256Digest : List<String>? = null
         var versionCode : String? = null
     }
 
     class DeviceIntegrity {
-        var deviceRecognitionVerdict : String? = null
+        var deviceRecognitionVerdict : List<String>? = null
     }
 
     class AccountDetails {
