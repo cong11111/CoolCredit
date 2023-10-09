@@ -1,5 +1,6 @@
 package com.tiny.cash.loan.card.ui.card
 
+import android.Manifest
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -17,6 +18,7 @@ import co.paystack.android.PaystackSdk
 import co.paystack.android.Transaction
 import co.paystack.android.model.Card
 import co.paystack.android.model.Charge
+import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.Constants
@@ -31,11 +33,11 @@ import com.tiny.cash.loan.card.net.ResponseException
 import com.tiny.cash.loan.card.net.request.params.BankCardParams
 import com.tiny.cash.loan.card.net.response.Response
 import com.tiny.cash.loan.card.net.response.data.bean.BankBoundResult
+import com.tiny.cash.loan.card.net.response.data.order.QueryOrderId
 import com.tiny.cash.loan.card.ui.base.BaseFragment2
-import com.tiny.cash.loan.card.utils.CommonUtils
-import com.tiny.cash.loan.card.utils.FirebaseUtils
-import com.tiny.cash.loan.card.utils.KvStorage
-import com.tiny.cash.loan.card.utils.LocalConfig
+import com.tiny.cash.loan.card.ui.camera.IdentityAuthActivity.Companion.checkExistAndToSelfie
+import com.tiny.cash.loan.card.ui.camera.IdentityPhotoActivity.Companion.launchActivity
+import com.tiny.cash.loan.card.utils.*
 import com.tiny.cash.loan.card.widget.BlankTextWatcher
 import com.tiny.cash.loan.card.widget.EditTextContainer
 import com.tiny.cash.loan.card.widget.ExpiryTextWatcher
@@ -327,10 +329,7 @@ class AddBankNum2Fragment : BaseFragment2() {
                 }
                 ToastUtils.showShort("bind card success")
                 FirebaseUtils.logEvent("fireb_card_success")
-                if (activity is BindNewCardActivity) {
-                    var bindNewCardActivity: BindNewCardActivity = activity as BindNewCardActivity
-                    bindNewCardActivity.toStep(BindNewCardActivity.BIND_BINK_CARD_SUCCESS)
-                }
+                queryOrderId()
             }
 
             override fun onException(netException: ResponseException) {
@@ -342,6 +341,67 @@ class AddBankNum2Fragment : BaseFragment2() {
             }
         }
         observable.subscribeWith(cardObserver)
+    }
+
+    private var orderStatusObserver: NetObserver<Response<QueryOrderId>>? = null
+    private fun queryOrderId() {
+        val observable: Observable<Response<QueryOrderId>> = NetManager.getApiService().QueryOrderId()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+        CommonUtils.disposable(orderStatusObserver)
+        showProgressDialogFragment(getString(R.string.str_loading), false)
+        orderStatusObserver = object : NetObserver<Response<QueryOrderId>>() {
+            override fun onNext(response: Response<QueryOrderId>) {
+                if (response == null || !response.isSuccess) {
+                    onBindCardSuccess()
+                    return
+                }
+                dismissProgressDialogFragment()
+                val queryOrderId  = response.body
+                if (queryOrderId.isInfoReviewSwitch) {
+                    if (!queryOrderId.isHasInfoReviewCard) {
+                        launchActivity(activity!!, !response.body.isHasInfoReviewSelfie)
+                        return
+                    }
+                    if (!queryOrderId.isHasInfoReviewSelfie) {
+                        val isGranted =
+                            PermissionUtils.isGranted(Manifest.permission.CAMERA)
+                        if (isGranted) {
+                            checkExistAndToSelfie(activity!!)
+                        } else {
+                            PermissionUtils.permission(Manifest.permission.CAMERA)
+                                .callback(object : PermissionUtils.SimpleCallback {
+                                    override fun onGranted() {
+                                        checkExistAndToSelfie(
+                                            activity!!
+                                        )
+                                    }
+
+                                    override fun onDenied() {
+                                        ToastUtils.showShort("please allow permission.")
+                                        JumpPermissionUtils.goToSetting(activity)
+                                    }
+                                }).request()
+                        }
+                        return
+                    }
+                }
+                onBindCardSuccess()
+            }
+
+            override fun onException(netException: ResponseException) {
+                dismissProgressDialogFragment()
+                onBindCardSuccess()
+            }
+        }
+        observable.subscribeWith(orderStatusObserver)
+    }
+
+    private fun onBindCardSuccess() {
+        if (activity is BindNewCardActivity) {
+            var bindNewCardActivity: BindNewCardActivity = activity as BindNewCardActivity
+            bindNewCardActivity.toStep(BindNewCardActivity.BIND_BINK_CARD_SUCCESS)
+        }
     }
 
     private fun errorMsg(errorMsg: String, response: String?, requestJson: JSONObject) {
