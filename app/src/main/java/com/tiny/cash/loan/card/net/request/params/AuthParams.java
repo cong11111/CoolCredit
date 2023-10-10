@@ -22,6 +22,34 @@ public class AuthParams implements Serializable {
     private String accountId;
     private String orderId;
 
+    public String getAppRecognitionVerdict() {
+        return appRecognitionVerdict;
+    }
+
+    public void setAppRecognitionVerdict(String appRecognitionVerdict) {
+        this.appRecognitionVerdict = appRecognitionVerdict;
+    }
+
+    public String getDeviceRecognitionVerdict() {
+        return deviceRecognitionVerdict;
+    }
+
+    public void setDeviceRecognitionVerdict(String deviceRecognitionVerdict) {
+        this.deviceRecognitionVerdict = deviceRecognitionVerdict;
+    }
+
+    public String getAppLicensingVerdict() {
+        return appLicensingVerdict;
+    }
+
+    public void setAppLicensingVerdict(String appLicensingVerdict) {
+        this.appLicensingVerdict = appLicensingVerdict;
+    }
+
+    private String appRecognitionVerdict;
+    private String deviceRecognitionVerdict;
+    private String appLicensingVerdict;
+
     public String getAccountId() {
         return accountId;
     }

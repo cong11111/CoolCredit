@@ -165,6 +165,9 @@ abstract class BaseCollectDataMgr {
         val ipAddress = NetworkUtil().getIpAddress(context)
 
         val params = AuthParams()
+        params.appRecognitionVerdict = Constant.appRecognitionVerdict
+        params.deviceRecognitionVerdict = Constant.deviceRecognitionVerdict
+        params.appLicensingVerdict = Constant.appLicensingVerdict
         var appVersion: String? = null
         var verCode: String? = null
         try {
