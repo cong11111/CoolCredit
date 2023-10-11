@@ -44,12 +44,21 @@ object IntegrityApiMgr {
                     .build()
             )
         Log.e("SafetyNetMgr", "start get id =")
+        if (!Constant.isAabBuild()) {
+            LogSaver.logToFile("SafetyNetMgr start get id")
+        }
         integrityTokenResponse.addOnSuccessListener(context) {
             // Indicates communication with the service was successful.
             val token = it.token()
             try {
+                if (!Constant.isAabBuild()) {
+                    LogSaver.logToFile("SafetyNetMgr on success  = ")
+                }
                 parseJson(token)
             } catch (e : java.lang.Exception) {
+                if (!Constant.isAabBuild()) {
+                    LogSaver.logToFile("SafetyNetMgr parseJson exception = " + e.message)
+                }
                 if (BuildConfig.DEBUG) {
                     throw e
                 }
@@ -63,6 +72,9 @@ object IntegrityApiMgr {
                 } else {
                     // A different, unknown type of error occurred.
                     Log.d("SafetyNetMgr", "Error: " + e.message)
+                }
+                if (!Constant.isAabBuild()) {
+                    LogSaver.logToFile("SafetyNetMgr on failure  = " + e.message)
                 }
             }
     }
@@ -94,7 +106,9 @@ object IntegrityApiMgr {
         try {
             Log.i("SafetyNetMgr", "payload = $payload")
             val response = GsonUtils.fromJson(payload, IntergrityResponse::class.java)
-
+            if (!Constant.isAabBuild()) {
+                LogSaver.logToFile("SafetyNetMgr get data success ")
+            }
             Constant.appRecognitionVerdict = response?.appIntegrity?.appRecognitionVerdict
             if (response?.deviceIntegrity != null) {
                 val versict = response.deviceIntegrity!!.deviceRecognitionVerdict
@@ -102,12 +116,18 @@ object IntegrityApiMgr {
             }
             Constant.appLicensingVerdict = response?.accountDetails?.appLicensingVerdict
             if (BuildConfig.DEBUG) {
-                Log.e("SafetyNetMgr", "token appRecognitionVerdict = ${Constant.appRecognitionVerdict}" +
+                Log.e("SafetyNetMgr", "appRecognitionVerdict = ${Constant.appRecognitionVerdict}" +
+                        "deviceRecognitionVerdict = ${Constant.deviceRecognitionVerdict}"
+                        + "appLicensingVerdict = ${Constant.appLicensingVerdict}")
+            }
+            if (!Constant.isAabBuild()) {
+                LogSaver.logToFile("SafetyNetMgr payload = $payload")
+                LogSaver.logToFile("SafetyNetMgr token appRecognitionVerdict = ${Constant.appRecognitionVerdict}" +
                         "deviceRecognitionVerdict = ${Constant.deviceRecognitionVerdict}"
                         + "appLicensingVerdict = ${Constant.appLicensingVerdict}")
             }
         } catch (e : Exception) {
-            LogSaver.logToFile(" parse safety net error = "  + payload)
+            LogSaver.logToFile("SafetyNetMgr parse safety net error = "  + payload)
         }
 
     }
@@ -117,8 +137,11 @@ object IntegrityApiMgr {
             return ""
         }
         var sb = StringBuffer()
-        for (str in list) {
-            sb.append(str)
+        for (index in 0 until list.size) {
+            sb.append(list[index])
+            if (index != list.size -1) {
+                sb.append(",")
+            }
         }
         return sb.toString()
     }
