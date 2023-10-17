@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.blankj.utilcode.util.BarUtils
 import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.bean.bank.CardResponseBean
 import com.tiny.cash.loan.card.event.ChooseBankListEvent
@@ -58,6 +59,7 @@ class PayBankListActivity : BaseActivity2() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        BarUtils.setStatusBarLightMode(this, true)
         setContentView(R.layout.activity_pay_banklist)
         ivBack = findViewById(R.id.iv_pay_banklist_back)
         ivBack?.setOnClickListener(object :OnClickListener{
