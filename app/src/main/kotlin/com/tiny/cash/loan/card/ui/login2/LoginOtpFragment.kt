@@ -14,8 +14,12 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.blankj.utilcode.util.*
+import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.KeyboardUtils.OnSoftInputChangedListener
+import com.blankj.utilcode.util.SPUtils
+import com.blankj.utilcode.util.StringUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.Constants
 import com.tiny.cash.loan.card.bean.login2.RegLoginBean
@@ -453,6 +457,9 @@ class LoginOtpFragment : BaseFragment2(){
         KvStorage.put(LocalConfig.LC_TOKEN, bean.token)
         KvStorage.put(LocalConfig.LC_MOBILE, bean.mobile)
         KvStorage.put(LocalConfig.LC_ACCOUNTID, bean.accountId)
+        if (!TextUtils.isEmpty(bean.accountId)) {
+            FirebaseUtils.setUserId(context, bean.accountId)
+        }
         if (TextUtils.equals(bean.active, "1")){
             FirebaseUtils.logEvent("fireb_register")
         } else if (TextUtils.equals(bean.active, "2")) {
