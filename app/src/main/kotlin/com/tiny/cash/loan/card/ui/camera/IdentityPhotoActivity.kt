@@ -26,6 +26,7 @@ import com.chocolate.moudle.scan.camera2.BaseUploadFilePresenter
 import com.chocolate.moudle.scan.camera2.CameraActivity2
 import com.chocolate.moudle.scan.my.ScanActivity
 import com.tiny.cash.loan.card.Constant
+import com.tiny.cash.loan.card.kudicredit.BuildConfig
 import com.tiny.cash.loan.card.kudicredit.R
 import com.tiny.cash.loan.card.log.LogSaver
 import com.tiny.cash.loan.card.utils.JumpPermissionUtils
@@ -376,7 +377,9 @@ class IdentityPhotoActivity : BaseIdentityActivity() {
             }
             progressBar?.progress = progress
         })
-        Log.i("Okhttp", " on progress 2 = " + progress)
+        if (BuildConfig.DEBUG) {
+            Log.i("Okhttp", " on progress 2 = " + progress)
+        }
     }
 
     private fun onStartUploadError(errorDesc: String, errorMsg: String) {

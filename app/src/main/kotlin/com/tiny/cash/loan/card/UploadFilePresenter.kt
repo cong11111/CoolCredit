@@ -147,10 +147,13 @@ class UploadFilePresenter : BaseUploadFilePresenter() {
                 override fun onProgress(currentBytes: Long, totalBytes: Long) {
                     try {
                         onUploadProgressChange(
-                            ((currentBytes / totalBytes) * 100).toInt(),
+                            ((currentBytes * 1f / totalBytes) * 100f).toInt(),
                             observer
                         )
                     } catch (e: java.lang.Exception) {
+                        if (BuildConfig.DEBUG) {
+                            throw e
+                        }
                         onUploadProgressChange(60, observer)
                     }
                 }
