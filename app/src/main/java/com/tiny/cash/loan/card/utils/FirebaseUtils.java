@@ -44,6 +44,10 @@ public class FirebaseUtils {
 
     public static void setUserId(Context context, String userId) {
         FirebaseAnalytics.getInstance(context).setUserId(userId);
+        if (!Constant.Companion.isAabBuild()) {
+            Toast.makeText(context, "setUserId = " + userId, Toast.LENGTH_SHORT).show();
+            LogSaver.logToFile("setUserId = " + userId);
+        }
     }
 
     public static void logEvent(String event) {
