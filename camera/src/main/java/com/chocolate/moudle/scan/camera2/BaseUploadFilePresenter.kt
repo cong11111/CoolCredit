@@ -25,6 +25,7 @@ abstract class BaseUploadFilePresenter {
         }
         val photos = ArrayList<String>()
         photos.add(file1.absolutePath)
+        observer?.onProgress(5)
         Luban.with(context)
             .load<String>(photos)
             .ignoreBy(100)
@@ -41,6 +42,7 @@ abstract class BaseUploadFilePresenter {
                     if (BuildConfig.DEBUG) {
                         Log.e("Okhttp", " unzip size = " + FileUtils.getSize(file) + " path .  " + file.absolutePath)
                     }
+                    observer?.onProgress(20)
                     requestUploadSign(imageType, file, observer)
                 }
 
@@ -61,10 +63,12 @@ abstract class BaseUploadFilePresenter {
     }
 
     fun onUploadProgressChange(progress: Int, observer: UploadObserver){
-        observer?.onProgress(progress)
+        val resultProgress : Int = 20 + (progress  * 7f / 10).toInt()
+        observer?.onProgress(resultProgress)
     }
 
     fun onUploadFileSuccess(result: File?, observer: UploadObserver){
+        observer?.onProgress(100)
         observer?.onSuccess()
     }
 

@@ -1,5 +1,7 @@
 package com.tiny.cash.loan.card.utils;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import java.io.IOException;
@@ -45,6 +47,7 @@ public class ProgressRequestBody extends RequestBody {
                     contentLength = contentLength();
                 }
                 bytesWritten += byteCount;
+//                Log.e("Okhttp", "write 1 = " + bytesWritten + " write 2 = " + contentLength);
                 progressListener.onProgress(bytesWritten, contentLength);
             }
         });
