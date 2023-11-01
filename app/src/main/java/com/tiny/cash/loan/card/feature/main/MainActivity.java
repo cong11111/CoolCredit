@@ -39,6 +39,7 @@ import com.chocolate.moudle.scan.my.ScanActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.feature.users.ContactsActivity;
 import com.tiny.cash.loan.card.mgr.IntegrityApiMgr;
 import com.tiny.cash.loan.card.ui.camera.IdentityAuthActivity;
 import com.tiny.cash.loan.card.ui.camera.IdentityPhotoActivity;
@@ -804,6 +805,9 @@ public class MainActivity extends BaseActivity {
 //        CameraActivity2.Companion.showMe(this);
 //        BindNewCardActivity.Companion.launchAddBankAccount(this);
 //        PayActivity2.Companion.launchPayActivity(this, "11111","111111");
+
+        Intent intent = new Intent(this, ContactsActivity.class);
+        startActivity(intent);
         if (true) {
             return;
         }

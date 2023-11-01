@@ -16,10 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityContactBinding;
+import com.tiny.cash.loan.card.log.LogSaver;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
@@ -92,6 +94,9 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
         mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     try {
+                        if (Constant.IS_COLLECT) {
+                            LogSaver.logToFile("request contact  success " );
+                        }
                         Uri contactUri = result.getData().getData();
                         if (contactUri == null) {
                             ToastUtils.showShort("not select contact.");
@@ -101,7 +106,7 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
                                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
                         Cursor cursor = getContentResolver().query(contactUri,
                                 projection, null, null, null);
-                        while (cursor != null && cursor.moveToFirst()) {
+                        while (cursor != null && !cursor.isClosed() && cursor.moveToFirst()) {
                             int NUMBER_INDEX = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
                             int DISPLAY_NAME = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
                             phoneNum  = cursor.getString(NUMBER_INDEX);
@@ -110,6 +115,10 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        if (Constant.IS_COLLECT) {
+                            LogSaver.logToFile("phoneNum = " + phoneNum + " exception = " + e.toString() );
+                        }
+                        ToastUtils.showShort(" select contact error = " + e.toString());
                     }
                     //  把电话号码中的  -  符号 替换成空格
                     if (phoneNum != null) {
@@ -372,9 +381,12 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
 
     private void intentToContact() {
         // 跳转到联系人界面
-        Intent intent = new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
         intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
         mActivityResultLauncher.launch(intent);
+        if (Constant.IS_COLLECT) {
+            LogSaver.logToFile("start request contact . " );
+        }
         if (intent.resolveActivity(getPackageManager()) != null) {
 
         }
