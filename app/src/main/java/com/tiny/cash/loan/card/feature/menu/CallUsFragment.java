@@ -8,19 +8,27 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ThreadUtils;
+import com.blankj.utilcode.util.ZipUtils;
+import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.FragmentCallUsBinding;
+import com.tiny.cash.loan.card.log.LogSaver;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
 import com.tiny.cash.loan.card.utils.ui.ToastManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -190,33 +198,31 @@ public class CallUsFragment extends BaseFragment {
      * 打开邮箱客户端
      */
     private void openEmail() {
-        Uri uri = Uri.parse("mailto:" + mEmail);
-        List<ResolveInfo> packageInfos = getContext().getPackageManager().queryIntentActivities(new Intent(Intent.ACTION_SENDTO, uri), 0);
-        List<String> tempPkgNameList = new ArrayList<>();
-        List<Intent> emailIntents = new ArrayList<>();
-        for (ResolveInfo info : packageInfos) {
-            String pkgName = info.activityInfo.packageName;
-            if (!tempPkgNameList.contains(pkgName)) {
-                tempPkgNameList.add(pkgName);
-                Intent intent = getContext().getPackageManager().getLaunchIntentForPackage(pkgName);
-                emailIntents.add(intent);
+        ThreadUtils.executeByCached(new ThreadUtils.SimpleTask<String>() {
+            @Override
+            public String doInBackground() throws Throwable {
+                File logFoldPath = new File(LogSaver.getLogFileFolder());
+                if (logFoldPath.listFiles().length > 0) {
+                    File srcFile = logFoldPath.listFiles()[0];
+                    File traceFile =
+                            new File(requireContext().getFilesDir().getAbsolutePath() + "/log/", "trace");
+                    FileUtils.createFileByDeleteOldFile(traceFile);
+                    boolean success = ZipUtils.zipFile(srcFile, traceFile);
+                    if (success) {
+                        return traceFile.getAbsolutePath();
+                    }
+                }
+                return null;
             }
-        }
-        if (!emailIntents.isEmpty()) {
-            Intent chooserIntent = Intent.createChooser(emailIntents.remove(0), "Select your email");
-            if (chooserIntent != null) {
-                // 设置对方邮件地址
-                chooserIntent.putExtra(Intent.EXTRA_EMAIL, uri);
-                chooserIntent.setAction(Intent.ACTION_SENDTO);
-                chooserIntent.setData(uri);
-                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, emailIntents.toArray(new Parcelable[]{}));
-                startActivity(chooserIntent);
-            } else {
-                Toast.makeText(getActivity(), "No available mail client was found", Toast.LENGTH_SHORT).show();
+
+            @Override
+            public void onSuccess(String traceFile) {
+                CallUsUtils.INSTANCE.startFeedBackEmail(traceFile, getContext(), mEmail);
             }
-        } else {
-            Toast.makeText(getActivity(), "No available mail client was found", Toast.LENGTH_SHORT).show();
-        }
+        });
+
+
     }
+
 
 }
