@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ import com.tiny.cash.loan.card.net.response.Response;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -122,6 +124,9 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
 
     private void initAmountAdapter() {
         amountAdapter = new AmountAdapter(getContext());
+        if (mAmountList != null && mAmountList.size() > 0) {
+            amountAdapter.selectItem(mAmountList.get(mAmountList.size() - 1));
+        }
         mBinding.spinnerLoanAmount.setAdapter(amountAdapter);
         amountAdapter.setData(mAmountList);
         amountAdapter.notifyDataSetChanged();
@@ -150,6 +155,8 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
         });
         adapter = new TermAdapter(getContext());
         if (mTermList.size() == 1){
+            adapter.selectItem(mTermList.get(0));
+        } else {
             adapter.selectItem(mTermList.get(0));
         }
         mBinding.recyclerView.setAdapter(adapter);
@@ -190,6 +197,13 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
             mBinding.llAll.setVisibility(View.GONE);
             mBinding.llFirst1.setVisibility(View.GONE);
         }
+
+        period = mTermList.get(0);
+        ProductList.ProductsBean productsBean = mDataMap.get(amount + period);
+        prodId = productsBean.getProdId();
+        prodName = productsBean.getProdName();
+        requestLoanTrial(prodId, amount);
+
         initTermAdapter();
     }
 
@@ -214,6 +228,25 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                     if (response.getBody() == null || response.getBody().getProducts() == null || response.getBody().getProducts().size() == 0)
                         return;
                     productsBeanList = response.getBody().getProducts();
+                    if (productsBeanList != null) {
+                        Collections.sort(productsBeanList, new Comparator<ProductList.ProductsBean>() {
+                            @Override
+                            public int compare(ProductList.ProductsBean o1, ProductList.ProductsBean o2) {
+                                try {
+                                    if (o1 != null && o2 != null) {
+                                        Double amount1  = Double.parseDouble(o1.getAmount());
+                                        Double amount2 =  Double.parseDouble(o2.getAmount());
+                                        if (amount1 != null && amount2 != null){
+                                            return (int) (amount2 - amount1);
+                                        }
+                                    }
+                                }catch (Exception e){
+                                    Log.e("ProductFragment", "parse exception ", e);
+                                }
+                                return 0;
+                            }
+                        });
+                    }
                     mType = response.getBody().getType();
                     for (ProductList.ProductsBean bean : productsBeanList) {
                         mRepayTermList = mTermMap.get(split(bean.getAmount()));
@@ -233,7 +266,9 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                     Collections.sort(mAmountList, (String o1, String o2) -> {
                         return Integer.parseInt(o1) - Integer.parseInt(o2);
                     });
-                    amount = mAmountList.get(0);
+                    if (mAmountList.size() > 0) {
+                        amount = mAmountList.get(mAmountList.size() - 1);
+                    }
                     initAmountAdapter();
                     TermView(amount, mTermMap.get(amount));
                 }

@@ -58,7 +58,7 @@ abstract class BaseLoanFragment : BaseFragment2() {
         if (mOrderInfo == null) {
             return
         }
-        if (mOrderInfo?.stageList != null) {
+        if (mOrderInfo?.stageList != null && mOrderInfo?.stageList!!.size > 0) {
             var stage: LoanOrderDetail.StageListBean? = mOrderInfo?.stageList!![0]
             if (stage != null){
                 tvDisburseDate?.text = stage.disburseTime.toString()
