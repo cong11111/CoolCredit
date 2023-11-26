@@ -54,7 +54,7 @@ object SendFileUtils {
                 val addressCC = arrayOf<String>("wang867103701@gmail.com")
                 data.putExtra(Intent.EXTRA_CC, addressCC)
             }
-            data.putExtra(Intent.EXTRA_SUBJECT, "iCredit Feedback")
+            data.putExtra(Intent.EXTRA_SUBJECT, "Icredit Feedback")
 //            val mobile = SPUtils.getInstance().getString(Constant.KEY_MOBILE)
             data.putExtra(Intent.EXTRA_TEXT, "Hi:  num "  + ",")
             if (!TextUtils.isEmpty(traceFile)) {

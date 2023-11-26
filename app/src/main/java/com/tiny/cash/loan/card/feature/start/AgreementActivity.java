@@ -7,6 +7,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseActivity;
@@ -23,6 +24,7 @@ public class AgreementActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BarUtils.setStatusBarColor(getWindow(), getResources().getColor(R.color.theme_color));
         binding = ActivityAgreementBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());//DataBindingUtil.setContentView(this, R.layout.activity_agreement);
         String type = getIntent().getStringExtra(TYPE);
