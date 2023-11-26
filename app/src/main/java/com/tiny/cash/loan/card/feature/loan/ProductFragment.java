@@ -196,13 +196,12 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
             mBinding.llNoTerm.setVisibility(View.VISIBLE);
             mBinding.llAll.setVisibility(View.GONE);
             mBinding.llFirst1.setVisibility(View.GONE);
+            period = mTermList.get(0);
+            ProductList.ProductsBean productsBean = mDataMap.get(amount + period);
+            prodId = productsBean.getProdId();
+            prodName = productsBean.getProdName();
+            requestLoanTrial(prodId, amount);
         }
-
-        period = mTermList.get(0);
-        ProductList.ProductsBean productsBean = mDataMap.get(amount + period);
-        prodId = productsBean.getProdId();
-        prodName = productsBean.getProdName();
-        requestLoanTrial(prodId, amount);
 
         initTermAdapter();
     }
@@ -228,6 +227,10 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                     if (response.getBody() == null || response.getBody().getProducts() == null || response.getBody().getProducts().size() == 0)
                         return;
                     productsBeanList = response.getBody().getProducts();
+                    // TODO
+//                    ProductList.ProductsBean productsBean = productsBeanList.get(0);
+//                    productsBean.setAmount("3900");
+//                    productsBeanList.add(productsBean);
                     if (productsBeanList != null) {
                         Collections.sort(productsBeanList, new Comparator<ProductList.ProductsBean>() {
                             @Override
@@ -249,19 +252,21 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                     }
                     mType = response.getBody().getType();
                     for (ProductList.ProductsBean bean : productsBeanList) {
-                        mRepayTermList = mTermMap.get(split(bean.getAmount()));
+                        String amountStr = getAmountStr(bean.getAmount());
+                        mRepayTermList = mTermMap.get(amountStr);
                         if (mRepayTermList == null) {
                             mRepayTermList = new ArrayList<>();
                         }
-                        if (mAmountList.size() == 0 || mAmountList.size() > 0
-                                && !mAmountList.contains(split(bean.getAmount()))) {
-                            mAmountList.add(split(bean.getAmount()));
+                        if (mAmountList != null && !TextUtils.isEmpty(bean.getAmount())) {
+                            if (!mAmountList.contains(amountStr)) {
+                                mAmountList.add(amountStr);
+                            }
                         }
                         if (!mRepayTermList.contains(bean.getPeriod())) {
                             mRepayTermList.add(bean.getPeriod());
                         }
-                        mDataMap.put(split(bean.getAmount()) + bean.getPeriod(), bean);
-                        mTermMap.put(split(bean.getAmount()), mRepayTermList);
+                        mDataMap.put(amountStr + bean.getPeriod(), bean);
+                        mTermMap.put(amountStr, mRepayTermList);
                     }
                     Collections.sort(mAmountList, (String o1, String o2) -> {
                         return Integer.parseInt(o1) - Integer.parseInt(o2);
@@ -282,11 +287,13 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
         observable.subscribeWith(LoanProductObserver);
     }
 
-    public String split(String s) {
-        if (s.length() > 2) {
-            return s.substring(0, s.length() - 2);
+    public String getAmountStr(String amount) {
+        if (TextUtils.isEmpty(amount)) {
+            return "0";
         }
-        return "0";
+        float amountFlt = Float.parseFloat(amount);
+        String amountStr = ((int)amountFlt) + "";
+        return amountStr;
     }
 
     private void initTrial(LoanTrial trial) {
@@ -313,10 +320,10 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
 
         } else {
 
-            mBinding.tvTotalInterest.setText(getString(R.string.str_money, split(trial.getTotalInterestAmount())));
-            mBinding.tvTotalFee.setText(getString(R.string.str_money, split(trial.getTotalFeeAmount())));
-            mBinding.tvTotalDisburse.setText(getString(R.string.str_money, split(trial.getTotalDisburseAmount())));
-            mBinding.tvTotalRepayment.setText(getString(R.string.str_money, split(trial.getTotalRepaymentAmount())));
+            mBinding.tvTotalInterest.setText(getString(R.string.str_money, getAmountStr(trial.getTotalInterestAmount())));
+            mBinding.tvTotalFee.setText(getString(R.string.str_money, getAmountStr(trial.getTotalFeeAmount())));
+            mBinding.tvTotalDisburse.setText(getString(R.string.str_money, getAmountStr(trial.getTotalDisburseAmount())));
+            mBinding.tvTotalRepayment.setText(getString(R.string.str_money, getAmountStr(trial.getTotalRepaymentAmount())));
 
             List<LoanTrial.TrialBean> trialBeanList = trial.getTrial();
             if (trialBeanList.size() == 1) {
@@ -324,10 +331,10 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                 mBinding.llAll.setVisibility(View.GONE);
                 for (LoanTrial.TrialBean trialBean : trialBeanList) {
                     if (Constants.ONE.equals(trialBean.getStageNo())) {
-                        mBinding.tvFirstInterest1.setText(getString(R.string.str_money, split(trialBean.getInterest())));
-                        mBinding.tvFirstFee1.setText(getString(R.string.str_money, split(trialBean.getFee())));
-                        mBinding.tvFirstDisburse1.setText(getString(R.string.str_money, split(trialBean.getDisburseAmount())));
-                        mBinding.tvFirstRepayment1.setText(getString(R.string.str_money, split(trialBean.getTotalAmount())));
+                        mBinding.tvFirstInterest1.setText(getString(R.string.str_money, getAmountStr(trialBean.getInterest())));
+                        mBinding.tvFirstFee1.setText(getString(R.string.str_money, getAmountStr(trialBean.getFee())));
+                        mBinding.tvFirstDisburse1.setText(getString(R.string.str_money, getAmountStr(trialBean.getDisburseAmount())));
+                        mBinding.tvFirstRepayment1.setText(getString(R.string.str_money, getAmountStr(trialBean.getTotalAmount())));
                         mBinding.tvFirstRepayDate1.setText(trialBean.getRepayDate());
                     }
                 }
@@ -337,16 +344,16 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                 mBinding.llAll.setVisibility(View.VISIBLE);
                 for (LoanTrial.TrialBean trialBean : trialBeanList) {
                     if (Constants.ONE.equals(trialBean.getStageNo())) {
-                        mBinding.tvFirstInterest.setText(getString(R.string.str_money, split(trialBean.getInterest())));
-                        mBinding.tvFirstFee.setText(getString(R.string.str_money, split(trialBean.getFee())));
-                        mBinding.tvFirstDisburse.setText(getString(R.string.str_money, split(trialBean.getDisburseAmount())));
-                        mBinding.tvFirstRepayment.setText(getString(R.string.str_money, split(trialBean.getTotalAmount())));
+                        mBinding.tvFirstInterest.setText(getString(R.string.str_money, getAmountStr(trialBean.getInterest())));
+                        mBinding.tvFirstFee.setText(getString(R.string.str_money, getAmountStr(trialBean.getFee())));
+                        mBinding.tvFirstDisburse.setText(getString(R.string.str_money, getAmountStr(trialBean.getDisburseAmount())));
+                        mBinding.tvFirstRepayment.setText(getString(R.string.str_money, getAmountStr(trialBean.getTotalAmount())));
                         mBinding.tvFirstRepayDate.setText(trialBean.getRepayDate());
                     } else if (Constants.TWO.equals(trialBean.getStageNo())) {
-                        mBinding.tvSecondInterest.setText(getString(R.string.str_money, split(trialBean.getInterest())));
-                        mBinding.tvSecondFee.setText(getString(R.string.str_money, split(trialBean.getFee())));
-                        mBinding.tvSecondDisburse.setText(getString(R.string.str_money, split(trialBean.getDisburseAmount())));
-                        mBinding.tvSecondRepayment.setText(getString(R.string.str_money, split(trialBean.getTotalAmount())));
+                        mBinding.tvSecondInterest.setText(getString(R.string.str_money, getAmountStr(trialBean.getInterest())));
+                        mBinding.tvSecondFee.setText(getString(R.string.str_money, getAmountStr(trialBean.getFee())));
+                        mBinding.tvSecondDisburse.setText(getString(R.string.str_money, getAmountStr(trialBean.getDisburseAmount())));
+                        mBinding.tvSecondRepayment.setText(getString(R.string.str_money, getAmountStr(trialBean.getTotalAmount())));
                         mBinding.tvSecondRepayDate.setText(trialBean.getRepayDate());
                         mBinding.tvTotalRepayDate.setText(trialBean.getRepayDate());
                     }
