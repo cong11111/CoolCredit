@@ -150,6 +150,9 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
 
     private void initTermAdapter() {
         List<String> mTermList = mTermMap.get(amount);
+        if (mTermList == null || mTermList.size() == 0) {
+            return;
+        }
         Collections.sort(mTermList, (String o1, String o2) -> {
             return Integer.parseInt(o1) - Integer.parseInt(o2);
         });
@@ -157,7 +160,8 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
         if (mTermList.size() == 1){
             adapter.selectItem(mTermList.get(0));
         } else {
-            adapter.selectItem(mTermList.get(0));
+            String term = mTermList.get(mTermList.size() - 1);
+            adapter.selectItem(term);
         }
         mBinding.recyclerView.setAdapter(adapter);
         adapter.setData(mTermList);
@@ -227,10 +231,6 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                     if (response.getBody() == null || response.getBody().getProducts() == null || response.getBody().getProducts().size() == 0)
                         return;
                     productsBeanList = response.getBody().getProducts();
-                    // TODO
-//                    ProductList.ProductsBean productsBean = productsBeanList.get(0);
-//                    productsBean.setAmount("3900");
-//                    productsBeanList.add(productsBean);
                     if (productsBeanList != null) {
                         Collections.sort(productsBeanList, new Comparator<ProductList.ProductsBean>() {
                             @Override
