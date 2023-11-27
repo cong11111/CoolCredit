@@ -20,6 +20,7 @@ import com.chocolate.moudle.scan.my.ScanActivity;
 import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.KudiCreditApp;
 import com.tiny.cash.loan.card.Constants;
+import com.tiny.cash.loan.card.kudicredit.BuildConfig;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.ui.adapter.AmountAdapter;
 import com.tiny.cash.loan.card.ui.adapter.TermAdapter;
@@ -70,13 +71,9 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
     private LayoutLoanProductBinding mBinding;
     private List<ProductList.ProductsBean> productsBeanList;
     private LoanTrial body;
-    private String prodId;
     private String amount;
-    private String period;
-    private String prodName;
+    private ProductList.ProductsBean mCurProductBean;
     private String mType;
-    //android.Manifest.permission.RECORD_AUDIO
-    //            , android.Manifest.permission.CAMERA,
     private String[] permissions = new String[]{
 //            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
 //            , Manifest.permission.READ_CONTACTS, Manifest.permission.READ_PHONE_STATE,
@@ -177,10 +174,8 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                     adapter.selectItem(s);
                     List<String> list = mTermMap.get(amount);
                     if (list != null && list.size() > 0) {
-                        period = list.get(position);
-                        prodId = productsBean.getProdId();
-                        prodName = productsBean.getProdName();
-                        requestLoanTrial(prodId, amount);
+                        mCurProductBean = productsBean;
+                        requestLoanTrial();
                     }
                 }
 
@@ -191,20 +186,17 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
 
     private void TermView(String amount, List<String> mTermList) {
         if (mTermList.size() == 1){
-            period = mTermList.get(0);
+            String period = mTermList.get(0);
             ProductList.ProductsBean productsBean = mDataMap.get(amount + period);
-            prodId = productsBean.getProdId();
-            prodName = productsBean.getProdName();
-            requestLoanTrial(prodId, amount);
+            mCurProductBean = productsBean;
+            requestLoanTrial();
         }else {
             mBinding.llNoTerm.setVisibility(View.VISIBLE);
             mBinding.llAll.setVisibility(View.GONE);
             mBinding.llFirst1.setVisibility(View.GONE);
-            period = mTermList.get(0);
-            ProductList.ProductsBean productsBean = mDataMap.get(amount + period);
-            prodId = productsBean.getProdId();
-            prodName = productsBean.getProdName();
-            requestLoanTrial(prodId, amount);
+            String period = mTermList.get(mTermList.size() - 1);
+            mCurProductBean = mDataMap.get(amount + period);
+            requestLoanTrial();
         }
 
         initTermAdapter();
@@ -364,7 +356,16 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
 
     }
 
-    private void requestLoanTrial(String prodId, String loanAmount) {
+    private void requestLoanTrial() {
+        if (mCurProductBean == null) {
+            return;
+        }
+        String prodId = mCurProductBean.getProdId();
+        String loanAmount = mCurProductBean.getAmount();
+        String period = mCurProductBean.getPeriod();
+        if (BuildConfig.DEBUG) {
+            Log.e("Test", " cur amount = " + loanAmount + " period = " + period + " prodId = " + prodId);
+        }
         Observable observable = NetManager.getApiService().loanTrial(prodId, loanAmount)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -492,7 +493,12 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
 //            FirebaseLogUtils.Log("af_new_apply");
 //        else
 //            FirebaseLogUtils.Log("af_old_apply");
-
+        if (mCurProductBean == null){
+            return;
+        }
+        String prodId = mCurProductBean.getProdId();
+        String prodName = mCurProductBean.getProdName();
+        String period = mCurProductBean.getPeriod();
         String acconutId = KvStorage.get(LocalConfig.LC_ACCOUNTID, "");
         ApplyParams applyParams = ApplyParams.createParams(acconutId, orderId, prodId, prodName, amount, period);
         ConfirmLoanDialogFragment.createBuilder(getContext(), getChildFragmentManager())
