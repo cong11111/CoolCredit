@@ -72,6 +72,7 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
     private List<ProductList.ProductsBean> productsBeanList;
     private LoanTrial body;
     private String amount;
+    private String mLastTerm;
     private ProductList.ProductsBean mCurProductBean;
     private String mType;
     private String[] permissions = new String[]{
@@ -145,7 +146,7 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
 
     TermAdapter adapter = null;
 
-    private void initTermAdapter() {
+    private void initTermAdapter(String selectStr) {
         List<String> mTermList = mTermMap.get(amount);
         if (mTermList == null || mTermList.size() == 0) {
             return;
@@ -157,8 +158,10 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
         if (mTermList.size() == 1){
             adapter.selectItem(mTermList.get(0));
         } else {
-            String term = mTermList.get(mTermList.size() - 1);
-            adapter.selectItem(term);
+            if (TextUtils.isEmpty(selectStr)) {
+                selectStr =  mTermList.get(mTermList.size() - 1);
+            }
+            adapter.selectItem(selectStr);
         }
         mBinding.recyclerView.setAdapter(adapter);
         adapter.setData(mTermList);
@@ -168,25 +171,22 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String s = mTermList.get(position);
                 ProductList.ProductsBean productsBean = mDataMap.get(amount + s);
-                if (productsBean.getUsable().equals("false"))
-                    ToastManager.show(getContext(), getString(R.string.str_keep_a_good_credit_history));
-                else {
-                    adapter.selectItem(s);
-                    List<String> list = mTermMap.get(amount);
-                    if (list != null && list.size() > 0) {
-                        mCurProductBean = productsBean;
-                        requestLoanTrial();
-                    }
+                adapter.selectItem(s);
+                mLastTerm = s;
+                List<String> list = mTermMap.get(amount);
+                if (list != null && list.size() > 0) {
+                    mCurProductBean = productsBean;
+                    requestLoanTrial();
                 }
-
             }
         });
     }
 
 
     private void TermView(String amount, List<String> mTermList) {
+        String period = null;
         if (mTermList.size() == 1){
-            String period = mTermList.get(0);
+            period = mTermList.get(0);
             ProductList.ProductsBean productsBean = mDataMap.get(amount + period);
             mCurProductBean = productsBean;
             requestLoanTrial();
@@ -194,12 +194,23 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
             mBinding.llNoTerm.setVisibility(View.VISIBLE);
             mBinding.llAll.setVisibility(View.GONE);
             mBinding.llFirst1.setVisibility(View.GONE);
-            String period = mTermList.get(mTermList.size() - 1);
+            if (!TextUtils.isEmpty(mLastTerm)) {
+                for (int i =0; i < mTermList.size(); i++) {
+                    String temp = mTermList.get(i);
+                    if (TextUtils.equals(mLastTerm, temp)) {
+                        period = mLastTerm;
+                        break;
+                    }
+                }
+            }
+            if (TextUtils.isEmpty(period)) {
+                period = mTermList.get(mTermList.size() - 1);
+            }
             mCurProductBean = mDataMap.get(amount + period);
             requestLoanTrial();
         }
-
-        initTermAdapter();
+        mLastTerm = mCurProductBean.getPeriod();
+        initTermAdapter(period);
     }
 
     NetObserver LoanProductObserver, loanTrialObserver, OrderStatusObserver;
@@ -267,6 +278,7 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
                         amount = mAmountList.get(mAmountList.size() - 1);
                     }
                     initAmountAdapter();
+                    mLastTerm = null;
                     TermView(amount, mTermMap.get(amount));
                 }
             }
@@ -612,6 +624,10 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         if (view == mBinding.btnApplyNow) {
+            if (mCurProductBean == null || mCurProductBean.getUsable().equals("false")) {
+                ToastManager.show(getContext(), getString(R.string.str_keep_a_good_credit_history));
+                 return;
+            }
             KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_FIRSTORDER), Constants.ZERO);
             if (body == null) {
                 return;
