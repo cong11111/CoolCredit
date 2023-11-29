@@ -622,7 +622,6 @@ public class MainActivity extends BaseActivity {
             pushUI(push);
             return;
         }
-        mLoanDetail = null;
         if (mLoanDetail == null) {
             mLoanTitle = getString(R.string.menu_My_loan);
             fragment = ProductFragment.newInstance();
