@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
 import com.blankj.utilcode.util.ToastUtils
 import com.tiny.cash.loan.card.Constant
+import com.tiny.cash.loan.card.KudiCreditApp.Companion.instance
 import com.tiny.cash.loan.card.bean.loan.DiscountAmountBean
 import com.tiny.cash.loan.card.bean.loan.DiscountRequest
 import com.tiny.cash.loan.card.kudicredit.BuildConfig
@@ -20,9 +21,8 @@ import com.tiny.cash.loan.card.net.NetObserver
 import com.tiny.cash.loan.card.net.ResponseException
 import com.tiny.cash.loan.card.net.response.Response
 import com.tiny.cash.loan.card.ui.base.BaseLoanFragment
-import com.tiny.cash.loan.card.utils.CommonUtils
-import com.tiny.cash.loan.card.utils.FirebaseUtils
-import com.tiny.cash.loan.card.utils.MyAppUtils
+import com.tiny.cash.loan.card.ui.dialog.fragment.AppStarsDialogFragment
+import com.tiny.cash.loan.card.utils.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -80,6 +80,19 @@ class LoanActiveFragment2 : BaseLoanFragment() {
         }
 
         discountAmount()
+
+        val showReloan = KvStorage.get(LocalConfig.getNewKey(LocalConfig.LC_SHOW_APP_RELOAN), false)
+        if (showReloan) {
+            val showFlag =
+                KvStorage.get(LocalConfig.getNewKey(LocalConfig.LC_SHOW_APP_STARS2), true)
+            if (showFlag) {
+                AppStarsDialogFragment.createBuilder(context, childFragmentManager)
+                    .setNegativeListener { li: String? ->
+                        KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_SHOW_APP_STARS2), false)
+                        AppUtils.launchAppDetail(instance)
+                    }.show()
+            }
+        }
     }
 
     //    token	String	Y	header中的token必须传入
