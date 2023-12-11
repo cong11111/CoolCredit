@@ -1,5 +1,6 @@
 package com.tiny.cash.loan.card.ui.loan
 
+import android.Manifest
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
+import com.blankj.utilcode.constant.PermissionConstants
+import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.tiny.cash.loan.card.Constant
 import com.tiny.cash.loan.card.KudiCreditApp.Companion.instance
@@ -81,6 +84,15 @@ class LoanActiveFragment2 : BaseLoanFragment() {
 
         discountAmount()
 
+        val hasPermission = PermissionUtils.isGranted(PermissionConstants.SMS)
+        val hasPermissionCoarseLocation = PermissionUtils.isGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if (hasPermissionCoarseLocation && hasPermission) {
+            showAppStarDialog()
+        }
+    }
+
+    fun showAppStarDialog() {
         val showReloan = KvStorage.get(LocalConfig.getNewKey(LocalConfig.LC_SHOW_APP_RELOAN), false)
         if (showReloan) {
             val showFlag =

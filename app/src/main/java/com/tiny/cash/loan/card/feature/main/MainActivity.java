@@ -313,6 +313,9 @@ public class MainActivity extends BaseActivity {
                 utils.callback(new PermissionUtils.SimpleCallback() {
                     @Override
                     public void onGranted() {
+                        if (mCurrentFragment != null && mCurrentFragment instanceof LoanActiveFragment2) {
+                            ((LoanActiveFragment2) mCurrentFragment).showAppStarDialog();
+                        }
                         executeCache();
                     }
 
