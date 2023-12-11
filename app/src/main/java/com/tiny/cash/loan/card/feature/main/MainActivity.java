@@ -321,6 +321,9 @@ public class MainActivity extends BaseActivity {
 
                     @Override
                     public void onDenied() {
+                        if (mCurrentFragment != null && mCurrentFragment instanceof LoanActiveFragment2) {
+                            ((LoanActiveFragment2) mCurrentFragment).showAppStarDialog();
+                        }
                         ToastUtils.showShort("please allow permission.");
                     }
                 }).request();
