@@ -33,18 +33,10 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chocolate.moudle.scan.CameraSdk;
-import com.chocolate.moudle.scan.camera2.CameraActivity2;
-import com.chocolate.moudle.scan.my.GameActivity;
-import com.chocolate.moudle.scan.my.ScanActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.Constants;
-import com.tiny.cash.loan.card.feature.users.ContactsActivity;
-import com.tiny.cash.loan.card.mgr.IntegrityApiMgr;
-import com.tiny.cash.loan.card.ui.camera.IdentityAuthActivity;
-import com.tiny.cash.loan.card.ui.camera.IdentityPhotoActivity;
-import com.tiny.cash.loan.card.utils.JumpPermissionUtils;
-import com.tiny.cash.loan.card.utils.SendFileUtils;
+import com.tiny.cash.loan.card.KudiCreditApp;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.collect.BaseCollectDataMgr;
@@ -53,7 +45,6 @@ import com.tiny.cash.loan.card.collect.CollectHardwareMgr;
 import com.tiny.cash.loan.card.collect.LocationMgr;
 import com.tiny.cash.loan.card.collect.item.CollectSmsMgr;
 import com.tiny.cash.loan.card.dialog.RequestPermissionDialog;
-import com.tiny.cash.loan.card.ui.loan.LoanActiveFragment2;
 import com.tiny.cash.loan.card.feature.loan.LoanOrderHelp;
 import com.tiny.cash.loan.card.feature.loan.OverdueFragment;
 import com.tiny.cash.loan.card.feature.loan.PaymentProgressFragment;
@@ -67,9 +58,11 @@ import com.tiny.cash.loan.card.feature.menu.HelpFragment;
 import com.tiny.cash.loan.card.feature.menu.MessageFragment;
 import com.tiny.cash.loan.card.feature.menu.MyProfileFragment;
 import com.tiny.cash.loan.card.feature.menu.OfflinePaymentFragment;
+import com.tiny.cash.loan.card.feature.users.ContactsActivity;
 import com.tiny.cash.loan.card.kudicredit.BuildConfig;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.message.EventMessage;
+import com.tiny.cash.loan.card.mgr.IntegrityApiMgr;
 import com.tiny.cash.loan.card.net.NetManager;
 import com.tiny.cash.loan.card.net.NetObserver;
 import com.tiny.cash.loan.card.net.ResponseException;
@@ -83,8 +76,12 @@ import com.tiny.cash.loan.card.net.response.data.order.MessageBean;
 import com.tiny.cash.loan.card.net.response.data.order.OrderStatus;
 import com.tiny.cash.loan.card.net.server.ApiServerImpl;
 import com.tiny.cash.loan.card.ui.adapter.DrawerAdapter;
+import com.tiny.cash.loan.card.ui.camera.IdentityAuthActivity;
+import com.tiny.cash.loan.card.ui.camera.IdentityPhotoActivity;
 import com.tiny.cash.loan.card.ui.card.BindNewCardActivity;
+import com.tiny.cash.loan.card.ui.dialog.fragment.AppStarsDialogFragment;
 import com.tiny.cash.loan.card.ui.dialog.fragment.TipsDialogFragment;
+import com.tiny.cash.loan.card.ui.loan.LoanActiveFragment2;
 import com.tiny.cash.loan.card.ui.loan.LoanDeclinedFragment;
 import com.tiny.cash.loan.card.ui.login2.Login2Activity;
 import com.tiny.cash.loan.card.ui.menu.VirtualAccountFragment;
@@ -92,8 +89,10 @@ import com.tiny.cash.loan.card.ui.pay2.PayActivity2;
 import com.tiny.cash.loan.card.utils.AppUtils;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.FirebaseUtils;
+import com.tiny.cash.loan.card.utils.JumpPermissionUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
+import com.tiny.cash.loan.card.utils.SendFileUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -833,6 +832,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test2() {
+        AppStarsDialogFragment.createBuilder(this, getSupportFragmentManager())
+                .setNegativeListener(li -> {
+                    KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_SHOW_APP_STARS2), false);
+                    AppUtils.launchAppDetail(KudiCreditApp.getInstance());
+                }).show();
+        if (true) {
+            return;
+        }
         boolean isGranted = PermissionUtils.isGranted(Manifest.permission.CAMERA);
         if (isGranted) {
             IdentityAuthActivity.Companion.checkExistAndToSelfie(this);
