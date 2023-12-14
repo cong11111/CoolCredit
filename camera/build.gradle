@@ -47,7 +47,7 @@ dependencies {
     //把so放到包里.
     implementation 'com.google.mlkit:face-detection:16.1.5'
 
-    def camerax_version = "1.1.0-beta01"
+    def camerax_version = "1.2.3"
 //    // CameraX view library
 //    def camerax_view_version = "1.0.0-alpha24"
     implementation "androidx.camera:camera-core:$camerax_version"

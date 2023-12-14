@@ -204,6 +204,7 @@ public class CameraScanningFragment extends Fragment {
         if (!isAdded()) {
             return;
         }
+        pvView.setImplementationMode(PreviewView.ImplementationMode.COMPATIBLE);
         pvView.setVisibility(View.VISIBLE);
         cameraSelector = new CameraSelector.Builder().requireLensFacing(lensFacing).build();
         ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication());
