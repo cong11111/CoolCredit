@@ -196,7 +196,7 @@
                     android:textColor="@color/color_ff999999"
                     android:textSize="@dimen/sp_16" />
 
-                <com.tiny.cash.loan.card.ui.view.ClearEditText
+                <com.tiny.cash.loan.card.ui.view.ClearEditText2
                     android:id="@+id/et_personal_email"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_34"

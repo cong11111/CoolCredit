@@ -58,6 +58,7 @@ import com.tiny.cash.loan.card.feature.menu.HelpFragment;
 import com.tiny.cash.loan.card.feature.menu.MessageFragment;
 import com.tiny.cash.loan.card.feature.menu.MyProfileFragment;
 import com.tiny.cash.loan.card.feature.menu.OfflinePaymentFragment;
+import com.tiny.cash.loan.card.feature.users.BasicInfoActivity;
 import com.tiny.cash.loan.card.feature.users.ContactsActivity;
 import com.tiny.cash.loan.card.kudicredit.BuildConfig;
 import com.tiny.cash.loan.card.kudicredit.R;
@@ -832,11 +833,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void test2() {
-        AppStarsDialogFragment.createBuilder(this, getSupportFragmentManager())
-                .setNegativeListener(li -> {
-                    KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_SHOW_APP_STARS2), false);
-                    AppUtils.launchAppDetail(KudiCreditApp.getInstance());
-                }).show();
+//        AppStarsDialogFragment.createBuilder(thi s, getSupportFragmentManager())
+//                .setNegativeListener(li -> {
+//                    KvStorage.put(LocalConfig.getNewKey(LocalConfig.LC_SHOW_APP_STARS2), false);
+//                    AppUtils.launchAppDetail(KudiCreditApp.getInstance());
+//                }).show();
+        Intent intent = new Intent(this, BasicInfoActivity.class);
+       startActivity(intent);
         if (true) {
             return;
         }
