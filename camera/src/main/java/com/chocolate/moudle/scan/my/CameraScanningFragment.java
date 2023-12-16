@@ -3,7 +3,7 @@ package com.chocolate.moudle.scan.my;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -204,7 +204,9 @@ public class CameraScanningFragment extends Fragment {
         if (!isAdded()) {
             return;
         }
-        pvView.setImplementationMode(PreviewView.ImplementationMode.COMPATIBLE);
+        if (Build.VERSION.SDK_INT >= 34) {
+            pvView.setImplementationMode(PreviewView.ImplementationMode.COMPATIBLE);
+        }
         pvView.setVisibility(View.VISIBLE);
         cameraSelector = new CameraSelector.Builder().requireLensFacing(lensFacing).build();
         ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication());

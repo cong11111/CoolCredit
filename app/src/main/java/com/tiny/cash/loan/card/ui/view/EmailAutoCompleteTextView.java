@@ -18,8 +18,15 @@ public class EmailAutoCompleteTextView extends AppCompatAutoCompleteTextView {
 
         private static final String TAG = "EmailAutoCompleteTextView";
 
-        private String[] emailSufixs = new String[]{ "@gmail.com","@hotmail.com",
-                "@yahoo.cn", "@163.com", "@126.com", "@foxmail.com",};
+        private String[] emailSufixs = new String[]{
+                "@gmail.com",
+                "@hotmail.com",
+                "@yahoo.com",
+                "@foxmail.com",
+                "@ymail.com",
+                "@icloud.com",
+                "@outlook.com",
+                "@rocketmail.com",};
 
 
         public EmailAutoCompleteTextView(Context context) {
