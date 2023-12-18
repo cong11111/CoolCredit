@@ -71,7 +71,7 @@ public class EmailAutoCompleteTextView extends AppCompatAutoCompleteTextView {
                         if (text != null && text.matches("^[a-zA-Z0-9_]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$")) {
 
                         } else {
-                            Toast toast = Toast.makeText(context, "邮件地址格式不正确", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(context, "not a correct email.", Toast.LENGTH_SHORT);
                             toast.show();
                         }
                     }

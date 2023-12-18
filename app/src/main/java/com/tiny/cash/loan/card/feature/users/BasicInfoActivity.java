@@ -2,6 +2,7 @@ package com.tiny.cash.loan.card.feature.users;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.RadioButton;
@@ -12,6 +13,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseActivity;
@@ -261,6 +263,22 @@ public class BasicInfoActivity extends BaseActivity implements View.OnClickListe
             }
             return false;
         }));
+        float height1 = getResources().getDimension(R.dimen.dp_40) * 5.5f;
+        mBinding.etPersonalEmail.setDropDownHeight((int) height1);
+        KeyboardUtils.registerSoftInputChangedListener(this, new KeyboardUtils.OnSoftInputChangedListener() {
+            @Override
+            public void onSoftInputChanged(int height) {
+                if (KeyboardUtils.isSoftInputVisible(BasicInfoActivity.this)) {
+                    if (mBinding.etPersonalEmail != null) {
+                        Log.e("Test", " height = " + height);
+                        int emailTitle = mBinding.tvEmailTitle.getHeight();
+                        int dp20 = (int) getResources().getDimension(R.dimen.dp_20);
+//                        mBinding.etPersonalEmail.getHeight() + emailTitle + dp20
+                        mBinding.etPersonalEmail.setDropDownVerticalOffset(-(int)height1);
+                    }
+                }
+            }
+        });
     }
 
     @Override
