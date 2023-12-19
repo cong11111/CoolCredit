@@ -2621,6 +2621,10 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+        <activity android:name="com.tiny.cash.loan.card.ui.dialog.InputBasicInfoActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+
 <!--        <activity-->
 <!--            android:name="com.tiny.cash.loan.card.feature.bank.AddBankCardActivity"-->
 <!--            android:configChanges="screenSize|keyboard|keyboardHidden|orientation|fontScale|uiMode"-->
