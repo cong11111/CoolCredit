@@ -1,23 +1,27 @@
 package com.tiny.cash.loan.card.feature.users;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
-import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.BarUtils;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseActivity;
 import com.tiny.cash.loan.card.kudicredit.databinding.ActivityBasicInfoBinding;
+import com.tiny.cash.loan.card.ui.dialog.InputBasicInfoActivity;
 import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
@@ -63,6 +67,7 @@ public class BasicInfoActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BarUtils.setStatusBarLightMode(this, true);
         mBinding = ActivityBasicInfoBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());//DataBindingUtil.setContentView(this, R.layout.activity_userinformation);
         initView();
@@ -263,22 +268,31 @@ public class BasicInfoActivity extends BaseActivity implements View.OnClickListe
             }
             return false;
         }));
-        float height1 = getResources().getDimension(R.dimen.dp_40) * 5.5f;
-        mBinding.etPersonalEmail.setDropDownHeight((int) height1);
-        KeyboardUtils.registerSoftInputChangedListener(this, new KeyboardUtils.OnSoftInputChangedListener() {
+        mBinding.etPersonalEmail.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSoftInputChanged(int height) {
-                if (KeyboardUtils.isSoftInputVisible(BasicInfoActivity.this)) {
-                    if (mBinding.etPersonalEmail != null) {
-                        Log.e("Test", " height = " + height);
-                        int emailTitle = mBinding.tvEmailTitle.getHeight();
-                        int dp20 = (int) getResources().getDimension(R.dimen.dp_20);
-//                        mBinding.etPersonalEmail.getHeight() + emailTitle + dp20
-                        mBinding.etPersonalEmail.setDropDownVerticalOffset(-(int)height1);
-                    }
-                }
+            public void onClick(View v) {
+                Intent intent = new Intent(BasicInfoActivity.this, InputBasicInfoActivity.class);
+                startActivityForResult(intent, 111);
+                overridePendingTransition(0,0);
+
             }
         });
+//        float height1 = getResources().getDimension(R.dimen.dp_40) * 5.5f;
+//        mBinding.etPersonalEmail.setDropDownHeight((int) height1);
+//        KeyboardUtils.registerSoftInputChangedListener(this, new KeyboardUtils.OnSoftInputChangedListener() {
+//            @Override
+//            public void onSoftInputChanged(int height) {
+//                if (KeyboardUtils.isSoftInputVisible(BasicInfoActivity.this)) {
+//                    if (mBinding.etPersonalEmail != null) {
+//                        Log.e("Test", " height = " + height);
+//                        int emailTitle = mBinding.tvEmailTitle.getHeight();
+//                        int dp20 = (int) getResources().getDimension(R.dimen.dp_20);
+////                        mBinding.etPersonalEmail.getHeight() + emailTitle + dp20
+//                        mBinding.etPersonalEmail.setDropDownVerticalOffset(-(int)height1);
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -385,5 +399,16 @@ public class BasicInfoActivity extends BaseActivity implements View.OnClickListe
         CommonUtils.disposable(mObserver);
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 111 && data != null){
+            String data1 = data.getStringExtra("data");
+            if (data1 != null) {
+                mBinding.etPersonalEmail.setText(data1);
+            }
+        }
     }
 }
