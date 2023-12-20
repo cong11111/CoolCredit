@@ -41,10 +41,10 @@ class InputBasicInfoActivity : BaseActivity() {
                 if (et != null) {
                     text = et!!.text.toString()
                 }
-                if (text != null && matches("^[a-zA-Z0-9_]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$", text)) {
+                if (text != null && matches(text)) {
                     finishAndInput()
                 } else {
-                    ToastUtils.showShort("not a correct email.")
+                    notMatchToast()
                 }
                 return true
             }
@@ -103,10 +103,10 @@ class InputBasicInfoActivity : BaseActivity() {
                     text = et!!.text.toString()
                 }
                 //这里正则写的有点粗暴:)
-                if (text != null && matches("^[a-zA-Z0-9_]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$", text)) {
+                if (text != null && matches(text)) {
                     finishAndInput()
                 } else {
-                    ToastUtils.showShort("not a correct email.")
+                    notMatchToast()
                 }
             }
 
@@ -123,6 +123,10 @@ class InputBasicInfoActivity : BaseActivity() {
             }
 
         })
+    }
+
+    private fun notMatchToast() {
+        ToastUtils.showShort("This email format is incorrect,pls check it.")
     }
 
     private fun finishAndInput(needSetData : Boolean = true) {
@@ -152,6 +156,6 @@ class InputBasicInfoActivity : BaseActivity() {
     }
 }
 
-private fun matches(regex: String, input : String): Boolean {
-   return Pattern.matches(regex, input)
+private fun matches(input : String): Boolean {
+   return Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", input)
 }
