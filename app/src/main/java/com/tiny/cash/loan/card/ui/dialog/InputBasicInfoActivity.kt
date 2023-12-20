@@ -125,15 +125,18 @@ class InputBasicInfoActivity : BaseActivity() {
         })
     }
 
-    private fun finishAndInput() {
-
+    private fun finishAndInput(needSetData : Boolean = true) {
         val intent = Intent()
         var data = ""
         if (et != null) {
             data = et!!.text.toString()
         }
         intent.putExtra("data", data)
-        setResult(111, intent)
+        if (needSetData) {
+            setResult(111, intent)
+        } else {
+            setResult(111)
+        }
         finish()
     }
 
@@ -145,7 +148,7 @@ class InputBasicInfoActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        finishAndInput()
+        finishAndInput(false)
     }
 }
 
