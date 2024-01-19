@@ -191,7 +191,7 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
             mCurProductBean = productsBean;
             requestLoanTrial();
         }else {
-            mBinding.llNoTerm.setVisibility(View.VISIBLE);
+//            mBinding.llNoTerm.setVisibility(View.GONE);
             mBinding.llAll.setVisibility(View.GONE);
             mBinding.llFirst1.setVisibility(View.GONE);
             if (!TextUtils.isEmpty(mLastTerm)) {
@@ -304,6 +304,11 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
         if (getContext() == null)
             return;
         if (trial == null) {
+            mBinding.llNoTerm.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.llNoTerm.setVisibility(View.GONE);
+        }
+        if (trial == null) {
             mBinding.tvFirstInterest.setText(getString(R.string.str_money, Constants.ZERO));
             mBinding.tvFirstFee.setText(getString(R.string.str_money, Constants.ZERO));
             mBinding.tvFirstDisburse.setText(getString(R.string.str_money, Constants.ZERO));
@@ -402,6 +407,7 @@ public class ProductFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onException(ResponseException netException) {
                 dismissProgressDialogFragment();
+                mBinding.llNoTerm.setVisibility(View.GONE);
             }
         };
         observable.subscribeWith(loanTrialObserver);
