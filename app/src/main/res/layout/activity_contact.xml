@@ -5,11 +5,12 @@
 -->
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
 
         <ImageView
             android:id="@+id/iv_back"
@@ -135,14 +136,14 @@
                     android:id="@+id/spinner_first_ralationship"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_10025"
+
                     android:layout_marginTop="@dimen/dp_5"
                     android:gravity="start"
                     android:hint="@string/str_choose_from_list"
                     android:textColor="@color/color_ffcccccc"
                     android:textSize="@dimen/sp_18"
                     app:backgroundSelector="@drawable/background_selector" />
-
+<!--                android:layout_marginLeft="@dimen/dp_10025"-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -231,31 +232,20 @@
                     android:id="@+id/spinner_second_ralationship"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_10025"
                     android:layout_marginTop="@dimen/dp_5"
                     android:gravity="start"
                     android:hint="@string/str_choose_from_list"
                     android:textColor="@color/color_ffcccccc"
                     android:textSize="@dimen/sp_18"
                     app:backgroundSelector="@drawable/background_selector" />
-
-                <TextView
-                    android:id="@+id/tv_more_Continue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:text="@string/str_continue_to_fill_in"
-                    android:textColor="@color/color_ff666666"
-                    android:textSize="@dimen/sp_16" />
-
+<!--                android:layout_marginLeft="@dimen/dp_10025"-->
 
                 <LinearLayout
                     android:id="@+id/ll_more_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    tools:visibility="visible">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -345,14 +335,13 @@
                         android:id="@+id/spinner_three_ralationship"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_10025"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="start"
                         android:hint="@string/str_choose_from_list"
                         android:textColor="@color/color_ffcccccc"
                         android:textSize="@dimen/sp_18"
                         app:backgroundSelector="@drawable/background_selector" />
-
+<!--                    android:layout_marginLeft="@dimen/dp_10025"-->
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -442,14 +431,24 @@
                         android:id="@+id/spinner_four_ralationship"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_10025"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="start"
                         android:hint="@string/str_choose_from_list"
                         android:textColor="@color/color_ffcccccc"
                         android:textSize="@dimen/sp_18"
                         app:backgroundSelector="@drawable/background_selector" />
+<!--                    android:layout_marginLeft="@dimen/dp_10025"-->
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_more_Continue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:text="@string/str_continue_to_fill_in"
+                    android:textColor="@color/color_ff666666"
+                    android:textSize="@dimen/sp_16" />
 
                 <Button
                     android:id="@+id/btn_next"
