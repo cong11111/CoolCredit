@@ -246,6 +246,10 @@ public class ConfirmLoanDialogFragment extends BaseDialogFragment<ConfirmLoanDia
                 }
             }
         }
+        if (builder.applyParams != null) {
+            String period = builder.applyParams.period;
+            binding.tvConfirmLoanDate.setText(period);
+        }
         binding.btnCancel.setOnClickListener(v -> {
             dismissAllowingStateLoss();
         });
