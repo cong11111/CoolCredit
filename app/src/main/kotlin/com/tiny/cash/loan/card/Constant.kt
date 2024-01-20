@@ -48,8 +48,8 @@ class Constant {
         var deviceRecognitionVerdict : String? = null
         var appLicensingVerdict : String? = null
 
-        const val CUR_VERSION_CODE = 30102
-        const val CUR_VERSION_NAME = "3.1.2"
+        const val CUR_VERSION_CODE = 30103
+        const val CUR_VERSION_NAME = "3.1.3"
 
 
 //        const val KEY_ACCOUNT_ID = "key_sign_in_account_id"
