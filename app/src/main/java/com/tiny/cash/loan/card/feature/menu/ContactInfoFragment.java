@@ -16,8 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import com.blankj.utilcode.util.ToastUtils;
 import com.tiny.cash.loan.card.Constants;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseFragment;
@@ -26,7 +25,6 @@ import com.tiny.cash.loan.card.utils.CommonUtils;
 import com.tiny.cash.loan.card.utils.FirebaseUtils;
 import com.tiny.cash.loan.card.utils.KvStorage;
 import com.tiny.cash.loan.card.utils.LocalConfig;
-import com.tiny.cash.loan.card.utils.ui.ToastManager;
 import com.tiny.cash.loan.card.utils.Utils;
 
 import com.tiny.cash.loan.card.net.ResponseException;
@@ -333,15 +331,7 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
         mRefereeInfoParams.setContact3Relationship(keyMap.get(mBinding.spinnerThreeRalationship.getText().toString()));
         mRefereeInfoParams.setContact4Relationship(keyMap.get(mBinding.spinnerFourRalationship.getText().toString()));
 
-
-        if (TextUtils.isEmpty(etFirstContactName)
-                || TextUtils.isEmpty(etFirstContactMobile)
-                || TextUtils.isEmpty(etSecondContactName)
-                || TextUtils.isEmpty(etSecondContactMobile)
-                || TextUtils.isEmpty(mRefereeInfoParams.getContact1Relationship())
-                || TextUtils.isEmpty(mRefereeInfoParams.getContact2Relationship())) {
-
-            ToastManager.show(getContext(), "This not null");
+        if (!checkContactAvailable()) {
             return;
         }
         String accountId = KvStorage.get(LocalConfig.LC_ACCOUNTID, "");
@@ -518,4 +508,93 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
         }
     }
 
+    private boolean checkContactAvailable() {
+        String leagalName1 = Utils.filter(mBinding.etFirstContactName.getText().toString());
+        String mobile1 = Utils.filter(mBinding.etFirstContactMobile.getText().toString());
+        String leagalName2 = Utils.filter(mBinding.etSecondContactName.getText().toString());
+        String mobile2 = Utils.filter(mBinding.etSecondContactMobile.getText().toString());
+
+        String leagalName3 = Utils.filter(mBinding.etThreeContactName.getText().toString());
+        String mobile3 = Utils.filter(mBinding.etThreeContactMobile.getText().toString());
+        String leagalName4 = Utils.filter(mBinding.etFourContactName.getText().toString());
+        String mobile4 = Utils.filter(mBinding.etFourContactMobile.getText().toString());
+        String relationShip1 = mRefereeInfoParams.getContact1Relationship();
+        String relationShip2 = mRefereeInfoParams.getContact2Relationship();
+        String relationShip3 = mRefereeInfoParams.getContact3Relationship();
+        String relationShip4 = mRefereeInfoParams.getContact4Relationship();
+        if (TextUtils.isEmpty(leagalName1)){
+            ToastUtils.showShort("Please select contact1 name");
+            return false;
+        }
+        if (TextUtils.isEmpty(mobile1)){
+            ToastUtils.showShort("Please select contact1 mobile");
+            return false;
+        }
+        if (relationShip1 == null){
+            ToastUtils.showShort("Please select contact1 relationship");
+            return false;
+        }
+        if (TextUtils.isEmpty(leagalName2)){
+            ToastUtils.showShort("Please select contact2 name");
+            return false;
+        }
+        if (TextUtils.isEmpty(mobile2)){
+            ToastUtils.showShort("Please select contact2 mobile");
+            return false;
+        }
+        if (relationShip2 == null){
+            ToastUtils.showShort("Please select contact2 relationship");
+            return false;
+        }
+        if (TextUtils.isEmpty(leagalName3)){
+            ToastUtils.showShort("Please select contact3 name");
+            return false;
+        }
+        if (TextUtils.isEmpty(mobile3)){
+            ToastUtils.showShort("Please select contact3 mobile");
+            return false;
+        }
+        if (relationShip3 == null){
+            ToastUtils.showShort("Please select contact3 relationship");
+            return false;
+        }
+        if (TextUtils.isEmpty(leagalName4)){
+            ToastUtils.showShort("Please select contact4 name");
+            return false;
+        }
+        if (TextUtils.isEmpty(mobile4)){
+            ToastUtils.showShort("Please select contact4 mobile");
+            return false;
+        }
+        if (relationShip4 == null){
+            ToastUtils.showShort("Please select contact4 relationship");
+            return false;
+        }
+        if (TextUtils.equals(mobile3, mobile1)){
+//            ToastUtils.showShort("Phone number 3 and phone number 1 are the same")
+            ToastUtils.showShort("Duplicate contact info.");
+            return false;
+        }
+        if (TextUtils.equals(mobile3, mobile2)){
+//            ToastUtils.showShort("Phone number 3 and phone number 2 are the same")
+            ToastUtils.showShort("Duplicate contact info.");
+            return false;
+        }
+        if (TextUtils.equals(mobile4, mobile1)){
+//            ToastUtils.showShort("Phone number 4 and phone number 1 are the same")
+            ToastUtils.showShort("Duplicate contact info.");
+            return false;
+        }
+        if (TextUtils.equals(mobile4, mobile2)){
+//            ToastUtils.showShort("Phone number 4 and phone number 2 are the same")
+            ToastUtils.showShort("Duplicate contact info.");
+            return false;
+        }
+        if (TextUtils.equals(mobile4, mobile3)){
+//            ToastUtils.showShort("Phone number 4 and phone number 3 are the same")
+            ToastUtils.showShort("Duplicate contact info.");
+            return false;
+        }
+        return true;
+    }
 }

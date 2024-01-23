@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import com.tiny.cash.loan.card.Constant;
 import com.tiny.cash.loan.card.kudicredit.R;
 import com.tiny.cash.loan.card.base.BaseFragment;
 import com.tiny.cash.loan.card.kudicredit.databinding.FragmentBankAccountBinding;
@@ -209,7 +210,7 @@ public class BankAccountFragment extends BaseFragment {
             @Override
             public void onNext(Response<BankDetail> bankDetailResponse) {
                 if (bankDetailResponse.getBody() != null) {
-                    if (bankDetailResponse.getBody().isEdit()) {
+                    if (bankDetailResponse.getBody().isEdit() || Constant.showModifyBankAccount) {
                         mBinding.rlSwitch.setVisibility(View.VISIBLE);
                     } else {
                         mBinding.rlSwitch.setVisibility(View.GONE);

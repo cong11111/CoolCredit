@@ -55,7 +55,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:text="@string/str_repay_term"
-                                android:textSize="@dimen/sp_15"
+                                android:textSize="@dimen/sp_16"
                                 android:textColor="@color/color_656565"
                                 android:layout_height="wrap_content"/>
 
@@ -65,7 +65,7 @@
                                 android:text="7"
                                 android:textColor="@color/color_ff09c9b3"
                                 android:layout_marginStart="@dimen/dp_25"
-                                android:textSize="@dimen/sp_15"
+                                android:textSize="@dimen/sp_16"
                                 android:layout_height="wrap_content"/>
 
                         </LinearLayout>

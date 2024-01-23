@@ -140,7 +140,7 @@
                     app:backgroundSelector="@drawable/background_selector"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_10025"
+                    android:layout_marginLeft="@dimen/dp_10020"
                     android:layout_marginTop="@dimen/dp_5"
                     android:gravity="start"
                     android:hint="@string/str_choose_from_list"
@@ -236,7 +236,7 @@
                     app:backgroundSelector="@drawable/background_selector"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_10025"
+                    android:layout_marginLeft="@dimen/dp_10020"
                     android:layout_marginTop="@dimen/dp_5"
                     android:gravity="start"
                     android:hint="@string/str_choose_from_list"
@@ -250,6 +250,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/dp_20"
                     android:text="@string/str_continue_to_fill_in"
+                    android:visibility="gone"
                     android:textColor="@color/color_ff666666"
                     android:textSize="@dimen/sp_16" />
 
@@ -259,7 +260,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -350,7 +351,7 @@
                         app:backgroundSelector="@drawable/background_selector"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_10025"
+                        android:layout_marginLeft="@dimen/dp_10020"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="start"
                         android:hint="@string/str_choose_from_list"
@@ -447,7 +448,7 @@
                         app:backgroundSelector="@drawable/background_selector"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_10025"
+                        android:layout_marginLeft="@dimen/dp_10020"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="start"
                         android:hint="@string/str_choose_from_list"

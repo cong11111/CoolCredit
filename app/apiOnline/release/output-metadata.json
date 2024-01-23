@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.cash.loan.kudicredit",
+  "variantName": "apiOnlineRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 30100,
+      "versionName": "3.1.0",
+      "outputFile": "Kudicredit_apiOnline_11_01.apk"
+    }
+  ]
+}

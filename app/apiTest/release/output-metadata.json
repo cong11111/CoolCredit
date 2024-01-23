@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.cash.loan.kudicredit",
+  "variantName": "apiTestRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 30103,
+      "versionName": "3.1.3",
+      "outputFile": "Kudicredit_apiTest_01_20.apk"
+    }
+  ]
+}

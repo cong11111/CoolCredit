@@ -136,14 +136,14 @@
                     android:id="@+id/spinner_first_ralationship"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginLeft="@dimen/dp_10020"
                     android:layout_marginTop="@dimen/dp_5"
                     android:gravity="start"
                     android:hint="@string/str_choose_from_list"
                     android:textColor="@color/color_ffcccccc"
                     android:textSize="@dimen/sp_18"
                     app:backgroundSelector="@drawable/background_selector" />
-<!--                android:layout_marginLeft="@dimen/dp_10025"-->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -234,11 +234,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_5"
                     android:gravity="start"
+                    android:layout_marginLeft="@dimen/dp_10020"
                     android:hint="@string/str_choose_from_list"
                     android:textColor="@color/color_ffcccccc"
                     android:textSize="@dimen/sp_18"
                     app:backgroundSelector="@drawable/background_selector" />
-<!--                android:layout_marginLeft="@dimen/dp_10025"-->
 
                 <LinearLayout
                     android:id="@+id/ll_more_container"
@@ -337,11 +337,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="start"
+                        android:layout_marginLeft="@dimen/dp_10020"
                         android:hint="@string/str_choose_from_list"
                         android:textColor="@color/color_ffcccccc"
                         android:textSize="@dimen/sp_18"
                         app:backgroundSelector="@drawable/background_selector" />
-<!--                    android:layout_marginLeft="@dimen/dp_10025"-->
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -433,11 +433,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="start"
+                        android:layout_marginLeft="@dimen/dp_10020"
                         android:hint="@string/str_choose_from_list"
                         android:textColor="@color/color_ffcccccc"
                         android:textSize="@dimen/sp_18"
                         app:backgroundSelector="@drawable/background_selector" />
-<!--                    android:layout_marginLeft="@dimen/dp_10025"-->
                 </LinearLayout>
 
                 <TextView
