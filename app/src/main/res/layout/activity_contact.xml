@@ -447,6 +447,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/dp_20"
                     android:text="@string/str_continue_to_fill_in"
+                    android:visibility="gone"
                     android:textColor="@color/color_ff666666"
                     android:textSize="@dimen/sp_16" />
 

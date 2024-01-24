@@ -63,9 +63,10 @@
                                 android:id="@+id/tv_confirm_loan_date"
                                 android:layout_width="wrap_content"
                                 android:text="7"
+                                android:includeFontPadding="false"
                                 android:textColor="@color/color_ff09c9b3"
                                 android:layout_marginStart="@dimen/dp_25"
-                                android:textSize="@dimen/sp_16"
+                                android:textSize="@dimen/sp_18"
                                 android:layout_height="wrap_content"/>
 
                         </LinearLayout>
