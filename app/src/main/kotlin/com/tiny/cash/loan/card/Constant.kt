@@ -18,9 +18,6 @@ class Constant {
             return BuildConfig.DEBUG
         }
 
-        @kotlin.jvm.JvmField
-        var showModifyBankAccount: Boolean = true
-
         const val IS_COLLECT= !BuildConfig.IS_AAB_BUILD
 
         var IS_FIRST_APPROVE = false

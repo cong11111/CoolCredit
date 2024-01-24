@@ -210,7 +210,7 @@ public class BankAccountFragment extends BaseFragment {
             @Override
             public void onNext(Response<BankDetail> bankDetailResponse) {
                 if (bankDetailResponse.getBody() != null) {
-                    if (bankDetailResponse.getBody().isEdit() || Constant.showModifyBankAccount) {
+                    if (bankDetailResponse.getBody().isEdit()) {
                         mBinding.rlSwitch.setVisibility(View.VISIBLE);
                     } else {
                         mBinding.rlSwitch.setVisibility(View.GONE);
