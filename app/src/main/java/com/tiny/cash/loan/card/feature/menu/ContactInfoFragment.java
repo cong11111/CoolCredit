@@ -120,6 +120,7 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
         mBinding.tvFirstContactName.setText(refereeDetailBO.getContact1());
         mBinding.tvFirstContactMobile.setText(refereeDetailBO.getContact1Mobile());
         mBinding.tvFirstRalationship.setText(refereeDetailBO.getContact1RelationshipLabel());
+
         mBinding.tvSecondContactName.setText(refereeDetailBO.getContact2());
         mBinding.tvSecondContactMobile.setText(refereeDetailBO.getContact2Mobile());
         mBinding.tvSecondRalationship.setText(refereeDetailBO.getContact2RelationshipLabel());
@@ -127,9 +128,10 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
         mBinding.tvThreeContactName.setText(refereeDetailBO.getContact3());
         mBinding.tvThreeContactMobile.setText(refereeDetailBO.getContact3Mobile());
         mBinding.tvThreeRalationship.setText(refereeDetailBO.getContact3RelationshipLabel());
+
         mBinding.tvFourContactName.setText(refereeDetailBO.getContact4());
         mBinding.tvFourContactMobile.setText(refereeDetailBO.getContact4Mobile());
-        mBinding.tvFourRalationship.setText(refereeDetailBO.getContact1RelationshipLabel());
+        mBinding.tvFourRalationship.setText(refereeDetailBO.getContact4RelationshipLabel());
     }
 
     NetObserver<Response<UserContactDetail>> refereeDetailObserver;
