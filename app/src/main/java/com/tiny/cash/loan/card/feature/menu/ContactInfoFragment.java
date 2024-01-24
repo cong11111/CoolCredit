@@ -434,6 +434,10 @@ public class ContactInfoFragment extends BaseFragment implements View.OnClickLis
         if (requestCode == CONTACT_CODE) {
             if (data != null) {
                 Uri uri = data.getData();
+                if (uri == null){
+                    ToastUtils.showShort("not select contact.");
+                    return;
+                }
                 try {
                     // 创建内容解析者
                     ContentResolver contentResolver = getContext().getContentResolver();
