@@ -97,7 +97,11 @@ public class ContactsActivity extends BaseActivity implements View.OnClickListen
                         if (Constant.IS_COLLECT) {
                             LogSaver.logToFile("request contact  success " );
                         }
-                        Uri contactUri = result.getData().getData();
+                        Uri contactUri = null;
+                        if (result != null && result.getData() != null) {
+                            contactUri = result.getData().getData();
+                        }
+
                         if (contactUri == null) {
                             ToastUtils.showShort("not select contact.");
                             return;
