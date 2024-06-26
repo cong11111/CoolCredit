@@ -1,5 +1,6 @@
 package com.tiny.cash.loan.card.ui.base;
 
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -7,7 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -67,7 +73,9 @@ public class WebViewFragment extends BaseFragment2 {
         });
         webView.setWebViewClient(webViewClient);
         webView.getSettings().setJavaScriptEnabled(true);
-
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setPluginState(WebSettings.PluginState.ON);//设置是否支持插件
+        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
         if (!TextUtils.isEmpty(mUrl)) {
             webView.loadUrl(mUrl);
 //            Log.e("Test", " url 1 = " + mUrl);
@@ -96,6 +104,25 @@ public class WebViewFragment extends BaseFragment2 {
                 LogSaver.logToFile("webview url = " + url);
             }
         }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            super.onReceivedError(view, request, error);
+            LogSaver.logToFile("webview onReceivedError = " + error.toString());
+        }
+
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            super.onReceivedHttpError(view, request, errorResponse);
+            LogSaver.logToFile("webview onReceivedHttpError = " + errorResponse.toString());
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            super.onReceivedSslError(view, handler, error);
+            LogSaver.logToFile("webview onReceivedSslError = " + error.toString());
+        }
+
     };
 
     private String getCallBackMethod(){
