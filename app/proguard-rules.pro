@@ -308,3 +308,4 @@ public static java.lang.String TABLENAME;
 -keep class com.google.gson.** {*;}
 -keep class com.tiny.cash.loan.card.bean.** {*; }
 -keep class com.chocolate.moudle.scan.bean.** {*; }
+-dontwarn com.google.firebase.messaging.TopicOperation$TopicOperations

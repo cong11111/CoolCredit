@@ -29,6 +29,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.Toast
@@ -41,8 +42,8 @@ import androidx.concurrent.futures.await
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.window.WindowManager
 import com.blankj.utilcode.util.ImageUtils
+import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.ThreadUtils
 import com.chocolate.moudle.scan.BuildConfig
 import com.chocolate.moudle.scan.base.CameraOverlay
@@ -82,7 +83,6 @@ class Camera2Fragment : Fragment() {
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
-    private lateinit var windowManager: WindowManager
 
     private var mPreviewView: PreviewView? = null
     private var switchButton: ImageButton? = null
@@ -170,7 +170,6 @@ class Camera2Fragment : Fragment() {
         // Every time the orientation of device changes, update rotation for use cases
         displayManager.registerDisplayListener(displayListener, null)
         // Initialize WindowManager to retrieve display metrics
-        windowManager = WindowManager(view.context)
         // Initialize MediaStoreUtils for fetching this app's images
         mediaStoreUtils = MediaStoreUtils(requireContext())
         mCameraUiContainer?.post(Runnable {
@@ -233,10 +232,15 @@ class Camera2Fragment : Fragment() {
 
     /** Declare and bind preview, capture and analysis use cases */
     private fun bindCameraUseCases() {
+        if (activity == null) {
+            return
+        }
+
         // Get screen metrics used to setup camera for full screen resolution
-        val metrics = windowManager.getCurrentWindowMetrics().bounds
-        Log.d(TAG, "Screen metrics: ${metrics.width()} x ${metrics.height()}")
-        val screenAspectRatio = aspectRatio(metrics.width(), metrics.height())
+        val width = ScreenUtils.getAppScreenWidth()
+        val height = ScreenUtils.getAppScreenHeight()
+        Log.d(TAG, "Screen metrics: ${width} x ${height}")
+        val screenAspectRatio = aspectRatio(width ,height)
         Log.d(TAG, "Preview aspect ratio: $screenAspectRatio")
         val rotation = mPreviewView!!.display.rotation
         // CameraProvider
