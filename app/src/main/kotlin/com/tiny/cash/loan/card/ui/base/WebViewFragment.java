@@ -1,6 +1,7 @@
 package com.tiny.cash.loan.card.ui.base;
 
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -78,7 +79,10 @@ public class WebViewFragment extends BaseFragment2 {
         webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
         if (!TextUtils.isEmpty(mUrl)) {
             webView.loadUrl(mUrl);
-//            Log.e("Test", " url 1 = " + mUrl);
+            if (Constant.IS_COLLECT) {
+                LogSaver.logToFile("webview url = " + mUrl);
+            }
+            Log.e("Test", " url 1 = " + mUrl);
         }
     }
 
@@ -108,13 +112,30 @@ public class WebViewFragment extends BaseFragment2 {
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
-            LogSaver.logToFile("webview onReceivedError = " + error.toString());
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    LogSaver.logToFile("webview onReceivedError = " + error.getDescription() + " getErrorCode = " + error.getErrorCode());
+                } else {
+                    LogSaver.logToFile("webview onReceivedError  22= " );
+                }
+                LogSaver.logToFile("webview onReceivedError  = " + request.getUrl() );
+                Log.e("Test", " onReceivedError = " + request.getUrl()  );
+            } catch (Exception e) {
+
+            }
+
         }
 
         @Override
         public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
             super.onReceivedHttpError(view, request, errorResponse);
-            LogSaver.logToFile("webview onReceivedHttpError = " + errorResponse.toString());
+            try {
+                LogSaver.logToFile("webview onReceivedHttpError = " + request.getUrl());
+                LogSaver.logToFile("webview errorResponse = " + errorResponse.getStatusCode());
+            } catch (Exception e) {
+
+            }
+
         }
 
         @Override
@@ -140,6 +161,7 @@ public class WebViewFragment extends BaseFragment2 {
 
     public void setUrl(String url) {
         mUrl = url;
+        mUrl = "https://checkout.paystack.com/prtxj690tvp6z5p";
         if (webView != null) {
             webView.loadUrl(mUrl);
             Log.e("Test", " url = " + mUrl);
