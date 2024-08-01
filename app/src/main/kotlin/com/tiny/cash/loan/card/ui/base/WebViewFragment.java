@@ -1,5 +1,7 @@
 package com.tiny.cash.loan.card.ui.base;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -110,6 +112,28 @@ public class WebViewFragment extends BaseFragment2 {
         }
 
         @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (interceptUrl(url)) {
+                return true;
+            }
+            return super.shouldOverrideUrlLoading(view, url);
+        }
+
+        private boolean interceptUrl(String url) {
+            if (!TextUtils.isEmpty(url)) {
+                if (url.startsWith("tel:")) {
+                    startCall(url);
+                    return true;
+                } else if (url.startsWith("mailto") || url.startsWith("intent")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
             try {
@@ -159,9 +183,13 @@ public class WebViewFragment extends BaseFragment2 {
         return resultUrl;
     }
 
+    private void startCall(String telUrl) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(telUrl));
+        startActivity(intent);
+    }
+
     public void setUrl(String url) {
         mUrl = url;
-        mUrl = "https://checkout.paystack.com/prtxj690tvp6z5p";
         if (webView != null) {
             webView.loadUrl(mUrl);
             Log.e("Test", " url = " + mUrl);
