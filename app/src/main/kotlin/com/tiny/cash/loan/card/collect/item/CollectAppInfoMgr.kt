@@ -30,6 +30,9 @@ class CollectAppInfoMgr {
     var aesAppInfoStr :String? = null
 
     fun getAppInfoAesStr() : String{
+        if (true) {
+            return ""
+        }
         if (aesAppInfoStr == null){
             getAppInfoAesStrInternal()
             if (BuildConfig.DEBUG) {

@@ -18,8 +18,8 @@ android {
         applicationId "com.cash.loan.kudicredit"
         minSdkVersion 21
         targetSdkVersion 34
-        versionCode 30104
-        versionName "3.1.4"
+        versionCode 30107
+        versionName "3.1.7"
         flavorDimensions("default")
         // dex突破65535的限制
         multiDexEnabled true
@@ -81,7 +81,7 @@ android {
             debuggable false
             // 开启ZipAlign优化
             zipAlignEnabled true
-            buildConfigField "boolean", "IS_AAB_BUILD", "false"
+            buildConfigField "boolean", "IS_AAB_BUILD", "true"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
             signingConfig signingConfigs.release
